@@ -1,3 +1,3 @@
-# Pre - production
+# Desarrollo
 
-Aqui va a ir todo lo relacionado a pre procuccion
+Aqui va a ir todo lo relacionado a desarrollo
