@@ -5,10 +5,10 @@ import HeaderComponent from './components/HeaderComponent'
 
 
 
-function App() {
-  const [count, setCount] = useState(0)
 
+function App() {
   return (
+    
     <div className="App">
       <HeaderComponent/>
 
@@ -47,4 +47,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
