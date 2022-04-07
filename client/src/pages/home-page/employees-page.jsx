@@ -13,6 +13,12 @@ import "./employees.css";
 import { useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 //https://v4.mui.com/es/components/buttons/?msclkid=40af928eb62411ecaf95a1a6c922508a
 //https://materialui.co/icon/expand-more
 
@@ -55,8 +61,24 @@ const EmployeesPage = (props) =>{
 
         }
     ];
+    const [openDialog, setOpenDialog] = useState(false);
 
+    const handleClose = () => {
+        setOpenDialog(false);
+    };
+    const handleOpen = () => {
+        setOpenDialog(true);
+    };
     const [employees, setEmployees] = useState(contentRows);
+    const deleteEmployee = (id, event) =>{
+        handleClose();
+        console.log(id);
+
+        let arreglo = [...employees];
+        
+        setEmployees(arreglo.filter((item) => item.id != id));
+        
+    }
 
     const addEmployee = () =>{
         console.log(employees);
@@ -100,13 +122,8 @@ const EmployeesPage = (props) =>{
         <><TableCell key={columnTitles.indexOf(title)} id={columnTitles.indexOf(title)}  onClick={hidding}>
             {title}
             {open[columnTitles.indexOf(title)] ? <KeyboardArrowUpIcon size="big" id={columnTitles.indexOf(title)}/> : <KeyboardArrowDownIcon id={columnTitles.indexOf(title)} />}   
-        </TableCell></>
-        
+        </TableCell></>    
     );
-
-
-    
-
     return(
         <><form className='form' noValidate autoComplete="off">
         <TextField id="outlined-basic" label="New Employee(s)" variant="outlined" onChange = {handleChange} />
@@ -139,8 +156,30 @@ const EmployeesPage = (props) =>{
                         <TableCell>{open[9] ? null : item.ICAManager}</TableCell>
                         <TableCell>{open[10] ? null : item.ica}</TableCell>
                         <TableCell>{open[11] ? null : item.Squad}</TableCell>
-                        <IconButton aria-label="delete" size="small" height="15" width="15">
-                            <DeleteIcon />
+                        <IconButton aria-label="delete" size="small" height="15" width="15" id={item.id} onClick={handleOpen}>
+                            <DeleteIcon id={item.id} />
+
+                            <Dialog
+                                open={openDialog}
+                                onClose={handleClose}
+                                aria-labelledby="alert-dialog-title"
+                                aria-describedby="alert-dialog-description"
+                            >
+                            <DialogTitle id="alert-dialog-title">
+                            {"Delete employee"}
+                            </DialogTitle>
+                            <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Are you sure you wanna delete this element?
+                            </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                            <Button onClick={handleClose}>Disagree</Button>
+                            <Button onClick={(e) => deleteEmployee(item.id, e)} autoFocus>
+                                Agree
+                            </Button>
+                            </DialogActions>
+                        </Dialog>
                         </IconButton>
                         <IconButton  size="small">
                             <svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 24 24" width="15"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
@@ -150,8 +189,7 @@ const EmployeesPage = (props) =>{
                         </IconButton>
                  
                     </TableRow>
-                    ))
-                    
+                    ))     
                 }
                     
                 </TableBody>
