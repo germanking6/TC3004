@@ -24,6 +24,10 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import clsx from 'clsx';
 import { makeStyles } from '@mui/styles';
+import {BrowserRouter,Routes,Route, Link} from "react-router-dom";
+import HeaderComponent from './HeaderComponent';
+import HomePage from '../pages/home-page/home-page';
+
 const drawerWidth = 240;
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -123,6 +127,7 @@ export default function SideBar() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
+      <BrowserRouter>
       <AppBar position="fixed" open={open} style={{ background: '#000000' }}>
         <Toolbar>
 
@@ -165,7 +170,9 @@ export default function SideBar() {
         <Divider/>
         <List>
           {['HOME', 'Delegate', 'Logout'].map((text, index) => (
+            
             <ListItemButton
+              component={Link} to={text}
               key={text}
               sx={{
                 minHeight: 48,
@@ -173,6 +180,7 @@ export default function SideBar() {
                 px: 2.5,
               }}
             >
+              
               <ListItemIcon
                 sx={{
                   minWidth: 0,
@@ -182,15 +190,24 @@ export default function SideBar() {
               >
                 {index ==0? <HomeIcon /> : index==1?<GroupAddIcon className={clsx({transform: "scaleX(-1)"},{transform: "scaleX(1)"})}/>:<LogoutIcon />}
               </ListItemIcon>
-              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+              
+              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 ,}} />
             </ListItemButton>
+            
           ))}
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
         
+        <Routes>
+          <Route path="/"/>
+          <Route path="/Delegate" element={<HeaderComponent/>}/>
+          <Route path='/HOME' element={<HomePage/>}/>
+        </Routes>
+      
       </Box>
+      </BrowserRouter>
     </Box>
   );
 }
