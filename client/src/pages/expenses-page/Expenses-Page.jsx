@@ -1,106 +1,117 @@
 import React from 'react';
+import { useState } from 'react';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import InputAdornment from '@mui/material/InputAdornment';
+import ContactMailIcon from '@mui/icons-material/ContactMail';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import CommentIcon from '@mui/icons-material/Comment';
+import Autocomplete from '@mui/material/Autocomplete';
+import SendIcon from '@mui/icons-material/Send';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
 
 export default function ExpensesPage(){
+  const [ICA, setICA] = useState([{label:"ICA 1"},{label:"ICA 2"},{label:"ICA 3"},{label:"ICA 4"}]);
+  const [typeOptions, setType] = useState([{label:"Type 1"},{label:"Type 2"},{label:"Type 3"},{label:"Type 4"},]);
+
+  //Hacer fetchs de los ica y de los type
   return (
-    <React.Fragment>
-      <Typography variant="h6" gutterBottom>
-        Shipping address
-      </Typography>
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="firstName"
-            name="firstName"
-            label="First name"
-            fullWidth
-            autoComplete="given-name"
-            variant="standard"
-          />
+    <Card variant="outlined" sx={{ maxWidth:'70%', margin:'1rem auto' }}>
+      <Box
+        component="form"
+        sx={{
+          '& .MuiTextField-root': { m: 2, width:"35ch"},
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <Grid container spacing={2}>
+          <Grid item xs={4}>
+            <TextField
+              required
+              id="EmployeeMail"
+              label="Employee Mail"
+              variant="standard"
+              helperText="Please enter employee email"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <ContactMailIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <TextField
+              required
+              id="Date"
+              label="Date"
+              variant="standard"
+              type="date"
+              helperText="Please select a date"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <TextField
+              required
+              id="Amount"
+              label="USD Cost"
+              variant="standard"
+              helperText="Please enter the amount"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AttachMoneyIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <TextField
+              required
+              id="Comment"
+              label="Comment"
+              variant="standard"
+              helperText="Please enter the comment"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <CommentIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <Autocomplete
+              disablePortal
+              id="ICA"
+              options={ICA}
+              renderInput={(params) => <TextField {...params} label="ICA" />}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <Autocomplete
+              disablePortal
+              id="Type"
+              options={typeOptions}
+              renderInput={(params) => <TextField {...params} label="Type" />}
+            />
+          </Grid>
+          <Grid item xs={4} container sx={{ mx: "auto"}}>
+            <Button variant="contained" endIcon={<SendIcon />} fullWidth={true} sx={{ mb:2}}>
+              Submit                                            
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="lastName"
-            name="lastName"
-            label="Last name"
-            fullWidth
-            autoComplete="family-name"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            id="address1"
-            name="address1"
-            label="Address line 1"
-            fullWidth
-            autoComplete="shipping address-line1"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            id="address2"
-            name="address2"
-            label="Address line 2"
-            fullWidth
-            autoComplete="shipping address-line2"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="city"
-            name="city"
-            label="City"
-            fullWidth
-            autoComplete="shipping address-level2"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            id="state"
-            name="state"
-            label="State/Province/Region"
-            fullWidth
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="zip"
-            name="zip"
-            label="Zip / Postal code"
-            fullWidth
-            autoComplete="shipping postal-code"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="country"
-            name="country"
-            label="Country"
-            fullWidth
-            autoComplete="shipping country"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <FormControlLabel
-            control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
-            label="Use this address for payment details"
-          />
-        </Grid>
-      </Grid>
-    </React.Fragment>
+      </Box>
+    </Card>
   );
 }
