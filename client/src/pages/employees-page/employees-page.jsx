@@ -21,6 +21,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
+
+
 //https://v4.mui.com/es/components/buttons/?msclkid=40af928eb62411ecaf95a1a6c922508a
 //https://materialui.co/icon/expand-more
 
@@ -81,8 +83,8 @@ const EmployeesPage = () =>{
     const contentRows = [
         {
             id: "1234",
-            Country: "GDL",
-            EmployeeDepartment: "SW",
+            Country: "MX",
+            EmployeeDepartment: "admin",
             DepartmentRequester: "admin",
             Band:2,
             Type: 2,
@@ -91,7 +93,7 @@ const EmployeesPage = () =>{
             DateFinish:"12/03",
             ICAManager: "nnn",
             ica: 555,
-            Squad: "varam",
+            Squad: "bear",
             state: true
 
         },
@@ -131,6 +133,12 @@ const EmployeesPage = () =>{
   },
     ];
     const [squad, setSquad] = useState('EUR');
+    //------EXCEL TABLE
+    const updateExcel = (e) =>{
+       console.log("import");
+       //https://stackoverflow.com/questions/62408085/how-to-get-the-data-from-excel-in-json-format-in-reactjs
+
+    }
 
     //------COLUMNS
     
@@ -152,12 +160,8 @@ const EmployeesPage = () =>{
         const keyObj = (Object.keys(employees[0])[id]);
         const arr = [...employees];
         console.log(keyObj);
-        setEmployees(arr.sort(((a, b) => (Object.values(a)[id]) -Object.values(b)[id])));
-        /*
-        for (let value of Object.values(employees[0])){
-            console.log(value);
-            setEmployees(arr.sort(((a, b) => (Object.values(a)) -Object.values(b))));
-        }*/
+        //setEmployees(arr.sort(((a, b) => (Object.values(a)[id]) - Object.values(b)[id])));
+        setEmployees(arr.sort(((a, b) => ('' + Object.values(a)[id]).localeCompare(Object.values(b)[id]))));
     }
 
     //------EMPLOYEES LIST USESTATE
@@ -168,28 +172,31 @@ const EmployeesPage = () =>{
 
     //dialog alert variables setStatus
     const [dialogDelete, setDialogDelete] = useState(false);
-    const [dialogEdit, setDialogEdit] = useState(false);
-    const [dialogActivate, setDialogActivate] = useState(false);
-    //for delete option
-    const [agree, setAgree] = useState(false);
+    //IdDeleteEmployee
+    const [idDelete, setIdDelete] = useState();
+    //open dialog delete 
+    const openDialogDelete = (id) =>{
+        setDialogDelete(true);
+        setIdDelete(id);
+        //deleteEmployee(id);
+    }
+    
     //function delete
     const deleteEmployee = (id) =>{
         setDialogDelete(true);
-        
-        console.log(agree);
-        //setDialogDelete(false); 
-        //handleClose();
         console.log(id);
 
         let arreglo = [...employees];
         console.log(arreglo.filter((item) => item.id != id));
         setEmployees(arreglo.filter((item) => item.id != id));
         console.log(employees);
-        console.log(agree);
-        //setDialogDelete(false);
+       
     };
     //for edit option
+    const [dialogEdit, setDialogEdit] = useState(false);
     const [edit, setEdit] = useState(false);
+    const [editId, setEditId] = useState();
+    
     const closeEdit = () => {
         setEdit(false);
         //setDialogEdit(true);
@@ -201,8 +208,11 @@ const EmployeesPage = () =>{
         console.log("edit");
     };
     //for activate option
-    const handleOpenActivate = () => {
+    const [dialogActivate, setDialogActivate] = useState(false);
+    const [activateId, setActivateId] = useState();
+    const OpenActivateEmployee = (id) => {
         setDialogActivate(true);
+        setActivateId(id);
         
     };
     //function activate
@@ -271,7 +281,7 @@ const EmployeesPage = () =>{
             <form className='form' noValidate autoComplete="off">
                 <TextField value ={inputField} id="outlined-basic" label="New Employee(s)" variant="outlined" onChange = {handleChange} />
                 <Button className='b' color="primary" onClick={addEmployee}>Submit</Button>
-                <IconButton className='b' size="small">
+                <IconButton className='b' size="small" onClick={(e) => updateExcel(e)}>
                     Import xsv
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z"/></svg>
                 </IconButton>
@@ -303,22 +313,24 @@ const EmployeesPage = () =>{
                                 <TableCell>{open[10] ? null : item.ica}</TableCell>
                                 <TableCell>{open[11] ? null : item.Squad}</TableCell>
                                 <TableCell>
-                                    <IconButton aria-label="delete" size="small" height="15" width="15" key={item.id} id={item.id} onClick={() => deleteEmployee(item.id)}>
+                                    <IconButton aria-label="delete" size="small" height="15" width="15" key={item.id} id={item.id} onClick={() => openDialogDelete(item.id)}>
                                         <DeleteIcon />
                                     </IconButton>
-                                    <Alert agree={agree} setAgree ={setAgree} dialog={dialogDelete} setDialog={setDialogDelete} message= {"Delete employee"} />
+                                    <Alert elementId ={idDelete} toDo= {deleteEmployee} dialog={dialogDelete} setDialog={setDialogDelete} ide= {item.id} message= {"Delete employee"} />
+                                    
+                                      
                                     
                                     
                                     <IconButton  size="small"  id={item.id} onClick={() => editEmployee(item.id)}>
                                         <svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 24 24" width="15"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" id={item.id} /></svg>
                                     </IconButton>
-                                    <Alert agree={agree} setAgree ={setAgree} dialog={dialogEdit} setDialog={setDialogEdit} toDo={editEmployee} ide= {item.id} message= {"Edit employee"} />
+                                    <Alert  elementId ={editId} dialog={dialogEdit} setDialog={setDialogEdit} toDo={editEmployee} ide= {item.id} message= {"Edit employee"} />
                                   
                                     
-                                    <IconButton color = "secondary" size="small" id={item.id} onClick={() => activateEmployee(item.id)}>
+                                    <IconButton color = "secondary" size="small" id={item.id} onClick={() => OpenActivateEmployee(item.id)}>
                                         <svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 24 24" width="15"><path d="M0 0h24v24H0z" fill="none"/><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z" id={item.id} /></svg>
                                     </IconButton>
-                                    <Alert agree={agree} setAgree ={setAgree} dialog={dialogActivate} setDialog={setDialogActivate} toDo={activateEmployee} ide= {item.id} message= {"Activate employee"} />
+                                    <Alert elementId ={activateId} dialog={dialogActivate} setDialog={setDialogActivate} toDo={activateEmployee} ide= {item.id} message= {"Change employee state (activat/desactivate)"} />
 
                                     
                                 </TableCell>   

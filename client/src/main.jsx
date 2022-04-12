@@ -4,7 +4,7 @@ import './index.css'
 import App from './App'
 //import {EmployeesPage} from "./pages\home-page/employees-page";
 import CssBaseline from '@mui/material/CssBaseline';
-import EmployeesPage from './pages/home-page/employees-page';
+import EmployeesPage from './pages/employees-page/employees-page';
 
 
 ReactDOM.render(

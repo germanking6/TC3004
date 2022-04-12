@@ -5,23 +5,17 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@material-ui/core/Button';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
 
 
-const Alert = ({setDialog, dialog, message, agree, setAgree}) =>{
+const Alert = ({setDialog, dialog, message, toDo, elementId}) =>{
     const handleClose = (proceed) => {
         if (proceed){
-            setAgree(true);
+            toDo(elementId);
         }
         setDialog(false);
     };
-    const theme = useTheme();
-    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-    
     return (
         <Dialog
-        fullScreen={fullScreen}
         open={dialog}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
