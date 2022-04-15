@@ -21,6 +21,9 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 
 //https://v4.mui.com/es/components/buttons/?msclkid=40af928eb62411ecaf95a1a6c922508a
@@ -78,8 +81,7 @@ const EmployeesPage = () =>{
             id: 11,
             title: "Squad"
         }
-    ]
-    //Employee data for simulate data base 
+    ];
     const contentRows = [
         {
             id: "1234",
@@ -114,26 +116,7 @@ const EmployeesPage = () =>{
 
         }
     ];
-    //data of select bar for edit option (simulation and testing)
-    const squads = [
-    {
-        value: 'USD',
-        label: '$',
-    },
-    {
-        value: 'EUR',
-        label: '€',
-    },
-    {
-        value: 'BTC',
-        label: '฿',
-    },
-    {
-        value: 'JPY',
-        label: '¥',
-    },
-    ];
-
+  
     //------EMPLOYEES LIST USESTATE
     //modificating employees list
     const [employees, setEmployees] = useState(contentRows);
@@ -243,8 +226,149 @@ const EmployeesPage = () =>{
 
     //------EDIT EMPLOYEES
     //VARIABLES
-    //temporary data for testing
-    const [squad, setSquad] = useState('EUR');
+    //----------------TEMPORARY DATA
+
+    //Employee data for simulate data base 
+    //data of select bar for edit option (simulation and testing)
+    
+    const country = [
+        {
+            value: 'Monterrey',
+            label: 'MTY',
+        },
+        {
+            value: 'Guadalajara',
+            label: 'GDL',
+        },
+        {
+            value: 'PuertoVallarta',
+            label: 'PTV',
+        },
+        {
+            value: 'Ciudad de Mexico',
+            label: 'CDMX',
+        },
+    ];
+
+    const department = [
+        {
+            value: 'Administration',
+            label: 'ADMIN',
+        },
+        {
+            value: 'Software',
+            label: 'SW',
+        }
+    ];
+
+    const band = [
+        {
+            value: '1',
+            label: '1',
+        },
+        {
+            value: '2',
+            label: '2',
+        }
+    ];
+
+    const type = [
+        {
+            value: '1',
+            label: 'type1',
+        },
+        {
+            value: '2',
+            label: 'type2',
+        }
+    ];
+
+    const icaM = [
+        {
+            value: '124',
+            label: 'Julio',
+        },
+        {
+            value: '123',
+            label: 'Cesar',
+        }
+    ];
+
+    const ica = [
+        {
+            value: '124',
+            label: 'Julio',
+        },
+        {
+            value: '123',
+            label: 'Cesar',
+        }
+    ];
+
+    const squads = [
+        {
+            value: 'Varam',
+            label: 'Varam',
+        },
+        {
+            value: 'Squad1',
+            label: 'Squad1',
+        },
+        {
+            value: 'Squad2',
+            label: 'Squad2',
+        },
+        {
+            value: 'Squad3',
+            label: 'Squad3',
+        },
+    ];
+    
+    //--TEMPORARYDATAEND
+    //country handler
+    const [selectCountry, setSelectCountry] = useState(country[0].value);
+    const handleChangeCountryInput = (event) =>{
+        setSelectCountry(event.target.value);
+    };
+    //department handler
+    const [selectDepartment, setSelectDepartment] = useState(department[0].value);
+    const handleChangeDepartmentInput = (event) =>{
+        setSelectDepartment(event.target.value);
+    };
+    //department request handler
+    const [selectDepartmentRequest, setSelectDepartmentRequest] = useState(department[0].value);
+    const handleChangeDepartmentRequestInput = (event) =>{
+        setSelectDepartmentRequest(event.target.value);
+    };
+    //band handler
+    const [selectBand, setSelectBand] = useState(band[0].value);
+    const handleChangeBandInput = (event) =>{
+        setSelectBand(event.target.value);
+    };
+    //type handler
+    const [selectType, setSelectType] = useState(type[0].value);
+    const handleChangeTypeInput = (event) =>{
+        setSelectType(event.target.value);
+    };
+    //date change handler
+    const dateChangeHandler = (event) =>{
+        console.log("c");
+    };
+    //ica manager handler
+    const [selectIcaM, setSelectIcaM] = useState(icaM[0].value);
+    const handleChangeIcaMInput = (event) =>{
+        setSelectIcaM(event.target.value);
+    };
+    //ica handler
+    const [selectIca, setSelectIca] = useState(ica[0].value);
+    const handleChangeIcaInput = (event) =>{
+        setSelectIca(event.target.value);
+    };
+    //squad handler
+    const [selectSquad, setSelectSquad] = useState(squads[0].value);
+    const handleChangeSquadInput = (event) =>{
+        setSelectSquad(event.target.value);
+    };
     //open dialog edit
     const [dialogEdit, setDialogEdit] = useState(false);
     //edit option or cancel task
@@ -253,13 +377,36 @@ const EmployeesPage = () =>{
     const [editId, setEditId] = useState();
     
     //closing edit window of inputs
-    const closeEdit = () => {
+    const closeEdit = (confirm) => {
+        if(confirm){
+            console.log("confirm");
+            //temporary array
+            let arreglo = [...employees];
+            //mapping array to change status of element id
+            arreglo.map((item) => {
+                if(item.id == editId){
+                    item.Country = selectCountry;
+                    item.EmployeeDepartment = selectDepartment;
+                    item.DepartmentRequester = selectDepartmentRequest;
+                    item.Band = selectBand;
+                    item.Type = selectType;
+                    //item.DateStart
+                    //item.DateFinish
+                    item.ICAManager = selectIcaM;
+                    item.ica = selectIca;
+                    item.Squad = selectSquad;
+                }
+                
+            });
+            //change state of employees
+            setEmployees(arreglo); 
+        }
         setEdit(false); 
     };
     //function edit
     const editEmployee = (id) =>{
         setEdit(true);
-        console.log("edit");
+        setEditId(id);
     };
 
     //------ACTIVATE/DESACTIVATE EMPLOYEES
@@ -365,68 +512,176 @@ const EmployeesPage = () =>{
                 open={edit}>
                     <DialogTitle>Subscribe</DialogTitle>
                     <DialogContent>
-                    <DialogContentText>
-                        Type:
-                    </DialogContentText>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="name"
-                        label="Type"
-                        variant="standard"
-                    />
-                    <DialogContentText>
-                        Band
-                    </DialogContentText>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="name"
-                        label="Band"
-                        variant="standard"
-                    />
-                     <DialogContentText>
-                        ICA:
-                    </DialogContentText>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="name"
-                        label="ICA"
-                        variant="standard"
-                    />
-                     <DialogContentText>
-                        Squad:
-                    </DialogContentText>
-                    <Box
-                    component="form"
-                    sx={{
-                        '& .MuiTextField-root': { m: 1, width: '25ch' },
-                    }}
-                    noValidate
-                    autoComplete="off"
-    >
-                    <div>
-                      <TextField
-                        id="outlined-select-currency"
-                        select
-                        label="Select"
-                        value={squad}
                         
-                        helperText="Please select your squad"
-                        >
-                        {squads.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                            </MenuItem>
-                        ))}
-                        </TextField>
+                        <Box sx={{ minWidth: 120 }}>
+                        <FormControl variant="standard" sx={{ m: 1, minWidth: 400 }}>
+                            <InputLabel id="select-country">Country</InputLabel>
+                            <Select
+                            labelId="select-country-label"
+                            id="select-country"
+                            value={selectCountry}
+                            label="Country"
+                            onChange={handleChangeCountryInput}
+                            >
+                            {country.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                                </MenuItem>
+                            ))}
+                            </Select>
+                        </FormControl>
+
+                        <FormControl variant="standard" sx={{ m: 1, minWidth: 400 }}>
+                            <InputLabel id="select-department">Department</InputLabel>
+                            <Select
+                            labelId="select-department-label"
+                            id="select-department"
+                            value={selectDepartment}
+                            label="Department"
+                            onChange={handleChangeDepartmentInput}
+                            >
+                            {department.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                                </MenuItem>
+                            ))}
+                            </Select>
+                        </FormControl>
+
+
+                        <FormControl variant="standard" sx={{ m: 1, minWidth: 400 }}>
+                            <InputLabel id="select-department-r">Department requester</InputLabel>
+                            <Select
+                            labelId="select-department-r-label"
+                            id="select-department-r"
+                            value={selectDepartmentRequest}
+                            label="Department-r"
+                            onChange={handleChangeDepartmentRequestInput}
+                            >
+                            {department.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                                </MenuItem>
+                            ))}
+                            </Select>
+                        </FormControl>
+
+
+                        <FormControl variant="standard" sx={{ m: 1, minWidth: 400 }}>
+                            <InputLabel id="select-band">Band</InputLabel>
+                            <Select
+                            labelId="select-band-label"
+                            id="select-band"
+                            value={selectBand}
+                            label="band"
+                            onChange={handleChangeBandInput}
+                            >
+                            {band.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                                </MenuItem>
+                            ))}
+                            </Select>
+                        </FormControl>
+
+
+                        <FormControl variant="standard" sx={{ m: 1, minWidth: 400 }}>
+                            <InputLabel id="select-type">Type</InputLabel>
+                            <Select
+                            labelId="select-type"
+                            id="select-type"
+                            value={selectType}
+                            label="type"
+                            onChange={handleChangeTypeInput}
+                            >
+                            {type.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                                </MenuItem>
+                            ))}
+                            </Select>
+                        </FormControl>
+
+                        <div>
+                            <InputLabel id="select-date-s">Date start</InputLabel>
+                            <input
+                                type='date'
+                                min='2019-01-01'
+                                max='2022-12-31'
+                                onChange={dateChangeHandler}
+                                >
+                            </input>
                         </div>
+
+                        <div>
+                            <InputLabel id="select-date-e">Date end</InputLabel>
+                            <input
+                                type='date'
+                                min='2019-01-01'
+                                max='2022-12-31'
+                                onChange={dateChangeHandler}
+                                >
+                            </input>
+                        </div>
+
+                        <FormControl variant="standard" sx={{ m: 1, minWidth: 400 }}>
+                            <InputLabel id="select-ica-m">ICA Manager</InputLabel>
+                            <Select
+                            labelId="select-ica-m"
+                            id="select-ica-m"
+                            value={selectIcaM}
+                            label="type"
+                            onChange={handleChangeIcaMInput}
+                            >
+                            {icaM.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                                </MenuItem>
+                            ))}
+                            </Select>
+                        </FormControl>
+
+                        <FormControl variant="standard" sx={{ m: 1, minWidth: 400 }}>
+                            <InputLabel id="select-ica">ICA</InputLabel>
+                            <Select
+                            labelId="select-ica"
+                            id="select-ica"
+                            value={selectIca}
+                            label="type"
+                            onChange={handleChangeIcaInput}
+                            >
+                            {ica.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                                </MenuItem>
+                            ))}
+                            </Select>
+                        </FormControl>
+
+
+                        <FormControl variant="standard" sx={{ m: 1, minWidth: 400 }}>
+                            <InputLabel id="select-squad">Squad</InputLabel>
+                            <Select
+                            labelId="select-squad"
+                            id="select-squad"
+                            value={selectSquad}
+                            label="type"
+                            onChange={handleChangeSquadInput}
+                            >
+                            {squads.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                                </MenuItem>
+                            ))}
+                            </Select>
+                        </FormControl>
                         </Box>
+                    
+                    
                     </DialogContent>
                     <DialogActions>
-                    <Button onClick= {closeEdit}> Cancel</Button>
-                    <Button onClick= {closeEdit}>Subscribe</Button>
+                    <Button onClick= {() =>closeEdit(false)}> Cancel</Button>
+                    <Button onClick= {() =>closeEdit(true)}>Subscribe</Button>
                     </DialogActions>
                 </Dialog> 
             </TableContainer>
