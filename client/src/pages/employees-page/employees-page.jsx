@@ -17,13 +17,18 @@ import Alert from "../../components/Alert";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
+import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import * as XLSX from "xlsx";
+//import { CSVLink } from 'react-csv';
+//const axios = require('axios');
+
+
 
 
 //https://v4.mui.com/es/components/buttons/?msclkid=40af928eb62411ecaf95a1a6c922508a
@@ -127,40 +132,62 @@ const EmployeesPage = () =>{
     const [inputField, setInputField] = useState("");
     //inputChange for adding employees        
     const handleChange = (event) =>{
+        event.preventDefault();
         setInputField(event.target.value);
 
     };
     //Function: adding employee 
     const addEmployee = () =>{
-        //new employee object
-        let obj = {
-            id: inputField,
-            Country: "",
-            EmployeeDepartment: "",
-            DepartmentRequester: "",
-            Band:2,
-            Type: 1,
-            PercentageRecover:50,
-            DateStart: "",
-            DateFinish:"",
-            ICAManager: "",
-            ica: 123,
-            Squad: "",
-            state: true
+        if (inputField != ""){
+            //new employee object
+            let obj = {
+                id: inputField,
+                Country: "",
+                EmployeeDepartment: "",
+                DepartmentRequester: "",
+                Band:2,
+                Type: 1,
+                PercentageRecover:50,
+                DateStart: "",
+                DateFinish:"",
+                ICAManager: "",
+                ica: 123,
+                Squad: "",
+                state: true
+            }
+            //adding new employee to a temporary array
+            const arr = [...employees,obj];
+            //adding employee to employee state list
+            setEmployees(arr);
+            //setting input to empty
+            setInputField(""); 
+
+        }  
+        else{
+            alert("No input!");
         }
-        //adding new employee to a temporary array
-        const arr = [...employees,obj];
-        //adding employee to employee state list
-        setEmployees(arr);
-        //setting input to empty
-        setInputField("");   
        
     };
 
-
     //------EXCEL TABLE
     const updateExcel = (e) =>{
-       console.log("import");
+          
+       e.preventDefault();
+       const [file] = e.target.files;
+       console.log(e.target.files);
+       const reader = new FileReader();
+
+       reader.onload = (evt) => {
+        const bstr = evt.target.result;
+        const wb = XLSX.read(bstr, { type: "binary" });
+        const wsname = wb.SheetNames[0];
+        const ws = wb.Sheets[wsname];
+        const data = XLSX.utils.sheet_to_csv(ws, { header: 1 });
+        console.log(data);
+        //https://dev.to/emman1320/convert-your-excel-file-to-a-javascript-object-using-react-without-storing-the-static-file-in-your-database-24jk
+      };
+      reader.readAsBinaryString(file);
+     
        //https://stackoverflow.com/questions/62408085/how-to-get-the-data-from-excel-in-json-format-in-reactjs
 
     }
@@ -350,9 +377,15 @@ const EmployeesPage = () =>{
     const handleChangeTypeInput = (event) =>{
         setSelectType(event.target.value);
     };
-    //date change handler
-    const dateChangeHandler = (event) =>{
-        console.log("c");
+    //date start change handler
+    const [selectDateS, setSelectDateS] = useState();
+    const dateSChangeHandler = (event) =>{
+        setSelectDateS(event.target.value);
+    };
+    //date end change handler
+    const [selectDateE, setSelectDateE] = useState();
+    const dateEChangeHandler = (event) =>{
+        setSelectDateE(event.target.value);
     };
     //ica manager handler
     const [selectIcaM, setSelectIcaM] = useState(icaM[0].value);
@@ -369,8 +402,6 @@ const EmployeesPage = () =>{
     const handleChangeSquadInput = (event) =>{
         setSelectSquad(event.target.value);
     };
-    //open dialog edit
-    const [dialogEdit, setDialogEdit] = useState(false);
     //edit option or cancel task
     const [edit, setEdit] = useState(false);
     //id for delete option
@@ -379,7 +410,6 @@ const EmployeesPage = () =>{
     //closing edit window of inputs
     const closeEdit = (confirm) => {
         if(confirm){
-            console.log("confirm");
             //temporary array
             let arreglo = [...employees];
             //mapping array to change status of element id
@@ -390,8 +420,8 @@ const EmployeesPage = () =>{
                     item.DepartmentRequester = selectDepartmentRequest;
                     item.Band = selectBand;
                     item.Type = selectType;
-                    //item.DateStart
-                    //item.DateFinish
+                    item.DateStart = selectDateS;
+                    item.DateFinish = selectDateE;
                     item.ICAManager = selectIcaM;
                     item.ica = selectIca;
                     item.Squad = selectSquad;
@@ -452,12 +482,14 @@ const EmployeesPage = () =>{
             <TableContainer className='table'>
 
             <form className='form' noValidate autoComplete="off">
-                <TextField value ={inputField} id="outlined-basic" label="New Employee(s)" variant="outlined" onChange = {handleChange} />
-                <Button className='b' color="primary" onClick={addEmployee}>Submit</Button>
-                <IconButton className='b' size="small" onClick={(e) => updateExcel(e)}>
-                    Import xsv
+                <Box m={1} pt={1}>
+                    <TextField value ={inputField} id="outlined-basic" label="New Employee(s)" variant="outlined" onChange = {handleChange} />
+                    <Button className='b' color="primary" onClick={addEmployee}>Submit</Button>
+                </Box>
+                <Box m={1} pt={1}>
+                    <input type="file" onChange={updateExcel} />
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z"/></svg>
-                </IconButton>
+                </Box>
              </form>
                 <Table sx={{ minWidth: 30}} aria-label="simple table">
                     <TableHead>
@@ -493,7 +525,7 @@ const EmployeesPage = () =>{
                                     <IconButton  size="small"  id={item.id} onClick={() => editEmployee(item.id)}>
                                         <svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 24 24" width="15"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" id={item.id} /></svg>
                                     </IconButton>
-                                    <Alert  elementId ={editId} dialog={dialogEdit} setDialog={setDialogEdit} toDo={editEmployee} ide= {item.id} message= {"Edit employee"} />
+                                    
                                   
                                     
                                     <IconButton color = "secondary" size="small" id={item.id} onClick={() => OpenActivateEmployee(item.id)}>
@@ -510,10 +542,10 @@ const EmployeesPage = () =>{
                  </Table>
                 <Dialog
                 open={edit}>
-                    <DialogTitle>Subscribe</DialogTitle>
+                    <DialogTitle>Edit Employee</DialogTitle>
                     <DialogContent>
                         
-                        <Box sx={{ minWidth: 120 }}>
+                        <Box sx={{ minWidth: 700 }}>
                         <FormControl variant="standard" sx={{ m: 1, minWidth: 400 }}>
                             <InputLabel id="select-country">Country</InputLabel>
                             <Select
@@ -525,8 +557,9 @@ const EmployeesPage = () =>{
                             >
                             {country.map((option) => (
                                 <MenuItem key={option.value} value={option.value}>
-                                {option.label}
+                                    <ListItemText inset>{option.label}</ListItemText>
                                 </MenuItem>
+                              
                             ))}
                             </Select>
                         </FormControl>
@@ -542,14 +575,15 @@ const EmployeesPage = () =>{
                             >
                             {department.map((option) => (
                                 <MenuItem key={option.value} value={option.value}>
-                                {option.label}
+                                    <ListItemText inset>{option.label}</ListItemText>
                                 </MenuItem>
+                                
                             ))}
                             </Select>
                         </FormControl>
 
 
-                        <FormControl variant="standard" sx={{ m: 1, minWidth: 400 }}>
+                        <FormControl variant="standard" sx={{ m: 1, minWidth: 400, border: 2 }}>
                             <InputLabel id="select-department-r">Department requester</InputLabel>
                             <Select
                             labelId="select-department-r-label"
@@ -559,8 +593,10 @@ const EmployeesPage = () =>{
                             onChange={handleChangeDepartmentRequestInput}
                             >
                             {department.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                {option.label}
+                                <MenuItem sx={{minWidth: 200}} key={option.value} value={option.value}>
+                                    <ListItemText inset>
+                                        {option.label}
+                                    </ListItemText>
                                 </MenuItem>
                             ))}
                             </Select>
@@ -578,7 +614,7 @@ const EmployeesPage = () =>{
                             >
                             {band.map((option) => (
                                 <MenuItem key={option.value} value={option.value}>
-                                {option.label}
+                                    <ListItemText inset>{option.label}</ListItemText>
                                 </MenuItem>
                             ))}
                             </Select>
@@ -595,35 +631,38 @@ const EmployeesPage = () =>{
                             onChange={handleChangeTypeInput}
                             >
                             {type.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                {option.label}
+                                <MenuItem key={option.value} value={option.value} >
+                                    <ListItemText inset>{option.label}</ListItemText>
                                 </MenuItem>
                             ))}
                             </Select>
                         </FormControl>
-
+                        <br></br>
+                        <br></br>
                         <div>
                             <InputLabel id="select-date-s">Date start</InputLabel>
-                            <input
+                            <input sx={{minHeight: 400, border: 4000 }}
                                 type='date'
                                 min='2019-01-01'
                                 max='2022-12-31'
-                                onChange={dateChangeHandler}
+                                onChange={dateSChangeHandler}
                                 >
                             </input>
                         </div>
-
+                        <br></br>
+                        <br></br>
                         <div>
                             <InputLabel id="select-date-e">Date end</InputLabel>
                             <input
                                 type='date'
                                 min='2019-01-01'
                                 max='2022-12-31'
-                                onChange={dateChangeHandler}
+                                onChange={dateEChangeHandler}
                                 >
                             </input>
                         </div>
-
+                        <br></br>
+                        <br></br>
                         <FormControl variant="standard" sx={{ m: 1, minWidth: 400 }}>
                             <InputLabel id="select-ica-m">ICA Manager</InputLabel>
                             <Select
@@ -635,7 +674,7 @@ const EmployeesPage = () =>{
                             >
                             {icaM.map((option) => (
                                 <MenuItem key={option.value} value={option.value}>
-                                {option.label}
+                                    <ListItemText inset>{option.label}</ListItemText>
                                 </MenuItem>
                             ))}
                             </Select>
@@ -652,7 +691,7 @@ const EmployeesPage = () =>{
                             >
                             {ica.map((option) => (
                                 <MenuItem key={option.value} value={option.value}>
-                                {option.label}
+                                    <ListItemText inset>{option.label}</ListItemText>
                                 </MenuItem>
                             ))}
                             </Select>
@@ -669,9 +708,10 @@ const EmployeesPage = () =>{
                             onChange={handleChangeSquadInput}
                             >
                             {squads.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                {option.label}
+                                <MenuItem sx={{ m: 1, minWidth: 400 }} key={option.value} value={option.value}>     
+                                    <ListItemText inset>{option.label}</ListItemText>    
                                 </MenuItem>
+                               
                             ))}
                             </Select>
                         </FormControl>
@@ -681,7 +721,7 @@ const EmployeesPage = () =>{
                     </DialogContent>
                     <DialogActions>
                     <Button onClick= {() =>closeEdit(false)}> Cancel</Button>
-                    <Button onClick= {() =>closeEdit(true)}>Subscribe</Button>
+                    <Button onClick= {() =>closeEdit(true)}>Confirm Changes</Button>
                     </DialogActions>
                 </Dialog> 
             </TableContainer>
