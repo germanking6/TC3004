@@ -25,6 +25,7 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import * as XLSX from "xlsx";
+import { Autocomplete } from '@mui/material';
 //import { CSVLink } from 'react-csv';
 //const axios = require('axios');
 
@@ -176,6 +177,9 @@ const EmployeesPage = () =>{
        const [file] = e.target.files;
        console.log(e.target.files);
        const reader = new FileReader();
+       const fileEx = event.dataTransfer.files[0];
+       convertExcelToObject(fileEx);
+       console.log(fileEx);
 
        reader.onload = (evt) => {
         const bstr = evt.target.result;
@@ -547,6 +551,7 @@ const EmployeesPage = () =>{
                         
                         <Box sx={{ minWidth: 700 }}>
                         <FormControl variant="standard" sx={{ m: 1, minWidth: 400 }}>
+                       
                             <InputLabel id="select-country">Country</InputLabel>
                             <Select
                             labelId="select-country-label"
