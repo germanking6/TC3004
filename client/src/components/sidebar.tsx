@@ -97,22 +97,22 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     }),
   }),
 );
-
+const routeInfo ={
+  home:{
+    name:'HOME',
+    icon: <HomeIcon/>
+  },
+  
+  delegate:{
+    name:'Delegate',
+    icon: <GroupAddIcon className={clsx({transform: "scaleX(-1)"},{transform: "scaleX(1)"})}/>
+  },
+  logout:{
+    name:'Logout',
+    icon: <LogoutIcon/>
+  },
+}
 export default function SideBar() {
-  const classes = makeStyles((theme) => ({
-    openX: {
-      transform: "scaleX(1)"
-    },
-    closeX: {
-      transform: "scaleX(-1)"
-    },
-    openY: {
-      transform: "scaleY(1)"
-    },
-    closeY: {
-      transform: "scaleY(-1)"
-    }
-  }));
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -169,29 +169,28 @@ export default function SideBar() {
         </Box>
         <Divider/>
         <List>
-          {['HOME', 'Delegate', 'Logout'].map((text, index) => (
+          {Object.keys(routeInfo).map((k) => (
             
             <ListItemButton
-              component={Link} to={text}
-              key={text}
+              component={Link} to={routeInfo[k].name}
+              key={routeInfo[k].name}
               sx={{
                 minHeight: 48,
                 justifyContent: open ? 'initial' : 'center',
                 px: 2.5,
               }}
             >
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+                mr: open ? 3 : 'auto',
+                justifyContent: 'center',
+              }}
+            >
+              {routeInfo[k].icon}
+            </ListItemIcon>
               
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-                }}
-              >
-                {index ==0? <HomeIcon /> : index==1?<GroupAddIcon className={clsx({transform: "scaleX(-1)"},{transform: "scaleX(1)"})}/>:<LogoutIcon />}
-              </ListItemIcon>
-              
-              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 ,}} />
+              <ListItemText primary={routeInfo[k].name} sx={{ opacity: open ? 1 : 0 ,}} />
             </ListItemButton>
             
           ))}
