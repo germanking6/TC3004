@@ -31,6 +31,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import CachedIcon from '@mui/icons-material/Cached';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import ExpensesPage from '../pages/expenses-page/Expenses-Page';
+import EmployeesPage from '../pages/employees-page/employees-page';
 
 const drawerWidth = 240;
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -110,18 +112,20 @@ const routeInfo ={
   
   delegate:{
     name:'Delegate',
-    icon: <GroupAddIcon className={clsx({transform: "scaleX(-1)"},{transform: "scaleX(1)"})}/>,
+    icon: <GroupAddIcon className={clsx({
+      transform: "scaleX(-1)"
+    })}/>,
     component: <HeaderComponent/>
   },
   employee:{
     name:'Employee',
     icon: <PersonIcon/>,
-    component: <HeaderComponent/>
+    component: <Box><EmployeesPage/></Box>
   },
   expenses:{
     name:'Expenses',
     icon: <AccountBalanceIcon/>,
-    component: <HeaderComponent/>
+    component: <ExpensesPage/>
   },
   recovery:{
     name:'Recovery',
