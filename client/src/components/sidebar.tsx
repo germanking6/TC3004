@@ -27,6 +27,10 @@ import { makeStyles } from '@mui/styles';
 import {BrowserRouter,Routes,Route, Link} from "react-router-dom";
 import HeaderComponent from './HeaderComponent';
 import HomePage from '../pages/home-page/home-page';
+import PersonIcon from '@mui/icons-material/Person';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import CachedIcon from '@mui/icons-material/Cached';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
 const drawerWidth = 240;
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -100,12 +104,34 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const routeInfo ={
   home:{
     name:'HOME',
-    icon: <HomeIcon/>
+    icon: <HomeIcon/>,
+    component: <HomePage/>
   },
   
   delegate:{
     name:'Delegate',
-    icon: <GroupAddIcon className={clsx({transform: "scaleX(-1)"},{transform: "scaleX(1)"})}/>
+    icon: <GroupAddIcon className={clsx({transform: "scaleX(-1)"},{transform: "scaleX(1)"})}/>,
+    component: <HeaderComponent/>
+  },
+  employee:{
+    name:'Employee',
+    icon: <PersonIcon/>,
+    component: <HeaderComponent/>
+  },
+  expenses:{
+    name:'Expenses',
+    icon: <AccountBalanceIcon/>,
+    component: <HeaderComponent/>
+  },
+  recovery:{
+    name:'Recovery',
+    icon: <CachedIcon/>,
+    component: <HeaderComponent/>
+  },
+  reports:{
+    name:'Reports',
+    icon: <InsertDriveFileIcon/>,
+    component: <HeaderComponent/>
   },
   logout:{
     name:'Logout',
@@ -172,8 +198,8 @@ export default function SideBar() {
           {Object.keys(routeInfo).map((k) => (
             
             <ListItemButton
-              component={Link} to={routeInfo[k].name}
-              key={routeInfo[k].name}
+              component={Link} to={k}
+              key={k}
               sx={{
                 minHeight: 48,
                 justifyContent: open ? 'initial' : 'center',
@@ -201,8 +227,10 @@ export default function SideBar() {
         
         <Routes>
           <Route path="/"/>
-          <Route path="/Delegate" element={<HeaderComponent/>}/>
-          <Route path='/HOME' element={<HomePage/>}/>
+          {Object.keys(routeInfo).map((k) => (
+            <Route path={"/"+k} element={routeInfo[k].component}/>
+          ))}
+          
         </Routes>
       
       </Box>
