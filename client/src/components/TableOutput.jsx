@@ -6,6 +6,9 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
+import "./employees.css";
 
 const TableOutput = (props) =>{
     //const columnTitles = ["id", "title","amount"];
@@ -27,6 +30,7 @@ const TableOutput = (props) =>{
             </TableCell>
             )
         }
+        <Button variant="outlined" startIcon={<DeleteIcon />}></Button>
         </TableRow>
     );
 
