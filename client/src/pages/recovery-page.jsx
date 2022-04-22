@@ -99,7 +99,9 @@ const RecoveryPage = () =>{
             id: "1234",
             DateStart: "11/03",
             DateFinish:"12/03",
-            Quarters: [[100,200,300],[200,100,300]],
+            Quarters: [
+                [100,200,300],[200,100,300]
+            ],
             taxes: 100,
             recover: 30,
             state: true
@@ -120,12 +122,17 @@ const RecoveryPage = () =>{
     //------EMPLOYEES LIST USESTATE
     //modificating employees list
     const [ica, setIca] = useState(contentRows);
+    const addQuarter = () => {
+        numQuarters = numQuarters+1
+    }
 
 
   
     //------COLUMNS
    //hide columns function
    //variables
+   //to know how much quarters exist
+   let numQuarters = 1;
     //setting false to all columns
     const a = [false, false,false,false,false,false,false,false,false,false,false,false];
     //Hidding state
@@ -199,23 +206,25 @@ const RecoveryPage = () =>{
                             .map((item) =>(
                             <TableRow key={item.id} sx={!item.state ? {bgcolor: '#ddd'} : {bgcolor: '#fff'}} >
                                 
-                                <TableCell >{open[0] ? null : item.DateStart}</TableCell>
-                                <TableCell>{open[1] ? null : item.DateFinish}</TableCell>
-                                {open[2] ? null : item.Quarters.map((quarter) =>(
+                                <TableCell key = {item.id} >{open[0] ? null : item.DateStart}</TableCell>
+                                <TableCell key = {item.id+1}>{open[1] ? null : item.DateFinish}</TableCell>
+                                {item.Quarters.map((quarter) =>(
                                     <>
-                                    <TableCell>{quarter[0]} </TableCell>
-                                    <TableCell>{quarter[1]} </TableCell> 
-                                    <TableCell>{quarter[2]} </TableCell>
-                                    <TableCell>{open[9] ? null : quarter[0]+quarter[1]+quarter[2]}</TableCell> 
+                                    <TableCell key = {item.id+numQuarters+1}>{open[numQuarters+1] ? null : quarter[0]} </TableCell>
+                                    <TableCell key = {item.id+numQuarters+2}>{open[numQuarters+2] ? null : quarter[1]} </TableCell> 
+                                    <TableCell key = {item.id+numQuarters+3}>{open[numQuarters+3] ? null : quarter[2]} </TableCell>
+                                    <TableCell key = {item.id+numQuarters+4}>{open[numQuarters+4] ? null : quarter[0]+quarter[1]+quarter[2]}</TableCell> 
+                                    
                                     </>
+                                  
                                 
                                 ))}
   
-                                <TableCell>{open[10] ? null : item.Quarters[0][0]+item.Quarters[0][1]+item.Quarters[0][2] + item.Quarters[1][0]+item.Quarters[1][1]+item.Quarters[1][2] }</TableCell>
-                                <TableCell>{open[1] ? null : "0"}</TableCell>
-                                <TableCell>{open[11] ? null : item.Quarters[0][0]+item.Quarters[0][1]+item.Quarters[0][2] + item.Quarters[1][0]+item.Quarters[1][1]+item.Quarters[1][2] + item.taxes}</TableCell>
-                                <TableCell>{open[11] ? null : item.Quarters[0][0]+item.Quarters[0][1]+item.Quarters[0][2] + item.Quarters[1][0]+item.Quarters[1][1]+item.Quarters[1][2] + item.taxes -item.recover}</TableCell>
-                                <TableCell>{open[1] ? null : item.state? "Activate": "Desactivate"}</TableCell>     
+                                <TableCell key = {item.id+numQuarters+5}>{open[10] ? null : item.Quarters[0][0]+item.Quarters[0][1]+item.Quarters[0][2] + item.Quarters[1][0]+item.Quarters[1][1]+item.Quarters[1][2] }</TableCell>
+                                <TableCell key = {item.id+numQuarters+6}>{open[11] ? null : "0"}</TableCell>
+                                <TableCell key = {item.id+numQuarters+7}>{open[12] ? null : item.Quarters[0][0]+item.Quarters[0][1]+item.Quarters[0][2] + item.Quarters[1][0]+item.Quarters[1][1]+item.Quarters[1][2] + item.taxes}</TableCell>
+                                <TableCell key = {item.id+numQuarters+8}>{open[13] ? null : item.Quarters[0][0]+item.Quarters[0][1]+item.Quarters[0][2] + item.Quarters[1][0]+item.Quarters[1][1]+item.Quarters[1][2] + item.taxes -item.recover}</TableCell>
+                                <TableCell key = {item.id+numQuarters+9}>{open[14] ? null : item.state? "Activate": "Desactivate"}</TableCell>     
                             </TableRow>    
                     ))     
                 }
