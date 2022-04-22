@@ -25,7 +25,6 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import * as XLSX from "xlsx";
 
-
 //https://v4.mui.com/es/components/buttons/?msclkid=40af928eb62411ecaf95a1a6c922508a
 //https://materialui.co/icon/expand-more
 
@@ -169,6 +168,8 @@ const RecoveryPage = () =>{
         
     );*/
 
+   
+
     //---------COLUMNS TITLES + BUTTON TO HIDE AND SORT ELEMENTS
     const titleItems = columnTitles.map((item) =>
         <TableCell key={item.id}>
@@ -200,22 +201,16 @@ const RecoveryPage = () =>{
                                 
                                 <TableCell >{open[0] ? null : item.DateStart}</TableCell>
                                 <TableCell>{open[1] ? null : item.DateFinish}</TableCell>
-                                <TableCell>{open[2] ? null : columnTitles.map((item) =>{
-                                   /* item.Quarters.map((quarter)=>{
-                                        quarter[0]
-
-                                    })*/
-                                    item.Quarters[0][1]
-                                })
+                                {open[2] ? null : item.Quarters.map((quarter) =>(
+                                    <>
+                                    <TableCell>{quarter[0]} </TableCell>
+                                    <TableCell>{quarter[1]} </TableCell> 
+                                    <TableCell>{quarter[2]} </TableCell>
+                                    <TableCell>{open[9] ? null : quarter[0]+quarter[1]+quarter[2]}</TableCell> 
+                                    </>
                                 
-                                }</TableCell>                                
-                                <TableCell>{open[3] ? null : item.Quarters[0][1]}</TableCell>
-                                <TableCell>{open[4] ? null : item.Quarters[0][2]}</TableCell>
-                                <TableCell>{open[5] ? null : item.Quarters[0][0]+item.Quarters[0][1]+item.Quarters[0][2]}</TableCell>
-                                <TableCell>{open[6] ? null : item.Quarters[1][0]}</TableCell>
-                                <TableCell>{open[7] ? null : item.Quarters[1][1]}</TableCell>
-                                <TableCell>{open[8] ? null : item.Quarters[1][2]}</TableCell>
-                                <TableCell>{open[9] ? null : item.Quarters[1][0]+item.Quarters[1][1]+item.Quarters[1][2]}</TableCell>
+                                ))}
+  
                                 <TableCell>{open[10] ? null : item.Quarters[0][0]+item.Quarters[0][1]+item.Quarters[0][2] + item.Quarters[1][0]+item.Quarters[1][1]+item.Quarters[1][2] }</TableCell>
                                 <TableCell>{open[1] ? null : "0"}</TableCell>
                                 <TableCell>{open[11] ? null : item.Quarters[0][0]+item.Quarters[0][1]+item.Quarters[0][2] + item.Quarters[1][0]+item.Quarters[1][1]+item.Quarters[1][2] + item.taxes}</TableCell>
