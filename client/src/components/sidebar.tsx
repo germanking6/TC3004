@@ -33,6 +33,7 @@ import CachedIcon from '@mui/icons-material/Cached';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import ExpensesPage from '../pages/expenses-page/Expenses-Page';
 import EmployeesPage from '../pages/employees-page/employees-page';
+import RecoveryPage from '../pages/recovery-page';
 
 const drawerWidth = 240;
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -130,7 +131,7 @@ const routeInfo ={
   recovery:{
     name:'Recovery',
     icon: <CachedIcon/>,
-    component: <HeaderComponent/>
+    component: <RecoveryPage/>
   },
   reports:{
     name:'Reports',
