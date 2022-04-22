@@ -120,7 +120,7 @@ const routeInfo ={
   employee:{
     name:'Employee',
     icon: <PersonIcon/>,
-    component: <Box><EmployeesPage/></Box>
+    component: <EmployeesPage/>
   },
   expenses:{
     name:'Expenses',

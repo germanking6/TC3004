@@ -4,9 +4,8 @@ import "./App.css";
 import HeaderComponent from "./components/HeaderComponent";
 import Login from "./components/Login/Login";
 import SideBar from "./components/sidebar";
-function App() {
 
-  const [count, setCount] = useState(0)
+function App() {
   return (
     <div className="App">
       <SideBar/>
