@@ -1,0 +1,12 @@
+.content1 {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.input {
+    margin-right: 2rem;
+    margin-bottom: 1rem;
+}
+
+
