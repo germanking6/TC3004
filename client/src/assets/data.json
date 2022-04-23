@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "email": "pedritosola@gmail.com",
+    "password": "pedrito123",
+    "user": "admin"
+  },
+  {
+    "id": 2,
+    "email": "pedritosola@gmail.com",
+    "password": "pedrito123",
+    "user": "admin"
+  },
+  {
+    "id": 3,
+    "email": "pedritosola@gmail.com",
+    "password": "pedrito123",
+    "user": "admin"
+  },
+  {
+    "id": 4,
+    "email": "pedritosola@gmail.com",
+    "password": "pedrito123",
+    "user": "admin"
+  },
+  {
+    "id": 5,
+    "email": "pedritosola@gmail.com",
+    "password": "pedrito123",
+    "user": "admin"
+  }
+]
