@@ -16,14 +16,14 @@ import { useState } from "react";
 import InputFooter from "./InputFooter";
 
 export default function InputForm() {
-  const [sucessfulLogin, setSucessfulLogin] = useState(false);
+  const [sucessfulLogin, setSucessfulLogin] = useState();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     let email = data.get("email");
     let password = data.get("password");
-    console.log(password);
+
     const userData = userJson.find((user) => user.email === email);
     if (userData) {
       if (userData.password === password) {
@@ -31,9 +31,11 @@ export default function InputForm() {
         setSucessfulLogin(true);
       } else {
         console.log("Incorrect Password");
+        setSucessfulLogin(false);
       }
     } else {
       console.log("Incorrect Email");
+      setSucessfulLogin(false);
     }
   };
 
@@ -56,6 +58,7 @@ export default function InputForm() {
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
           <TextField
+            error={sucessfulLogin == false}
             margin="normal"
             required
             fullWidth
@@ -66,6 +69,7 @@ export default function InputForm() {
             autoFocus
           />
           <TextField
+            error={sucessfulLogin == false}
             margin="normal"
             required
             fullWidth
