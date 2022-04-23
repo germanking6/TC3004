@@ -23,9 +23,18 @@ export default function InputForm() {
     const data = new FormData(event.currentTarget);
     let email = data.get("email");
     let password = data.get("password");
-
+    console.log(password);
     const userData = userJson.find((user) => user.email === email);
-    console.log(userData);
+    if (userData) {
+      if (userData.password === password) {
+        console.log("Sucessful Login");
+        setSucessfulLogin(true);
+      } else {
+        console.log("Incorrect Password");
+      }
+    } else {
+      console.log("Incorrect Email");
+    }
   };
 
   return (
