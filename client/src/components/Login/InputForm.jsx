@@ -15,8 +15,8 @@ import {
 import { useState } from "react";
 import InputFooter from "./InputFooter";
 
-export default function InputForm() {
-  const [sucessfulLogin, setSucessfulLogin] = useState();
+export default function InputForm(props) {
+  const [successfulLogin, setSucessfulLogin] = useState();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -29,13 +29,16 @@ export default function InputForm() {
       if (userData.password === password) {
         console.log("Sucessful Login");
         setSucessfulLogin(true);
+        props.setSuccess(true);
       } else {
         console.log("Incorrect Password");
         setSucessfulLogin(false);
+        props.setSuccess(successfulLogin);
       }
     } else {
       console.log("Incorrect Email");
       setSucessfulLogin(false);
+      props.setSuccess(successfulLogin);
     }
   };
 
@@ -58,7 +61,7 @@ export default function InputForm() {
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
           <TextField
-            error={sucessfulLogin == false}
+            error={successfulLogin == false}
             margin="normal"
             required
             fullWidth
@@ -69,7 +72,7 @@ export default function InputForm() {
             autoFocus
           />
           <TextField
-            error={sucessfulLogin == false}
+            error={successfulLogin == false}
             margin="normal"
             required
             fullWidth
@@ -83,12 +86,7 @@ export default function InputForm() {
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
+          <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign In
           </Button>
           <InputFooter />

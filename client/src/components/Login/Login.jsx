@@ -8,12 +8,19 @@ import InputForm from "./InputForm";
 
 const theme = createTheme();
 
-export default function Login() {
+export default function Login(props) {
+  let success = false;
+
+  const loginFunction = (data) => {
+    success = data;
+    console.log(success);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
-        <InputForm />
+        <InputForm setSuccess={props.setSuccess} />
         <Grid
           item
           xs={false}
