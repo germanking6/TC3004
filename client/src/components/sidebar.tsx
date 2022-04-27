@@ -34,6 +34,7 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import ExpensesPage from "../pages/expenses-page/Expenses-Page";
 import EmployeesPage from "../pages/employees-page/employees-page";
 
+
 const drawerWidth = 240;
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -135,10 +136,11 @@ const routeInfo = {
     icon: <AccountBalanceIcon />,
     component: <ExpensesPage />,
   },
-  recovery: {
-    name: "Recovery",
-    icon: <CachedIcon />,
-    component: <HeaderComponent />,
+  recovery:{
+    name:'Recovery',
+    icon: <CachedIcon/>,
+    component: <RecoveryPage/>
+
   },
   reports: {
     name: "Reports",
