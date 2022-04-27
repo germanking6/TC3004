@@ -5,7 +5,7 @@ import './delegate-page.css';
 
 // Local components
 import HeaderComponent from '../../components/HeaderComponent';
-import BasicTable from '../../components/TableComponent';
+import DataTable from '../../components/DataGridComponent';
 
 // MUI components
 import Card from '@mui/material/Card';
@@ -20,6 +20,7 @@ import IconButton from '@mui/material/IconButton';
 import DownloadIcon from '@mui/icons-material/Download';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import Box from '@mui/material/Box';
+import EnhancedTable from '../../components/TableSortComponent';
 
 
 function DelegatePage() {
@@ -29,7 +30,7 @@ function DelegatePage() {
             margin:'1rem auto'}}>
             <HeaderComponent/>
             <Container>
-                <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
+                <Grid container spacing={2} sx={{ justifyContent: 'center', alignItems: 'center'}}>
                     <Grid className='input'>
                         <Autocomplete
                             id="clear-on-escape"
@@ -47,37 +48,26 @@ function DelegatePage() {
             <Box>
                 <Card className="table" sx={{  
                             margin:'1rem 1rem 0 1rem'}}>
-                    <Grid sx={{ 
-                            width: '95%', 
-                            margin:'1rem 1rem 0 1rem'}}
-                            container spacing={2}>
-                        <Grid xs={9}>
-                            <h3> Delegates: </h3>
-                        </Grid>
-                        <Grid xs={3}>
-                            <TextField
-                                id="search"
-                                label="Search"
-                                variant="standard"
-                                InputProps={{
-                                    startAdornment: (
-                                    <InputAdornment position="start">
-                                        <SearchIcon />
-                                    </InputAdornment>
-                                    ),
-                                }}
-                                />
+                    <Box>
+                        <div style={{
+                            display: "flex",
+                            justifyContent: "space-evenly",
+                            alignItems: "center",
+                            padding: "20px",
+                        }}>
+                            <h3 style={{ flex: "1 1 auto" }}> Delegates: </h3>
+                            <div>
                                 <IconButton aria-label="download">
                                     <DownloadIcon />
                                 </IconButton>
-                        </Grid>
-                    </Grid>
+                            </div>
+                        </div>
+                    </Box>
                 </Card>
                 <Card className="table" sx={{  
                             margin:'0 1rem 1rem 1rem'}}>
-                    <BasicTable />
+                    <DataTable />
                 </Card>
-                
             </Box>
         </Card>
     )
