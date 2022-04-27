@@ -34,33 +34,34 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import ExpensesPage from '../pages/expenses-page/Expenses-Page';
 import EmployeesPage from '../pages/employees-page/employees-page';
 import Login from './Login/Login';
+import RecoveryPage from '../pages/recovery-page';
 
 const drawerWidth = 240;
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
-  transition: theme.transitions.create('width', {
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
   }),
-  overflowX: 'hidden',
+  overflowX: "hidden",
 });
 
 const closedMixin = (theme: Theme): CSSObject => ({
-  transition: theme.transitions.create('width', {
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  overflowX: 'hidden',
+  overflowX: "hidden",
   width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up('sm')]: {
+  [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
 });
 
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
@@ -71,78 +72,87 @@ interface AppBarProps extends MuiAppBarProps {
 }
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
+  shouldForwardProp: (prop) => prop !== "open",
 })<AppBarProps>(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(['width', 'margin'], {
+  transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-    boxSizing: 'border-box',
-    ...(open && {
-      ...openedMixin(theme),
-      '& .MuiDrawer-paper': openedMixin(theme),
-    }),
-    ...(!open && {
-      ...closedMixin(theme),
-      '& .MuiDrawer-paper': closedMixin(theme),
-    }),
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: "nowrap",
+  boxSizing: "border-box",
+  ...(open && {
+    ...openedMixin(theme),
+    "& .MuiDrawer-paper": openedMixin(theme),
   }),
-);
-const routeInfo ={
-  home:{
-    name:'HOME',
-    icon: <HomeIcon/>,
-    component: <HomePage/>
+  ...(!open && {
+    ...closedMixin(theme),
+    "& .MuiDrawer-paper": closedMixin(theme),
+  }),
+}));
+const routeInfo = {
+  home: {
+    name: "HOME",
+    icon: <HomeIcon />,
+    component: <HomePage />,
   },
-  
-  delegate:{
-    name:'Delegate',
-    icon: <GroupAddIcon className={clsx({
-      transform: "scaleX(-1)"
-    })}/>,
-    component: <HeaderComponent/>
+
+  delegate: {
+    name: "Delegate",
+    icon: (
+      <GroupAddIcon
+        className={clsx({
+          transform: "scaleX(-1)",
+        })}
+      />
+    ),
+    component: <HeaderComponent />,
   },
-  employee:{
-    name:'Employee',
-    icon: <PersonIcon/>,
-    component: <Box><EmployeesPage/></Box>
+  employee: {
+    name: "Employee",
+    icon: <PersonIcon />,
+    component: (
+      <Box>
+        <HeaderComponent />
+      </Box>
+    ),
   },
-  expenses:{
-    name:'Expenses',
-    icon: <AccountBalanceIcon/>,
-    component: <ExpensesPage/>
+  expenses: {
+    name: "Expenses",
+    icon: <AccountBalanceIcon />,
+    component: <ExpensesPage />,
   },
   recovery:{
     name:'Recovery',
     icon: <CachedIcon/>,
-    component: <HeaderComponent/>
+    component: <RecoveryPage/>
+
   },
-  reports:{
-    name:'Reports',
-    icon: <InsertDriveFileIcon/>,
-    component: <HeaderComponent/>
+  reports: {
+    name: "Reports",
+    icon: <InsertDriveFileIcon />,
+    component: <HeaderComponent />,
   },
-  logout:{
-    name:'Logout',
-    icon: <LogoutIcon/>
+  logout: {
+    name: "Logout",
+    icon: <LogoutIcon />,
   },
-}
+};
 export default function SideBar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -202,20 +212,44 @@ export default function SideBar() {
         <List>
           {Object.keys(routeInfo).map((k) => (
             
-            <ListItemButton
+            <><ListItemButton
               component={Link} to={k}
               key={k}
               sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
+                marginRight: 5,
+                ...(open && { display: "none" }),
               }}
             >
-            <ListItemIcon
+              <MenuIcon />
+            </IconButton><Typography variant="h6" noWrap component="div">
+                LERT -LABOR EXPENSES RECOVERY TOOL
+              </Typography></>
+          </Toolbar>
+        
+        <Drawer variant="permanent" open={open}>
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "rtl" ? (
+                <ChevronRightIcon />
+              ) : (
+                <ChevronLeftIcon />
+              )}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <Box
+            sx={{
+              minWidth: 0,
+              mr: open ? 3 : "auto",
+              justifyContent: "center",
+            }}
+          >
+            <Avatar
+              alt="Remy Sharp"
               sx={{
                 minWidth: 0,
-                mr: open ? 3 : 'auto',
-                justifyContent: 'center',
+                mr: open ? 3 : "auto",
+                justifyContent: "center",
               }}
             >
               {routeInfo[k].icon}
@@ -242,7 +276,7 @@ export default function SideBar() {
     </Box>:
     <Routes>
     <Route path="/" element={<Login/>}/>
-  </Routes>
+    </Routes>
     }
   </BrowserRouter>
   );
