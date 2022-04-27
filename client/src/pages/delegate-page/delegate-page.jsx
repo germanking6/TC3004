@@ -20,8 +20,6 @@ import IconButton from '@mui/material/IconButton';
 import DownloadIcon from '@mui/icons-material/Download';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import Box from '@mui/material/Box';
-import EnhancedTable from '../../components/TableSortComponent';
-
 
 function DelegatePage() {
     return (
