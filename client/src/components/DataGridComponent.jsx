@@ -31,7 +31,7 @@ export default function DataTable() {
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid
         rows={rows}
-        columns={[{ field: 'adminMail', minWidth: 450 }, { field: 'managerMail', headerName: 'Manager Mail', minWidth: 450 }, { field: 'status', headerName: 'Status', minWidth: 100 }]}
+        columns={[{ field: 'adminMail', headerName: 'Admin Mail', minWidth: 450 }, { field: 'managerMail', headerName: 'Manager Mail', minWidth: 450 }, { field: 'status', headerName: 'Status', minWidth: 100 }]}
         pageSize={5}
         rowsPerPageOptions={[5]}
         disableSelectionOnClick
