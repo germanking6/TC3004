@@ -12,9 +12,11 @@ export default function Reports() {
     const [from, setFrom] = React.useState(null);
     const [to, setTo] = React.useState(null);
 
-    function submitHandler() {
-        console.log(from);
-        console.log(to);
+    async function submitHandler() {
+        if (from != null && to != null) {
+            let url = `http://localhost:5000/reports?start_date=${from}&end_date=${to}`;
+            window.open(url);
+        }
     }
 
     return (
@@ -33,7 +35,7 @@ export default function Reports() {
                     onChange={(newValue) => {
                         setFrom(newValue);
                     }}
-                    renderInput={(params) => <TextField {...params} />}
+                    renderInput={(params) => <TextField required {...params} />}
                 />
                 <DatePicker
                     label="Date Finish"
@@ -41,18 +43,11 @@ export default function Reports() {
                     onChange={(newValue) => {
                         setTo(newValue);
                     }}
-                    renderInput={(params) => <TextField {...params} />}
+                    renderInput={(params) => <TextField required {...params} />}
                 />
             </LocalizationProvider>
 
             <Button variant="contained" onClick={submitHandler}>Submit</Button>
-
-
-
         </Box>
-
-
-
-
     );
 }
