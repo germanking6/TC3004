@@ -33,6 +33,7 @@ import CachedIcon from '@mui/icons-material/Cached';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import ExpensesPage from '../pages/expenses-page/Expenses-Page';
 import EmployeesPage from '../pages/employees-page/employees-page';
+import Login from './Login/Login';
 
 const drawerWidth = 240;
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -145,7 +146,7 @@ const routeInfo ={
 export default function SideBar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+  const [log,setLog]=React.useState(true);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -155,9 +156,9 @@ export default function SideBar() {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <BrowserRouter>
+    <BrowserRouter>
+    {log ? <Box sx={{ display: 'flex' }}>
+      <CssBaseline />     
       <AppBar position="fixed" open={open} style={{ background: '#000000' }}>
         <Toolbar>
 
@@ -238,7 +239,11 @@ export default function SideBar() {
         </Routes>
       
       </Box>
-      </BrowserRouter>
-    </Box>
+    </Box>:
+    <Routes>
+    <Route path="/" element={<Login/>}/>
+  </Routes>
+    }
+  </BrowserRouter>
   );
 }
