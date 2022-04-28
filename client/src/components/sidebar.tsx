@@ -35,6 +35,7 @@ import ExpensesPage from '../pages/expenses-page/Expenses-Page';
 import EmployeesPage from '../pages/employees-page/employees-page';
 import Login from './Login/Login';
 import RecoveryPage from '../pages/recovery-page';
+import DelegatePage from '../pages/delegate-page/delegate-page';
 
 const drawerWidth = 240;
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -117,7 +118,7 @@ const routeInfo ={
     icon: <GroupAddIcon className={clsx({
       transform: "scaleX(-1)"
     })}/>,
-    component: <HeaderComponent/>
+    component: <DelegatePage/>
   },
   employee:{
     name:'Employee',
@@ -141,7 +142,7 @@ const routeInfo ={
   },
   logout:{
     name:'Logout',
-    icon: <LogoutIcon/>
+    icon: <LogoutIcon/>,
   },
 }
 export default function SideBar() {
