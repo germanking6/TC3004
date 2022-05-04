@@ -33,6 +33,9 @@ import CachedIcon from '@mui/icons-material/Cached';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import ExpensesPage from '../pages/expenses-page/Expenses-Page';
 import EmployeesPage from '../pages/employees-page/employees-page';
+import Login from './Login/Login';
+import RecoveryPage from '../pages/recovery-page';
+import DelegatePage from '../pages/delegate-page/delegate-page';
 
 const drawerWidth = 240;
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -115,7 +118,7 @@ const routeInfo ={
     icon: <GroupAddIcon className={clsx({
       transform: "scaleX(-1)"
     })}/>,
-    component: <HeaderComponent/>
+    component: <DelegatePage/>
   },
   employee:{
     name:'Employee',
@@ -130,7 +133,7 @@ const routeInfo ={
   recovery:{
     name:'Recovery',
     icon: <CachedIcon/>,
-    component: <HeaderComponent/>
+    component: <RecoveryPage/>
   },
   reports:{
     name:'Reports',
@@ -139,13 +142,13 @@ const routeInfo ={
   },
   logout:{
     name:'Logout',
-    icon: <LogoutIcon/>
+    icon: <LogoutIcon/>,
   },
 }
 export default function SideBar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+  const [log,setLog]=React.useState(true);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -155,9 +158,9 @@ export default function SideBar() {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <BrowserRouter>
+    <BrowserRouter>
+    {log ? <Box sx={{ display: 'flex' }}>
+      <CssBaseline />     
       <AppBar position="fixed" open={open} style={{ background: '#000000' }}>
         <Toolbar>
 
@@ -185,18 +188,10 @@ export default function SideBar() {
           </IconButton>
         </DrawerHeader>
         <Divider/>
-        <Box sx={{
-                minWidth: 0,
-                mr: open ? 3 : 'auto',
-                justifyContent: 'center'
-                }}>
-          <Avatar alt="Remy Sharp" sx={{
-                minWidth: 0,
-                mr: open ? 3 : 'auto',
-                justifyContent: 'center'
-                }}/>
+
+        <Avatar alt="Sasa"  sx={{mx:'auto'}} />
                 
-        </Box>
+
         <Divider/>
         <List>
           {Object.keys(routeInfo).map((k) => (
@@ -234,11 +229,14 @@ export default function SideBar() {
           {Object.keys(routeInfo).map((k) => (
             <Route path={"/"+k} element={routeInfo[k].component}/>
           ))}
-          
+          <Route path="*" element={<HomePage/>}/>
         </Routes>
-      
       </Box>
-      </BrowserRouter>
-    </Box>
+    </Box>:
+    <Routes>
+    <Route path="*" element={<Login setSuccess={setLog}  />}/>
+    </Routes>
+    }
+  </BrowserRouter>
   );
 }

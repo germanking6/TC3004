@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import RecoveryPage from './pages/recovery-page'
+import App from './App'
 import CssBaseline from '@mui/material/CssBaseline';
 
 

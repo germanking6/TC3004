@@ -6,9 +6,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import DeleteIcon from '@mui/icons-material/Delete';
-import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/IconButton';
 import "./employees.css";
 import { useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -26,8 +26,6 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import * as XLSX from "xlsx";
 import { Autocomplete } from '@mui/material';
-//import { CSVLink } from 'react-csv';
-//const axios = require('axios');
 
 
 
