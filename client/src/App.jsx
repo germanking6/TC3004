@@ -12,10 +12,7 @@ function App() {
 
   return (
     <div className="App">
-      {AuthCtx.token ?
-        <SideBar /> :
-        <Login />
-      }
+      <SideBar />
     </div>
   );
 }
