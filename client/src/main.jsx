@@ -8,7 +8,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 ReactDOM.render(
   <React.StrictMode>
     <CssBaseline/>
-    <RecoveryPage />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 )
