@@ -1,38 +1,44 @@
-import * as React from "react";
-import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import MuiDrawer from "@mui/material/Drawer";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
-import CssBaseline from "@mui/material/CssBaseline";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import Avatar from "@mui/material/Avatar";
-import HomeIcon from "@mui/icons-material/Home";
-import AddIcon from "@mui/icons-material/Add";
-import LogoutIcon from "@mui/icons-material/Logout";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import clsx from "clsx";
-import { makeStyles } from "@mui/styles";
+import * as React from 'react';
+import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import MuiDrawer from '@mui/material/Drawer';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import CssBaseline from '@mui/material/CssBaseline';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
+import Avatar from '@mui/material/Avatar';
+import HomeIcon from '@mui/icons-material/Home';
+import AddIcon from '@mui/icons-material/Add';
+import LogoutIcon from '@mui/icons-material/Logout';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import clsx from 'clsx';
+import { makeStyles } from '@mui/styles';
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import HeaderComponent from "./HeaderComponent";
-import HomePage from "../pages/home-page/home-page";
-import PersonIcon from "@mui/icons-material/Person";
-import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-import CachedIcon from "@mui/icons-material/Cached";
-import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import ExpensesPage from "../pages/expenses-page/Expenses-Page";
-import EmployeesPage from "../pages/employees-page/employees-page";
+import HeaderComponent from './HeaderComponent';
+import HomePage from '../pages/home-page/home-page';
+import PersonIcon from '@mui/icons-material/Person';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import CachedIcon from '@mui/icons-material/Cached';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import ExpensesPage from '../pages/expenses-page/Expenses-Page';
+import EmployeesPage from '../pages/employees-page/employees-page';
+import Login from './Login/Login';
+import RecoveryPage from '../pages/recovery-page';
+import DelegatePage from '../pages/delegate-page/delegate-page';
+
+
+import Reports from "../pages/reports-page/Reports";
 
 const drawerWidth = 240;
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -102,58 +108,49 @@ const Drawer = styled(MuiDrawer, {
     ...closedMixin(theme),
     "& .MuiDrawer-paper": closedMixin(theme),
   }),
-}));
+);
 const routeInfo = {
   home: {
-    name: "HOME",
+    name: 'HOME',
     icon: <HomeIcon />,
-    component: <HomePage />,
+    component: <HomePage />
   },
 
   delegate: {
-    name: "Delegate",
-    icon: (
-      <GroupAddIcon
-        className={clsx({
-          transform: "scaleX(-1)",
-        })}
-      />
-    ),
-    component: <HeaderComponent />,
+    name: 'Delegate',
+    icon: <GroupAddIcon className={clsx({
+      transform: "scaleX(-1)"
+    })} />,
+    component: <DelegatePage />
   },
   employee: {
-    name: "Employee",
+    name: 'Employee',
     icon: <PersonIcon />,
-    component: (
-      <Box>
-        <HeaderComponent />
-      </Box>
-    ),
+    component: <Box><EmployeesPage /></Box>
   },
   expenses: {
-    name: "Expenses",
+    name: 'Expenses',
     icon: <AccountBalanceIcon />,
-    component: <ExpensesPage />,
+    component: <ExpensesPage />
   },
   recovery: {
-    name: "Recovery",
+    name: 'Recovery',
     icon: <CachedIcon />,
-    component: <HeaderComponent />,
+    component: <RecoveryPage />
   },
   reports: {
-    name: "Reports",
+    name: 'Reports',
     icon: <InsertDriveFileIcon />,
-    component: <HeaderComponent />,
+    component: <Reports />
   },
   logout: {
-    name: "Logout",
+    name: 'Logout',
     icon: <LogoutIcon />,
   },
 };
 export default function SideBar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -163,11 +160,12 @@ export default function SideBar() {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <BrowserRouter>
-        <AppBar position="fixed" open={open} style={{ background: "#000000" }}>
+    <BrowserRouter>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <AppBar position="fixed" open={open} style={{ background: '#000000' }}>
           <Toolbar>
+
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -175,7 +173,7 @@ export default function SideBar() {
               edge="start"
               sx={{
                 marginRight: 5,
-                ...(open && { display: "none" }),
+                ...(open && { display: 'none' }),
               }}
             >
               <MenuIcon />
@@ -188,58 +186,40 @@ export default function SideBar() {
         <Drawer variant="permanent" open={open}>
           <DrawerHeader>
             <IconButton onClick={handleDrawerClose}>
-              {theme.direction === "rtl" ? (
-                <ChevronRightIcon />
-              ) : (
-                <ChevronLeftIcon />
-              )}
+              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
             </IconButton>
           </DrawerHeader>
           <Divider />
-          <Box
-            sx={{
-              minWidth: 0,
-              mr: open ? 3 : "auto",
-              justifyContent: "center",
-            }}
-          >
-            <Avatar
-              alt="Remy Sharp"
-              sx={{
-                minWidth: 0,
-                mr: open ? 3 : "auto",
-                justifyContent: "center",
-              }}
-            />
-          </Box>
+
+          <Avatar alt="Sasa" sx={{ mx: 'auto' }} />
+
+
           <Divider />
           <List>
             {Object.keys(routeInfo).map((k) => (
+
               <ListItemButton
-                component={Link}
-                to={k}
+                component={Link} to={k}
                 key={k}
                 sx={{
                   minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
+                  justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
                 }}
               >
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
                   }}
                 >
                   {routeInfo[k].icon}
                 </ListItemIcon>
 
-                <ListItemText
-                  primary={routeInfo[k].name}
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
+                <ListItemText primary={routeInfo[k].name} sx={{ opacity: open ? 1 : 0, }} />
               </ListItemButton>
+
             ))}
           </List>
         </Drawer>
@@ -249,11 +229,12 @@ export default function SideBar() {
           <Routes>
             <Route path="/" />
             {Object.keys(routeInfo).map((k) => (
-              <Route path={"/" + k} element={routeInfo[k].component} />
+              <Route key={k} path={"/" + k} element={routeInfo[k].component} />
             ))}
+            <Route path="*" element={<HomePage />} />
           </Routes>
         </Box>
-      </BrowserRouter>
-    </Box>
+      </Box>
+    </BrowserRouter>
   );
 }
