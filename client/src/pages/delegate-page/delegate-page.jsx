@@ -26,7 +26,7 @@ function DelegatePage() {
         <Card sx={{ 
             maxWidth:'95%', 
             margin:'1rem auto'}}>
-            <HeaderComponent/>
+            <HeaderComponent title="Delegate Page"/>
             <Container>
                 <Grid container spacing={2} sx={{ justifyContent: 'center', alignItems: 'center'}}>
                     <Grid className='input'>
