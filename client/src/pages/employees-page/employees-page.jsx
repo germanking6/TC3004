@@ -481,7 +481,7 @@ const EmployeesPage = () =>{
     //---------HTML
     return(
         <TableContainer className='table'>
-                <HeaderComponent title="HeaderComponent"/>
+                <HeaderComponent title="Employee Page"/>
             <form className='form' noValidate autoComplete="off">
                 <Box m={1} pt={1}>
                     <TextField value ={inputField} id="outlined-basic" label="New Employee(s)" variant="outlined" onChange = {handleChange} />

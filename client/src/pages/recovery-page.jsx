@@ -8,6 +8,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { useState, useEffect } from 'react';
+import HeaderComponent from '../components/HeaderComponent';
 
 //https://v4.mui.com/es/components/buttons/?msclkid=40af928eb62411ecaf95a1a6c922508a
 //https://materialui.co/icon/expand-more
@@ -258,7 +259,7 @@ const RecoveryPage = () =>{
           }
           setInputNumber("");
           setInputMonth(null);
-          setInputRecover(null);
+          setInputRecover();
           setRecover(m);
           
             console.log(m);
@@ -275,7 +276,8 @@ const RecoveryPage = () =>{
     //---------HTML
     return(
         
-        <div style={{ height: 300, width: '100%' }}>          
+        <div style={{ height: 300, width: '100%' }}> 
+        <HeaderComponent title="Recovery Page"/>         
                 <Grid container spacing={2} sx={{ justifyContent: 'center', alignItems: 'center'}}>
                     <Grid className='input'>
                         <Autocomplete
