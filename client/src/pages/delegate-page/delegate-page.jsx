@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useRef} from 'react';
 
 // Styles
 import './delegate-page.css';
@@ -22,6 +22,8 @@ import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import Box from '@mui/material/Box';
 
 function DelegatePage() {
+    const userToLog = useRef('');
+
     return (
         <Card sx={{ 
             maxWidth:'95%', 
@@ -35,11 +37,21 @@ function DelegatePage() {
                             clearOnEscape
                             options={profiles}
                             sx={{ width: 300 }}
-                            renderInput={(params) => <TextField {...params} id="outlined-basic" label="Select the profile you want to log in" variant="standard"/>}
+                            renderInput={(params) => <TextField {...params} id="outlined-basic" label="Select the profile you want to log in" variant="standard" inputRef={userToLog}/>}
                         />
                     </Grid>
                     <Grid>
-                        <Button variant="outlined" size="small">SUBMIT</Button>
+                        <Button variant="outlined" size="small"
+                        onClick={() => {
+                            var user = userToLog.current.value
+                            if (profiles.includes(user) == false) {
+                                profiles.push();
+                            }
+                            else {
+                                alert("This profile is already in your team")
+                            }
+                          }}>
+                              SUBMIT</Button>
                     </Grid>
                 </Grid>
             </Container>
@@ -73,7 +85,7 @@ function DelegatePage() {
 
 
 const profiles = [
-    'Alex', 'German', 'Sauce', 'Ariana', 'Marisol', 'Victor'
+    'alexhdz@ibm.com', 'german@ibm.com', 'sauce@ibm.com', 'ari@ibm.com', 'marisol@ibm.com', 'viktor@ibm.com'
 ]
 
 export default DelegatePage;
