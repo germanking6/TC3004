@@ -485,8 +485,8 @@ const EmployeesPage = () =>{
 
             <form className='form' noValidate autoComplete="off">
                 <Box m={1} pt={1}>
-                    <TextField value ={inputField} id="outlined-basic" label="New Employee(s)" variant="outlined" onChange = {handleChange} />
-                    <Button className='b' color="primary" onClick={addEmployee}>Submit</Button>
+                    <TextField name="newEmployee" value ={inputField} id="outlined-basic" label="New Employee(s)" variant="outlined" onChange = {handleChange} />
+                    <Button name="submitNew" className='b' color="primary" onClick={addEmployee}>Submit</Button>
                 </Box>
                 <Box m={1} pt={1}>
                     <input type="file" onChange={updateExcel} />
