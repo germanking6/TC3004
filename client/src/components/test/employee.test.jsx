@@ -1,12 +1,13 @@
 //employee.test.js
 
-import { configure, shallow, mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+//import { configure, shallow, mount } from 'enzyme';
+import Enzyme from 'enzyme';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import renderer from 'react-test-renderer';
 import React from 'react';
-import { employee } from '../pages/employees-page/employees-page';
+import { EmployeesPage } from '../pages/employees-page/employees-page';
 
-configure({ adapter: new Adapter() }); //enzyme - react 16 hooks support
+Enzyme.configure({ adapter: new Adapter() }); 
 
 it('should render an employee input tag', () => {
     const wrapper = shallow(<EmployeesPage />);
