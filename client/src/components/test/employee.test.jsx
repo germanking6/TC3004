@@ -1,12 +1,14 @@
 //employee.test.js
-
+import Input from "react-validation/build/input";
 //import { configure, shallow, mount } from 'enzyme';
 import Enzyme from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import renderer from 'react-test-renderer';
 import React from 'react';
 import { EmployeesPage } from '../pages/employees-page/employees-page';
-
+require("@babel/core").transformSync("code", {
+    presets: ["@babel/preset-react"],
+});
 Enzyme.configure({ adapter: new Adapter() }); 
 
 it('should render an employee input tag', () => {
