@@ -3,7 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import HeaderComponent from "./components/HeaderComponent";
 import Login from "./components/Login/Login";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./components/dashboard";
 import { UserContext } from "./context/AuthContext";
 
 function App() {
