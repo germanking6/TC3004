@@ -8,7 +8,6 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { useState, useEffect } from 'react';
-import HeaderComponent from '../components/HeaderComponent';
 
 //https://v4.mui.com/es/components/buttons/?msclkid=40af928eb62411ecaf95a1a6c922508a
 //https://materialui.co/icon/expand-more
@@ -68,9 +67,11 @@ const RecoveryPage = () =>{
     const [months, setMonths] = useState();
     const [recover, setRecover] = useState();
     const [total, setTotal] = useState();
-    
 
  
+    
+    let rec = [];
+    let tot = [];
     let q1 = [];
     let q2 = [];
     let q3 = [];
@@ -135,11 +136,13 @@ const RecoveryPage = () =>{
             }
     
         }
-      
+        //console.log(arr);
+       //console.log(arr1);
        setTitles(a);
        setRecover(arr1);
        setTotal(arr);
-   
+       //console.log(total);
+       //console.log(recover);
     
     } 
     useEffect(() => {
@@ -174,119 +177,17 @@ const RecoveryPage = () =>{
 
       
       //update value of quarter1total quarter2 total or quarter3 total y taxes y recover y el mes 
-      const addRecovery = () =>{
-          //REVISAR INPUTS----------
-          console.log(InputNumber);
-          let m = recover;
-          if(InputNumber == "" || inputMonth == null || inputRecover == null){
-              alert("Empty values");
-          }
-          else{
-              //actualizar variables
-            //SET RECOVER
-            
-            if(inputMonth == "January" || inputMonth == "February" || inputMonth == "March"){
-                //buscar su elemento item con id inputIca y cambiarlo
-                ica.map((item,index)=>{
-                    if(item.id == inputRecover){
-                        m[0] = m[0]+parseInt(InputNumber, 10);
-                        //-------------------CAMBIAR ESE VALOR
-                        
-                        ica[index].total1 = ica[index].total1+parseInt(InputNumber, 10);
-
-                        
-
-                    }
-                })
-
-                
-
-            }
-            else if(inputMonth == "April" || inputMonth == "May" || inputMonth == "June"){
-                //buscar su elemento item con id inputIca y cambiarlo
-                ica.map((item,index)=>{
-                    if(item.id == inputRecover){
-                        if(m[1] > 0){
-                            m[1] = m[1]+parseInt(InputNumber, 10);;
-                            //-------------------CAMBIAR ESE VALOR
-                            item.total1 = m[0];
-
-                        }
-                        else{
-                            alert("This month is not available in this ICA!");
-                        }
-                        
-                    }
-                })
-            }
-            else if(inputMonth == "July" || inputMonth == "August" || inputMonth == "September"){
-                //buscar su elemento item con id inputIca y cambiarlo
-                ica.map((item,index)=>{
-                    if(item.id == inputRecover){
-                        if(m[2] > 0){
-                            m[2] = m[2]+parseInt(InputNumber, 10);;
-                            //-------------------CAMBIAR ESE VALOR
-                            item.total1 = m[0];
-
-                        }
-                        else{
-                            alert("This month is not available in this ICA!");
-                        }
-                        
-                    }
-                })
-            }
-            else if(inputMonth == "October" || inputMonth == "November" || inputMonth == "December"){
-                //buscar su elemento item con id inputIca y cambiarlo
-                ica.map((item,index)=>{
-                    if(item.id == inputRecover){
-                        if(m[3] > 0){
-                            m[3] = m[3]+parseInt(InputNumber, 10);
-                            //-------------------CAMBIAR ESE VALOR
-                            item.total1 = m[0];
-                            
-
-                        }
-                        else{
-                            alert("This month is not available in this ICA!");
-                        }
-                        
-                    }
-                })
-            }
-            alert("Recovery successful");
-
-          }
-          setInputNumber("");
-          setInputMonth(null);
-          setInputRecover();
-          setRecover(m);
-          
-            console.log(m);
-            //SET TOTAL
-
-            //cambiar el objeto
-
-
-            console.log(inputMonth);
-            //UPDATE EN LA BD
+      const addRecovery = (event) =>{
+            console.log(event);
       }
-      
-
     //---------HTML
     return(
         
-        <div style={{ height: 300, width: '100%' }}> 
-        <HeaderComponent title="Recovery Page"/>         
+        <div style={{ height: 300, width: '100%' }}>          
                 <Grid container spacing={2} sx={{ justifyContent: 'center', alignItems: 'center'}}>
                     <Grid className='input'>
                         <Autocomplete
                             id="clear-on-escape"
-                            value ={inputRecover}
-                            onChange={(_event, newTeam) => {
-                                setInputRecover(newTeam);
-                                //console.log(newTeam);
-                            }}
                             clearOnEscape
                             options={titles}
                             sx={{ width: 300 }}
@@ -296,29 +197,12 @@ const RecoveryPage = () =>{
                     <Grid className='input'>
                         <Autocomplete
                             id="clear-on-escape"
-                            value={inputMonth}
-                            onChange={(_event, newTeam) => {
-                                setInputMonth(newTeam);
-                                //console.log(newTeam);
-                            }}
                             clearOnEscape
                             options={month}
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} id="outlined-basic" label="Select month of recovery" variant="standard"/>}
                         />
                     </Grid>
-                    <label >Recovery amount (just numbers):</label>
-                    <input
-                         id="name"
-                         type="number"
-                         label = "put Recover amount"
-                         value = {InputNumber}
-                         onChange={(event) => {
-                            setInputNumber(event.target.value);
-                            //console.log(event.target.value);
-                        }}
-                    >
-                    </input>
                 <Grid>
                     <IconButton color = "secondary" size="small" id="addRecovery" >
                         <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg>
@@ -328,7 +212,7 @@ const RecoveryPage = () =>{
                     </Grid>
                 </Grid>
             
-            <DataGrid rows={ica} columns={columns}/>
+            <DataGrid rows={contentRows} columns={columns}/>
             
           
             <Graphic budget={total} recover={recover} />
