@@ -22,11 +22,36 @@ import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import Box from '@mui/material/Box';
 
 function DelegatePage() {
+    const columns = [
+        { field: 'adminMail', headerName: 'Admin mail', width: 400 },
+        { field: 'managerMail', headerName: 'Manager mail', width: 450 },
+        { field: 'status', headerName: 'Status', width: 100 }
+    ];
+      
+    const rows = [
+        { id: 1, adminMail: 'marisol@ibm.com', managerMail: 'alexhdz@ibm.com', status: 'Active' },
+        { id: 2, adminMail: 'ari@ibm.com', managerMail: 'alexhdz@ibm.com', status: 'Active' },
+        { id: 3, adminMail: 'sauce@ibm.com', managerMail: 'alexhdz@ibm.com', status: 'Active' },
+        { id: 4, adminMail: 'viktor@ibm.com', managerMail: 'lalo@ibm.com', status: 'Active' },
+        { id: 5, adminMail: 'german@ibm.com', managerMail: 'lalo@ibm.com', status: 'Active' },
+    ];
+    
+    rows.sort(function (a, b) {
+        if (a.adminMail > b.adminMail) {
+        return 1;
+        }
+        if (a.adminMail < b.adminMail) {
+        return -1;
+        }
+        // a must be equal to b
+        return 0;
+    });
+
     return (
         <Card sx={{ 
             maxWidth:'95%', 
             margin:'1rem auto'}}>
-            <HeaderComponent/>
+            <HeaderComponent title="Delegate Page"/>
             <Container>
                 <Grid container spacing={2} sx={{ justifyContent: 'center', alignItems: 'center'}}>
                     <Grid className='input'>
@@ -62,9 +87,12 @@ function DelegatePage() {
                         </div>
                     </Box>
                 </Card>
-                <Card className="table" sx={{  
+                <Card sx={{  
                             margin:'0 1rem 1rem 1rem'}}>
-                    <DataTable />
+                    <DataTable 
+                        r = {rows}
+                        c = {columns}
+                    />
                 </Card>
             </Box>
         </Card>

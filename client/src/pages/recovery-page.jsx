@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { DataGrid} from '@mui/x-data-grid';
 //import { useRef } from 'react';
@@ -151,10 +150,10 @@ const RecoveryPage = () =>{
         
      }, []);
     
+     const [inputMonth, setInputMonth] = useState(null);
+     const [inputRecover, setInputRecover] = useState(null);
+     const [InputNumber, setInputNumber] = useState("");
     
-    /*{(for int i)
-
-    }*/
     
     
       const columns = [

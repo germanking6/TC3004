@@ -10,6 +10,7 @@ import CommentIcon from '@mui/icons-material/Comment';
 import Autocomplete from '@mui/material/Autocomplete';
 import SendIcon from '@mui/icons-material/Send';
 import Button from '@mui/material/Button';
+
 import Card from '@mui/material/Card';
 import HeaderComponent from '../../components/HeaderComponent';
 import Alert from '@mui/material/Alert';
@@ -56,7 +57,7 @@ export default function ExpensesPage(){
   //Hacer fetchs de los ica y de los type
   return (
     <Card variant="outlined" sx={{ margin:'1rem auto' }}>
-      <HeaderComponent/>
+      <HeaderComponent title="Expenses Page"/>
       {showAlert ? (<Alert severity="error">Selecciona ICA y Tipo</Alert>): null}
       <Box
         component="form"
