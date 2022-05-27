@@ -9,7 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/IconButton';
-import "./employees.css";
+//import "./employees.css";
 import { useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -485,7 +485,7 @@ const EmployeesPage = () =>{
 
             <form className='form' noValidate autoComplete="off">
                 <Box m={1} pt={1}>
-                    <TextField name="newEmployee" value ={inputField} id="outlined-basic" label="New Employee(s)" variant="outlined" onChange = {handleChange} />
+                    <TextField name="newEmployee" data-testid="newEmployee" value ={inputField} id="outlined-basic" label="New Employee(s)" variant="outlined" onChange = {handleChange} />
                     <Button name="submitNew" className='b' color="primary" onClick={addEmployee}>Submit</Button>
                 </Box>
                 <Box m={1} pt={1}>
