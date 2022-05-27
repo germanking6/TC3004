@@ -37,6 +37,7 @@ import Login from "./Login/Login";
 import RecoveryPage from "../pages/recovery-page";
 import DelegatePage from "../pages/delegate-page/delegate-page";
 import Reports from "../pages/reports-page/Reports";
+import { UserContext } from "../context/AuthContext";
 const drawerWidth = 240;
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -157,6 +158,7 @@ export default function Dashboard() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [log, setLog] = React.useState(true);
+  const AuthCtx = React.useContext(UserContext);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -236,7 +238,32 @@ export default function Dashboard() {
                       sx={{ opacity: open ? 1 : 0 }}
                     />
                   </ListItemButton>
-                ))}
+                ))},
+                <ListItemButton
+                  onClick={()=>{
+                    AuthCtx.logout();
+                  }}
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {routeInfo["logout"].icon}
+                    </ListItemIcon>
+
+                    <ListItemText
+                      primary={routeInfo["logout"].name}
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
               </List>
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
