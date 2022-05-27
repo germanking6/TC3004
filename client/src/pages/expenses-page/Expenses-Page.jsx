@@ -20,12 +20,12 @@ export default function ExpensesPage(){
   const [typeOptions, setType] = useState([{label:"Type 1"},{label:"Type 2"},{label:"Type 3"},{label:"Type 4"},]);
 
   const [formState, setFormState] = React.useState({
-    EmployeeMail: "",
-    Date: "",
-    Amount: "",
-    Comment: "",
-    ICA: "",
-    Type: ""
+    "EmployeeMail": "",
+    "Date": "",
+    "Amount": "",
+    "Comment": "",
+    "ICA": "",
+    "Type": ""
   });
   const [icaSelected, setICASelected] = useState(false);
   const [typeSelected, setTypeSelected] = useState(false);
@@ -34,7 +34,13 @@ export default function ExpensesPage(){
     event.preventDefault();
     if(icaSelected && typeSelected){
       console.log(formState);
-      console.log(event );
+      fetch('http://127.0.0.1:5000/expensesPage',{
+        method:'POST',
+        headers : {
+          'Content-Type':'application/json'
+        },
+        body: JSON.stringify(formState)
+      })
     }else{
       setShowAlert(true);
     }
