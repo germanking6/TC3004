@@ -1,20 +1,27 @@
-from crypt import methods
+#from crypt import methods
 import csv
 from datetime import datetime
 from io import StringIO
-import re
 from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
+from ExpensesPage import ExpensesPage
+from source.db.ICA_Data import ICA_Data
+from source.api.IcaEndpoints import getIca,setICA
+from source.db.DBManager import DBManager
+from sqlalchemy import select
+
 #Prueba
 from lert_driver_db2.db2.Db2Connection import Db2Connection
-from ExpensesPage import ExpensesPage
 # timestamp - milesimas de segundo desde 1 de enero de 1970 
-
+db = DBManager.getInstance()
 # 2do - creamos un objeto de tipo flask
 app = Flask(__name__)
 if __name__ == "__main__":
     app.run(debug=True)
 CORS(app)
+
+app.add_url_rule("/recoveryPage", view_func=getIca, methods=['GET'])
+
 
 @app.route("/")
 def servicio_default():
@@ -74,3 +81,8 @@ def reports():
     response = Response(generate(), mimetype='text/csv')
     response.headers.set("Content-Disposition", "attachment", filename="log.csv")
     return response
+
+
+
+    
+
