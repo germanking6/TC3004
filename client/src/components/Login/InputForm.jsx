@@ -23,7 +23,7 @@ export default function InputForm(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    AuthCtx.login();
+    
 
     const data = new FormData(event.currentTarget);
     let email = data.get("email");
@@ -34,6 +34,7 @@ export default function InputForm(props) {
       if (userData.password === password) {
         console.log("Sucessful Login");
         setSucessfulLogin(true);
+        AuthCtx.login();
       } else {
         console.log("Incorrect Password");
         setSucessfulLogin(false);

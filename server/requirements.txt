@@ -1,4 +1,5 @@
 Flask==2.1.1
 Flask-DB2==0.0.10
 ibm-db==3.1.1
+Flask-Cors==3.0.10
 Flask-SQLAlchemy

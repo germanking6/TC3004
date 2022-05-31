@@ -1,34 +1,41 @@
+from crypt import methods
 import csv
 from datetime import datetime
 from io import StringIO
+import re
 from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 #Prueba
 from lert_driver_db2.db2.Db2Connection import Db2Connection
+from ExpensesPage import ExpensesPage
 # timestamp - milesimas de segundo desde 1 de enero de 1970 
 
 # 2do - creamos un objeto de tipo flask
 app = Flask(__name__)
-connection = Db2Connection()
 if __name__ == "__main__":
     app.run(debug=True)
 CORS(app)
+
 @app.route("/")
 def servicio_default():
     connection = Db2Connection()
     sentence = "SELECT * FROM gatitos"
     records = connection.get_all(sentence)
     connection.close_connection()
-    records_to_return = []
-    for record in records:
-        prueba = {
-            "id": record[0],
-            "name": record[1]
-        }
-        records_to_return.append(prueba)
+    return jsonify(records)
 
-    return jsonify(records_to_return)
-
+@app.route("/expensesPage", methods=['POST', 'GET'])
+def expensesPage():
+    try:
+        expenseManager = ExpensesPage()
+        if request.method == "POST":
+            expenseManager.addExpense(request.get_json())
+            return "", 200
+        elif request.method == "GET":
+            result = expenseManager.getExpenses()
+            return jsonify(result), 200
+    except:
+        return 404
 
 def generate():
     # dummy data
