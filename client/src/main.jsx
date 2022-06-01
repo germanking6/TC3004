@@ -8,8 +8,10 @@ import { UserProvider } from './context/AuthContext';
 
 ReactDOM.render(
   <React.StrictMode>
-    <CssBaseline/>
-    <App/>
+    <UserProvider>
+      <CssBaseline />
+      <App />
+    </UserProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )
