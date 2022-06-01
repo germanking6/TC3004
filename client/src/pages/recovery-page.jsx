@@ -17,18 +17,29 @@ import { Input } from '@mui/material';
 
 const RecoveryPage = () =>{
     //fetch
-    async function getData() {
-        const res = await fetch('http://127.0.0.1:5000/recoveryPage')
-        const json = await res.json();
-        console.log(json);
-        setIca(await json);
-        icas();
-    }
+    const cargarDatos = async () => {
+        try{
+            const url = "http://127.0.0.1:5000/recoveryPage";
+            const res = await fetch(url);
+            const datos = await res.json();
+            console.log(datos);
+            return datos
+        } catch(err) {
+          console.log(err)
+        }
+        
+      };
+    const [ica, setIca] = useState();
+    useEffect(async () => {
+          icas();
+        
+        
+     }, []);
    
    
     let a = [];
     const month = ["January", "February", "March","April","May","June","July","August", "September", "October", "November", "December"];
-    const [ica, setIca] = useState();
+
     const [titles, setTitles] = useState();
     const [months, setMonths] = useState();
     const [recover, setRecover] = useState();
@@ -42,9 +53,15 @@ const RecoveryPage = () =>{
     let rec2 = [];
     let rec3 = [];
     let rec4 = [];
-    const icas = () => {
-       console.log(ica);
-       ica.map((item,index)=>{
+    const icas = async () => {
+        
+        let arrt =[]
+        let a = await cargarDatos();
+        arrt.push(await a)
+        setIca(await [a])
+        console.log(ica);
+           
+       await ica.map((item,index)=>{
             a[index]= item.id;
             q1[index] = item.total1;
             rec1[index] = item.recover1;
