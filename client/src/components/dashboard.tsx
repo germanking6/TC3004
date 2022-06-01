@@ -38,6 +38,10 @@ import RecoveryPage from "../pages/recovery-page";
 import DelegatePage from "../pages/delegate-page/delegate-page";
 import Reports from "../pages/reports-page/Reports";
 import { UserContext } from "../context/AuthContext";
+import TrackChangesIcon from '@mui/icons-material/TrackChanges';
+import TextSnippetIcon from '@mui/icons-material/TextSnippet';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import AddAlarmIcon from '@mui/icons-material/AddAlarm';
 const drawerWidth = 240;
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -113,7 +117,26 @@ const routeInfo = {
     icon: <HomeIcon />,
     component: <HomePage/>,
   },
-
+  types: {
+    name: "Types",
+    icon: <TrackChangesIcon />,
+    component: <HomePage/>,
+  },
+  icas: {
+    name: "ICAS",
+    icon: <TextSnippetIcon />,
+    component: <HomePage/>,
+  },
+  expensesTypes: {
+    name: "Expenses Types",
+    icon: <AttachMoneyIcon />,
+    component: <HomePage/>,
+  },
+  extrahours: {
+    name: "Extra Hours",
+    icon: <AddAlarmIcon />,
+    component: <HomePage/>,
+  },
   delegate: {
     name: "Delegate",
     icon: (
@@ -149,10 +172,7 @@ const routeInfo = {
     icon: <InsertDriveFileIcon />,
     component: <Reports />,
   },
-  logout: {
-    name: "Logout",
-    icon: <LogoutIcon />,
-  },
+
 };
 export default function Dashboard() {
   const theme = useTheme();
@@ -238,7 +258,7 @@ export default function Dashboard() {
                       sx={{ opacity: open ? 1 : 0 }}
                     />
                   </ListItemButton>
-                ))},
+                ))}
                 <ListItemButton
                   onClick={()=>{
                     AuthCtx.logout();
@@ -256,11 +276,11 @@ export default function Dashboard() {
                         justifyContent: "center",
                       }}
                     >
-                      {routeInfo["logout"].icon}
+                      {<LogoutIcon/>}
                     </ListItemIcon>
 
                     <ListItemText
-                      primary={routeInfo["logout"].name}
+                      primary={"Logout"}
                       sx={{ opacity: open ? 1 : 0 }}
                     />
                   </ListItemButton>
@@ -270,7 +290,7 @@ export default function Dashboard() {
               <DrawerHeader />
 
               <Routes>
-                <Route path="/" />
+                <Route path="/" element={<HomePage/>}/>
                 {Object.keys(routeInfo).map((k) => (
                   <Route path={"/" + k} element={routeInfo[k].component} />
                 ))}
