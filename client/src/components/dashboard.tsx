@@ -38,7 +38,10 @@ import RecoveryPage from "../pages/recovery-page";
 import DelegatePage from "../pages/delegate-page/delegate-page";
 import Reports from "../pages/reports-page/Reports";
 import { UserContext } from "../context/AuthContext";
-import Logout from "@mui/icons-material/Logout";
+import TrackChangesIcon from '@mui/icons-material/TrackChanges';
+import TextSnippetIcon from '@mui/icons-material/TextSnippet';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import AddAlarmIcon from '@mui/icons-material/AddAlarm';
 const drawerWidth = 240;
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -114,7 +117,26 @@ const routeInfo = {
     icon: <HomeIcon />,
     component: <HomePage/>,
   },
-
+  types: {
+    name: "Types",
+    icon: <TrackChangesIcon />,
+    component: <HomePage/>,
+  },
+  icas: {
+    name: "ICAS",
+    icon: <TextSnippetIcon />,
+    component: <HomePage/>,
+  },
+  expensesTypes: {
+    name: "Expenses Types",
+    icon: <AttachMoneyIcon />,
+    component: <HomePage/>,
+  },
+  extrahours: {
+    name: "Extra Hours",
+    icon: <AddAlarmIcon />,
+    component: <HomePage/>,
+  },
   delegate: {
     name: "Delegate",
     icon: (
