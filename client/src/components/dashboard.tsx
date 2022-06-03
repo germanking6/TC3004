@@ -37,6 +37,8 @@ import Login from "./Login/Login";
 import RecoveryPage from "../pages/recovery-page";
 import DelegatePage from "../pages/delegate-page/delegate-page";
 import Reports from "../pages/reports-page/Reports";
+import ICAS from "../pages/icas-page/ICAS";
+
 import { UserContext } from "../context/AuthContext";
 const drawerWidth = 240;
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -138,6 +140,11 @@ const routeInfo = {
     name: "Expenses",
     icon: <AccountBalanceIcon />,
     component: <ExpensesPage />,
+  },
+  ICAs: {
+    name: "ICAs",
+    icon: <AccountBalanceIcon />,
+    component: <ICAS />,
   },
   recovery: {
     name: "Recovery",
