@@ -37,6 +37,8 @@ import Login from "./Login/Login";
 import RecoveryPage from "../pages/recovery-page";
 import DelegatePage from "../pages/delegate-page/delegate-page";
 import Reports from "../pages/reports-page/Reports";
+import ICAS from "../pages/icas-page/ICAS";
+
 import { UserContext } from "../context/AuthContext";
 import TrackChangesIcon from '@mui/icons-material/TrackChanges';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
@@ -161,6 +163,11 @@ const routeInfo = {
     name: "Expenses",
     icon: <AccountBalanceIcon />,
     component: <ExpensesPage />,
+  },
+  ICAs: {
+    name: "ICAs",
+    icon: <AccountBalanceIcon />,
+    component: <ICAS />,
   },
   recovery: {
     name: "Recovery",
