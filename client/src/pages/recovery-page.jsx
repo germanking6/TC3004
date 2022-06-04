@@ -37,11 +37,11 @@ const RecoveryPage = () =>{
      }, []);
    
    
-    let a = [];
+  
     const month = ["January", "February", "March","April","May","June","July","August", "September", "October", "November", "December"];
 
     const [titles, setTitles] = useState();
-    const [months, setMonths] = useState();
+    //const [months, setMonths] = useState();
     const [recover, setRecover] = useState();
     const [total, setTotal] = useState();
 
@@ -53,16 +53,18 @@ const RecoveryPage = () =>{
     let rec2 = [];
     let rec3 = [];
     let rec4 = [];
+    let op = [];
     const icas = async () => {
         
         let arrt =[]
         let a = await cargarDatos();
         arrt.push(await a)
-        setIca(await [a])
+        setIca([await a])
         console.log(ica);
            
        await ica.map((item,index)=>{
-            a[index]= item.id;
+            op.push(""+item.id)
+            //a[index]= item.id;
             q1[index] = item.total1;
             rec1[index] = item.recover1;
             if(item.total2){
@@ -88,7 +90,7 @@ const RecoveryPage = () =>{
             arr1[0] = arr1[0] + rec1[i];
         }
         console.log(arr[0]);
-        if(q2.length > 0){
+        if(await q2.length > 0){
             for (var i = 0; i < q2.length; i++) {
             
                 arr[1] = arr[1] + q2[i];
@@ -97,7 +99,7 @@ const RecoveryPage = () =>{
             }
     
         }
-        if(q3.length > 0){
+        if(await q3.length > 0){
             for (var i = 0; i < q3.length; i++) {
             
                 arr[2] = arr[2] + q3[i];
@@ -106,7 +108,7 @@ const RecoveryPage = () =>{
             }
     
         }
-        if(q4.length > 0){
+        if(await q4.length > 0){
             for (var i = 0; i < q4.length; i++) {
             
                 arr[3] = arr[3] + q4[i];
@@ -116,28 +118,22 @@ const RecoveryPage = () =>{
     
         }
       
-       setTitles(a);
+       await setTitles(await op);
        
-       setRecover(arr1);
-       setTotal(arr);
+       await setRecover(await arr1);
+       await setTotal(await arr);
        
     
     } 
-    const updateRecover = (number,id) =>{
+    const updateRecover = (number,q,recover,totalrecover,tot) =>{
     // POST request using fetch()
-        fetch("http://127.0.0.1:5000/recoveryPage", {
+        fetch(`http://127.0.0.1:5000/recoveryPage?id=${number}&recover=${totalrecover}&quarter=${q}&trecover=${recover}&t=${tot}`, {
             
             // Adding method type
             method: "POST",
         
             // Adding body or contents to send
-            body: JSON.stringify({
-                title: "foo",
-                body: "bar",
-                id: 1,
-                recover: 100,
-                quarter: 10000
-            }),
+            body: "id=1"
             
             /*// Adding headers to the request
             headers: {
@@ -147,9 +143,9 @@ const RecoveryPage = () =>{
         
         // Converting to JSON
         .then(response => response.json())
-        
+        //.then(setIca([json]))
         // Displaying results to console
-        .then(json => console.log(json));
+        .then(json => setIca([json]));
 
     }
     const [inputMonth, setInputMonth] = useState(month[0]);
@@ -160,25 +156,28 @@ const RecoveryPage = () =>{
            console.log(InputNumber);
            console.log(inputMonth)
            console.log(inputRecover)
+           
            //first cuarter
            if(inputMonth == month[0] || inputMonth == month[1] || inputMonth == month[2] || inputMonth == month[3]){
              //update recover in first quarter
+             
+               updateRecover(InputNumber,1,inputRecover,inputRecover+ica[0].recover1,ica[0].total+inputRecover)
            }
            //second quarter
            if(inputMonth == month[4] || inputMonth == month[5] || inputMonth == month[6] || inputMonth == month[7]){
-               
+               updateRecover(InputNumber,2,inputRecover,inputRecover+ica[0].recover2,ica[0].total+inputRecover)
             }
             //third quarter
             if(inputMonth == month[8] || inputMonth == month[9] || inputMonth == month[10] || inputMonth == month[11]){
-               
+                updateRecover(InputNumber,3,inputRecover,inputRecover+ica[0].recover3,ica[0].total+inputRecover)
             }
             
            //setInputNumber(InputNumber)
      }
-    useEffect(async () => {
+    /*useEffect(async () => {
          let a = await getData();
          await icas();
-     }, []);
+     }, []);*/
     
       const columns = [
         { field: 'id', headerName: 'Ica', width: 150 },

@@ -20,7 +20,8 @@ if __name__ == "__main__":
     app.run(debug=True)
 CORS(app)
 
-app.add_url_rule("/recoveryPage", view_func=getIca, methods=['GET','POST'])
+app.add_url_rule("/recoveryPage", view_func=getIca, methods=['GET'])
+app.add_url_rule("/recoveryPage", view_func=setICA, methods=['POST'])
 
 
 @app.route("/")
