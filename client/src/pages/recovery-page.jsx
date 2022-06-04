@@ -124,6 +124,32 @@ const RecoveryPage = () =>{
     
     } 
     const updateRecover = (number,id) =>{
+    // POST request using fetch()
+        fetch("http://127.0.0.1:5000/recoveryPage", {
+            
+            // Adding method type
+            method: "POST",
+        
+            // Adding body or contents to send
+            body: JSON.stringify({
+                title: "foo",
+                body: "bar",
+                id: 1,
+                recover: 100,
+                quarter: 10000
+            }),
+            
+            /*// Adding headers to the request
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }*/
+        })
+        
+        // Converting to JSON
+        .then(response => response.json())
+        
+        // Displaying results to console
+        .then(json => console.log(json));
 
     }
     const [inputMonth, setInputMonth] = useState(month[0]);

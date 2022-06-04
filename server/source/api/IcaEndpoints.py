@@ -44,14 +44,18 @@ def getIca():
     #return pd.DataFrame.from_records(dict(zip(r.keys(), r)) for r in usuarioDB)
    
 
-def setICA(id,recover,quarter):
-    u = "U"+quarter
-    t = "TOTAL"+quarter
+def setICA(id,recover,quarter,newquarter,newtotal):
+    if quarter == 1:
+        query = update(ICA_Data).where(ICA_Data.id == id).values(u1=recover, total1=newquarter, total=newtotal)
+    elif quarter == 2:
+        query = update(ICA_Data).where(ICA_Data.id == id).values(u2=recover, total2=newquarter, total=newtotal)
+    elif quarter == 3:
+        query = update(ICA_Data).where(ICA_Data.id == id).values(u3=recover, total3=newquarter, total=newtotal)
     # modificado para usar SQLAlchemy 
     db = DBManager.getInstance()
 
-    query = update(ICA_Data).where(ICA_Data.id == id).values(u1=recover, total1=recover, total=recover)
+    
     db.session.execute(query)
     db.session.commit()
-    
+    return getIca()
    
