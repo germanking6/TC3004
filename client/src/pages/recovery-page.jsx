@@ -58,11 +58,10 @@ const RecoveryPage = () =>{
         
         let arrt =[]
         let a = await cargarDatos();
-        arrt.push(await a)
-        setIca([await a])
+        await setIca(await [a] )
         console.log(ica);
            
-       await ica.map((item,index)=>{
+       await [a].map((item,index)=>{
             op.push(""+item.id)
             //a[index]= item.id;
             q1[index] = item.total1;
@@ -79,6 +78,8 @@ const RecoveryPage = () =>{
                 q4[index] = item.total4;
                 rec4[index] = item.recover4;
             }
+            setTitles(op);
+            
             
        });
        
@@ -118,7 +119,7 @@ const RecoveryPage = () =>{
     
         }
       
-       await setTitles(await op);
+       
        
        await setRecover(await arr1);
        await setTotal(await arr);
@@ -127,6 +128,8 @@ const RecoveryPage = () =>{
     } 
     const updateRecover = (number,q,recover,totalrecover,tot) =>{
     // POST request using fetch()
+    console.log(recover)
+    console.log(tot)
         fetch(`http://127.0.0.1:5000/recoveryPage?id=${number}&recover=${totalrecover}&quarter=${q}&trecover=${recover}&t=${tot}`, {
             
             // Adding method type
@@ -160,16 +163,16 @@ const RecoveryPage = () =>{
            //first cuarter
            if(inputMonth == month[0] || inputMonth == month[1] || inputMonth == month[2] || inputMonth == month[3]){
              //update recover in first quarter
-             
-               updateRecover(InputNumber,1,inputRecover,inputRecover+ica[0].recover1,ica[0].total+inputRecover)
+                console.log(ica[0].total+InputNumber)
+               updateRecover(inputRecover,1,parseInt(InputNumber),parseInt(InputNumber)+parseInt(ica[0].recover1),parseInt(ica[0].total)+parseInt(InputNumber))
            }
            //second quarter
            if(inputMonth == month[4] || inputMonth == month[5] || inputMonth == month[6] || inputMonth == month[7]){
-               updateRecover(InputNumber,2,inputRecover,inputRecover+ica[0].recover2,ica[0].total+inputRecover)
+               updateRecover(inputRecover,2,parseInt(InputNumber),parseInt(InputNumber)+parseInt(ica[0].recover2),parseInt(ica[0].total)+parseInt(InputNumber))
             }
             //third quarter
             if(inputMonth == month[8] || inputMonth == month[9] || inputMonth == month[10] || inputMonth == month[11]){
-                updateRecover(InputNumber,3,inputRecover,inputRecover+ica[0].recover3,ica[0].total+inputRecover)
+                updateRecover(inputRecover,3,parseInt(InputNumber),parseInt(InputNumber)+parseInt(ica[0].recover3),parseInt(ica[0].total)+parseInt(InputNumber))
             }
             
            //setInputNumber(InputNumber)
