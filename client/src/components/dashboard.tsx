@@ -42,6 +42,7 @@ import TrackChangesIcon from '@mui/icons-material/TrackChanges';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AddAlarmIcon from '@mui/icons-material/AddAlarm';
+import ExpensesType from "./ExpensesType";
 const drawerWidth = 240;
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -130,7 +131,7 @@ const routeInfo = {
   expensesTypes: {
     name: "Expenses Types",
     icon: <AttachMoneyIcon />,
-    component: <HomePage/>,
+    component: <ExpensesType/>,
   },
   extrahours: {
     name: "Extra Hours",
@@ -292,7 +293,7 @@ export default function Dashboard() {
               <Routes>
                 <Route path="/" element={<HomePage/>}/>
                 {Object.keys(routeInfo).map((k) => (
-                  <Route path={"/" + k} element={routeInfo[k].component} />
+                  <Route key={k} path={"/" + k} element={routeInfo[k].component} />
                 ))}
                 <Route path="*" element={<HomePage />} />
               </Routes>
