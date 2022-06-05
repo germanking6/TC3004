@@ -1,5 +1,5 @@
 
-from flask import jsonify
+from flask import jsonify,request
 from sqlalchemy import select, update
 from source.db.DBManager import DBManager
 from source.db.ICA_Data import ICA_Data
@@ -44,14 +44,27 @@ def getIca():
     #return pd.DataFrame.from_records(dict(zip(r.keys(), r)) for r in usuarioDB)
    
 
-def setICA(id,recover,quarter):
-    u = "U"+quarter
-    t = "TOTAL"+quarter
+def setICA():
+    id = request.args.get('id')
+    recover = request.args.get('recover')
+    quarter = request.args.get('quarter')
+    newQuarter = request.args.get('trecover')
+    print(id)
+    print(quarter)
+    newTotal = request.args.get('t')
+    print(id)
+    print(recover)
+    if quarter == "1":
+        query = update(ICA_Data).where(ICA_Data.id == id).values(u1=recover, total1=newQuarter, total=newTotal)
+    elif quarter == "2":
+        query = update(ICA_Data).where(ICA_Data.id == id).values(u2=recover, total2=newQuarter, total=newTotal)
+    elif quarter == "3":
+        query = update(ICA_Data).where(ICA_Data.id == id).values(u3=recover, total3=newQuarter, total=newTotal)
     # modificado para usar SQLAlchemy 
     db = DBManager.getInstance()
 
-    query = update(ICA_Data).where(ICA_Data.id == id).values(u1=recover, total1=recover, total=recover)
+    
     db.session.execute(query)
     db.session.commit()
-    
+    return getIca()
    
