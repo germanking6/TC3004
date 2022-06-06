@@ -15,14 +15,15 @@ def protegido():
 def getIca():
     db = DBManager.getInstance()
     #query = select(ICA_Data)
-    usuarioDB = ICA_Data()
-    stmt = select(ICA_Data).where(ICA_Data.id == '1234')
-    usuarioDB = db.session.scalar(stmt)
- 
-    print("holaaaaaaa")
-    print(usuarioDB.id)
-
-    return {
+    #usuarioDB = ICA_Data()
+    arr = []
+    #stmt = select(ICA_Data).where(ICA_Data.id == '1234')
+    #res = db.session.scalar(stmt)
+    items = db.session.query(ICA_Data).filter(ICA_Data.id =='1234').all()
+    
+    for usuarioDB in items:
+        arr.append(
+            {
         "DateStart" : usuarioDB.DateFinish,
         "DateFinish" : usuarioDB.DateStart,
         "recover2":usuarioDB.recover2,
@@ -41,6 +42,10 @@ def getIca():
         "6":usuarioDB.u6,
         "total":usuarioDB.total
     }
+        )
+  
+    return jsonify({'data': arr})
+    
     #return pd.DataFrame.from_records(dict(zip(r.keys(), r)) for r in usuarioDB)
    
 
