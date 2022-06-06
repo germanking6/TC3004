@@ -22,6 +22,7 @@ CORS(app)
 
 app.add_url_rule("/recoveryPage", view_func=getIca, methods=['GET'])
 app.add_url_rule("/recoveryPage", view_func=setICA, methods=['POST'])
+app.add_url_rule("/employeesPage", view_func=setICA, methods=['GET'])
 
 
 @app.route("/")
