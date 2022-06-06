@@ -14,18 +14,20 @@ Base = declarative_base()
 # mappear renglones de una DB a objetos
 class EMPLOYEE_Data(Base):
     # agregamos los campos donde se mapearan las columnas de la db
-    __tablename__ = "EMPLOYEE_DATA"
+    __tablename__ = "EMPLOYEES"
     id = Column(Integer, primary_key=True)
-    DateStart = Column(Date)
-    DateFinish = Column(Date)
-    country = Column(String)
-    employeeDepartment = Column(String)
-    departmentRequester = Column(String)
+    country = Column(String(5))
+    employeeDepartment = Column(String(10))
+    departmentRequester = Column(String(10))
     band = Column(Integer)
-    type = Column(Integer)
+    kind = Column(Integer)
     percentageRecover = Column(Integer)
-    icaManager = Column(String)
-    state = Column(Boolean)
+    dateStart = Column(Date)
+    dateFinish = Column(Date)
+    icaManager = Column(String(10))
     ica = Column(Integer)
-    squad = Column(String)
+    squad = Column(String(10))
+    state = Column(Boolean)
+   
+    
     
