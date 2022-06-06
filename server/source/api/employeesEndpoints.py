@@ -1,8 +1,8 @@
-
 from flask import jsonify,request
 from sqlalchemy import select, update
+from source.db.EMPLOYEES_Data import EMPLOYEE_Data
 from source.db.DBManager import DBManager
-from source.db.ICA_Data import ICA_Data
+from source.db.EMPLOYEES_Data import EMPLOYEE_Data
 from configparser import ConfigParser
 
 #from source.managers.ConfigManager import ConfigManager
@@ -12,43 +12,39 @@ from configparser import ConfigParser
 def protegido():
     return "<p>PROTEGIDO!</p>"
 """
-def getIca():
+def getEmployee():
     db = DBManager.getInstance()
     #query = select(ICA_Data)
     #usuarioDB = ICA_Data()
     arr = []
     #stmt = select(ICA_Data).where(ICA_Data.id == '1234')
     #res = db.session.scalar(stmt)
-    items = db.session.query(ICA_Data).filter(ICA_Data.id =='1234').all()
-    
+    items = db.session.query(EMPLOYEE_Data).all()
+    print(items)
     for usuarioDB in items:
-        arr.append(
-            {
-        "DateStart" : usuarioDB.DateFinish,
-        "DateFinish" : usuarioDB.DateStart,
-        "recover2":usuarioDB.recover2,
-        "recover1" : usuarioDB.recover, 
-        "taxes" : usuarioDB.taxes,
-        "recover": usuarioDB.recover,
-        "state": usuarioDB.state,
-        "id": usuarioDB.id,
-        "total1": usuarioDB.total1,
-        "total2":usuarioDB.total2,
-        "1": usuarioDB.u1,
-        "2": usuarioDB.u2,
-        "3": usuarioDB.u3,
-        "4": usuarioDB.u4,
-        "5": usuarioDB.u5,
-        "6":usuarioDB.u6,
-        "total":usuarioDB.total
-    }
+        arr.append({
+            "id": usuarioDB.id,
+            "Country": usuarioDB.country,
+            "EmployeeDepartment": usuarioDB.employeeDepartment,
+            "DepartmentRequester": usuarioDB.departmentRequester,
+            "Band": usuarioDB.band,
+            "Type": usuarioDB.kind,
+            "PercentageRecover": usuarioDB.percentageRecover,
+            "DateStart": usuarioDB.dateStart,
+            "DateFinish": usuarioDB.dateFinish,
+            "ICAManager": usuarioDB.icaManager,
+            "ica": usuarioDB.ica,
+            "Squad": usuarioDB.squad,
+            "state": usuarioDB.state
+
+        }
         )
   
     return jsonify({'data': arr})
     
     #return pd.DataFrame.from_records(dict(zip(r.keys(), r)) for r in usuarioDB)
    
-
+"""
 def setICA():
     id = request.args.get('id')
     recover = request.args.get('recover')
@@ -73,3 +69,4 @@ def setICA():
     db.session.commit()
     return getIca()
    
+"""
