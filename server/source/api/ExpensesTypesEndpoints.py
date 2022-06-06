@@ -3,12 +3,15 @@ from pickle import ADDITEMS
 from lert_driver_db2.db2.Db2Connection import Db2Connection
 from flask import jsonify,request
 
-def addExpensesTypes(formData: json):
+def addExpensesTypes():
+    formData=request.args.get('Type');
     addExpensesTypeQuery='''insert into TYPE_OF_EXPENSE (TYPE)values ('{}');'''
     connection = Db2Connection()
-    sentence = addExpensesTypeQuery.format(formData["Type"])
+    sentence = addExpensesTypeQuery.format(formData)
     records = connection.execute(sentence)
     connection.close_connection()
+    response= getExpensesTypes()
+    return response
 
 def getExpensesTypes():
     connection = Db2Connection()
