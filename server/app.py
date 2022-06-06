@@ -5,7 +5,7 @@ from datetime import datetime
 from io import StringIO
 from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
-from ExpensesPage import ExpensesPage
+from source.api.ExpensesPage import addExpense, getExpenses
 from source.api.employeesEndpoints import getEmployee
 from source.db.ICA_Data import ICA_Data
 from source.api.IcaEndpoints import getIca,setICA
@@ -26,8 +26,11 @@ CORS(app)
 app.add_url_rule("/recoveryPage", view_func=getIca, methods=['GET'])
 app.add_url_rule("/recoveryPage", view_func=setICA, methods=['POST'])
 app.add_url_rule("/employeesPage", view_func=getEmployee, methods=['GET'])
+app.add_url_rule("/expensesPage", view_func=addExpense, methods=["POST"])
+app.add_url_rule("/expensesPage", view_func=getExpenses, methods=["GET"])
 app.add_url_rule("/expensesTypes", view_func=addExpensesTypes, methods=['POST'])
 app.add_url_rule("/expensesTypes", view_func=getExpensesTypes, methods=['GET'])
+
 
 @app.route("/")
 def servicio_default():
@@ -36,19 +39,6 @@ def servicio_default():
     records = connection.get_all(sentence)
     connection.close_connection()
     return jsonify(records)
-
-@app.route("/expensesPage", methods=['POST', 'GET'])
-def expensesPage():
-    try:
-        expenseManager = ExpensesPage()
-        if request.method == "POST":
-            expenseManager.addExpense(request.get_json())
-            return "", 200
-        elif request.method == "GET":
-            result = expenseManager.getExpenses()
-            return jsonify(result), 200
-    except:
-        return 404
 
 def generate():
     # dummy data
@@ -87,8 +77,3 @@ def reports():
     response = Response(generate(), mimetype='text/csv')
     response.headers.set("Content-Disposition", "attachment", filename="log.csv")
     return response
-
-
-
-    
-
