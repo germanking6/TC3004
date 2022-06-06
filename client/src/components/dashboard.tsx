@@ -1,4 +1,6 @@
 import * as React from "react";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { useContext } from "react";
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -40,10 +42,13 @@ import Reports from "../pages/reports-page/Reports";
 import ICAS from "../pages/icas-page/ICAS";
 
 import { UserContext } from "../context/AuthContext";
-import TrackChangesIcon from '@mui/icons-material/TrackChanges';
-import TextSnippetIcon from '@mui/icons-material/TextSnippet';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import AddAlarmIcon from '@mui/icons-material/AddAlarm';
+import TrackChangesIcon from "@mui/icons-material/TrackChanges";
+import TextSnippetIcon from "@mui/icons-material/TextSnippet";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import AddAlarmIcon from "@mui/icons-material/AddAlarm";
+import { ThemeContext } from "../context/themeContext";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 const drawerWidth = 240;
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -117,27 +122,27 @@ const routeInfo = {
   home: {
     name: "HOME",
     icon: <HomeIcon />,
-    component: <HomePage/>,
+    component: <HomePage />,
   },
   types: {
     name: "Types",
     icon: <TrackChangesIcon />,
-    component: <HomePage/>,
+    component: <HomePage />,
   },
   icas: {
     name: "ICAS",
     icon: <TextSnippetIcon />,
-    component: <HomePage/>,
+    component: <HomePage />,
   },
   expensesTypes: {
     name: "Expenses Types",
     icon: <AttachMoneyIcon />,
-    component: <HomePage/>,
+    component: <HomePage />,
   },
   extrahours: {
     name: "Extra Hours",
     icon: <AddAlarmIcon />,
-    component: <HomePage/>,
+    component: <HomePage />,
   },
   delegate: {
     name: "Delegate",
@@ -179,13 +184,18 @@ const routeInfo = {
     icon: <InsertDriveFileIcon />,
     component: <Reports />,
   },
-
 };
 export default function Dashboard() {
-  const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [log, setLog] = React.useState(true);
   const AuthCtx = React.useContext(UserContext);
+  const { value, setValue } = useContext(ThemeContext);
+  const theme = createTheme({
+    palette: {
+      //@ts-ignore
+      mode: value,
+    },
+  });
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -196,8 +206,8 @@ export default function Dashboard() {
 
   return (
     <React.Fragment>
-      <BrowserRouter>
-        
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
           <Box sx={{ display: "flex" }}>
             <CssBaseline />
             <AppBar
@@ -218,9 +228,30 @@ export default function Dashboard() {
                 >
                   <MenuIcon />
                 </IconButton>
-                <Typography variant="h6" noWrap component="div">
-                  LERT -LABOR EXPENSES RECOVERY TOOL
+                <Typography
+                  variant="h6"
+                  noWrap
+                  component="div"
+                  sx={{ flexGrow: 1 }}
+                >
+                  LERT - LABOR EXPENSES RECOVERY TOOL
                 </Typography>
+
+                <IconButton
+                  sx={{ ml: 1 }}
+                  onClick={() => {
+                    setValue((prevValue) =>
+                      prevValue == "light" ? "dark" : "light"
+                    );
+                  }}
+                  color="inherit"
+                >
+                  {theme.palette.mode === "dark" ? (
+                    <Brightness7Icon />
+                  ) : (
+                    <Brightness4Icon />
+                  )}
+                </IconButton>
               </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open}>
@@ -235,7 +266,7 @@ export default function Dashboard() {
               </DrawerHeader>
               <Divider />
 
-              <Avatar alt="Sasa" sx={{ mx: "auto", my:1 }} />
+              <Avatar alt="Sasa" sx={{ mx: "auto", my: 1 }} />
 
               <Divider />
               <List>
@@ -267,37 +298,37 @@ export default function Dashboard() {
                   </ListItemButton>
                 ))}
                 <ListItemButton
-                  onClick={()=>{
+                  onClick={() => {
                     AuthCtx.logout();
                   }}
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
+                >
+                  <ListItemIcon
                     sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
                     }}
                   >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {<LogoutIcon/>}
-                    </ListItemIcon>
+                    {<LogoutIcon />}
+                  </ListItemIcon>
 
-                    <ListItemText
-                      primary={"Logout"}
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
+                  <ListItemText
+                    primary={"Logout"}
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
               </List>
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
               <DrawerHeader />
 
               <Routes>
-                <Route path="/" element={<HomePage/>}/>
+                <Route path="/" element={<HomePage />} />
                 {Object.keys(routeInfo).map((k) => (
                   <Route path={"/" + k} element={routeInfo[k].component} />
                 ))}
@@ -305,8 +336,8 @@ export default function Dashboard() {
               </Routes>
             </Box>
           </Box>
-        
-      </BrowserRouter>
+        </BrowserRouter>
+      </ThemeProvider>
     </React.Fragment>
   );
 }
