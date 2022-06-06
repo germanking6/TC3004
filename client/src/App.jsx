@@ -12,14 +12,18 @@ function App() {
   const AuthCtx = React.useContext(UserContext);
 
   const [value, setValue] = useState(localStorage.getItem("value"));
+  if(localStorage.getItem("value")===null){
+    setValue('light')
+    localStorage.setItem("value", 'light');
+  }
   React.useEffect(() => {
     localStorage.setItem("value", value);
   }, [value]);
   return (
     <div className="App">
-      <ThemeContext.Provider value={{ value, setValue }}>
+      {<ThemeContext.Provider value={{ value, setValue }}>
         {AuthCtx.token ? <Dashboard /> : <Login />}
-      </ThemeContext.Provider>
+      </ThemeContext.Provider>}
     </div>
   );
 }
