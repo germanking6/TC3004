@@ -58,10 +58,10 @@ const RecoveryPage = () =>{
         
         let arrt =[]
         let a = await cargarDatos();
-        await setIca(await [a] )
+        await setIca(await a.data )
         console.log(ica);
            
-       await [a].map((item,index)=>{
+       await a.data.map((item,index)=>{
             op.push(""+item.id)
             //a[index]= item.id;
             q1[index] = item.total1;
