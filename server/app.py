@@ -5,7 +5,7 @@ from io import StringIO
 from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 from ExpensesPage import ExpensesPage
-from source.api.employeesEndpoints import getEmployee
+from source.api.employeesEndpoints import getEmployee,setEmployee
 from source.db.ICA_Data import ICA_Data
 from source.api.IcaEndpoints import getIca,setICA
 from source.db.DBManager import DBManager
@@ -24,6 +24,7 @@ CORS(app)
 app.add_url_rule("/recoveryPage", view_func=getIca, methods=['GET'])
 app.add_url_rule("/recoveryPage", view_func=setICA, methods=['POST'])
 app.add_url_rule("/employeesPage", view_func=getEmployee, methods=['GET'])
+app.add_url_rule("/employeesPage", view_func=setEmployee, methods=['POST'])
 
 
 @app.route("/")

@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/IconButton';
 import "./employees.css";
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Alert from "../../components/Alert";
@@ -124,6 +124,26 @@ const EmployeesPage = () =>{
     //------EMPLOYEES LIST USESTATE
     //modificating employees list
     const [employees, setEmployees] = useState(contentRows);
+    //fetch
+    const cargarDatos = async () => {
+        try{
+            const url = "http://127.0.0.1:5000/employeesPage";
+            const res = await fetch(url);
+            const datos = await res.json();
+            setEmployees(await datos.data);
+            console.log(await datos.data);
+            
+        } catch(err) {
+          console.log(err)
+        }
+        
+    };
+    useEffect(async () => {
+        await cargarDatos();
+      
+      
+   }, []);
+    
 
 
     //------INPUT ADD EMPLOYEES
@@ -262,30 +282,30 @@ const EmployeesPage = () =>{
     
     const country = [
         {
-            value: 'Monterrey',
+            value: 'MTY',
             label: 'MTY',
         },
         {
-            value: 'Guadalajara',
+            value: 'GDL',
             label: 'GDL',
         },
         {
-            value: 'PuertoVallarta',
+            value: 'PTV',
             label: 'PTV',
         },
         {
-            value: 'Ciudad de Mexico',
+            value: 'CDMX',
             label: 'CDMX',
         },
     ];
 
     const department = [
         {
-            value: 'Administration',
+            value: 'Admin',
             label: 'ADMIN',
         },
         {
-            value: 'Software',
+            value: 'SW',
             label: 'SW',
         }
     ];
@@ -314,11 +334,11 @@ const EmployeesPage = () =>{
 
     const icaM = [
         {
-            value: '124',
+            value: 'Julio',
             label: 'Julio',
         },
         {
-            value: '123',
+            value: 'Cesar',
             label: 'Cesar',
         }
     ];
@@ -354,6 +374,8 @@ const EmployeesPage = () =>{
     ];
     
     //--TEMPORARYDATAEND
+    //EDIT 
+   
     //country handler
     const [selectCountry, setSelectCountry] = useState(country[0].value);
     const handleChangeCountryInput = (event) =>{
@@ -414,6 +436,8 @@ const EmployeesPage = () =>{
         if(confirm){
             //temporary array
             let arreglo = [...employees];
+            let pr;
+            let st;
             //mapping array to change status of element id
             arreglo.map((item) => {
                 if(item.id == editId){
@@ -427,9 +451,19 @@ const EmployeesPage = () =>{
                     item.ICAManager = selectIcaM;
                     item.ica = selectIca;
                     item.Squad = selectSquad;
+                    pr = item.PercentageRecover;
+                    st = item.state;
+
                 }
                 
             });
+            
+            fetch(`http://127.0.0.1:5000/employeesPage?id=${editId}&country=${selectCountry}&EmployeeDepartment=${selectDepartment}&DepartmentRequester=${selectDepartmentRequest}&band=${selectBand}&kind=${selectType}&percentageRecover=${pr}&dateStart=${selectDateS}&dateFinish=${selectDateE}&icaManager=${selectIcaM}&ica=${selectIca}&squad=${selectSquad}&state=${st}`, {
+                    
+                method: "POST",
+                body: "id=1"
+            })
+
             //change state of employees
             setEmployees(arreglo); 
         }
@@ -480,6 +514,7 @@ const EmployeesPage = () =>{
     );
     //---------HTML
     return(
+        
         <TableContainer className='table'>
                 <HeaderComponent title="Employee Page"/>
             <form className='form' noValidate autoComplete="off">
