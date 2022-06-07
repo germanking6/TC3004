@@ -27,8 +27,6 @@ app.add_url_rule("/recoveryPage", view_func=getIca, methods=['GET'])
 app.add_url_rule("/recoveryPage", view_func=setICA, methods=['POST'])
 app.add_url_rule("/employeesPage", view_func=getEmployee, methods=['GET'])
 app.add_url_rule("/employeesPage", view_func=setEmployee, methods=['POST'])
-app.add_url_rule("/expensesPage", view_func=addExpense, methods=["POST"])
-app.add_url_rule("/expensesPage", view_func=getExpenses, methods=["GET"])
 app.add_url_rule("/expensesTypes", view_func=addExpensesTypes, methods=['POST'])
 app.add_url_rule("/expensesTypes", view_func=getExpensesTypes, methods=['GET'])
 
