@@ -10,12 +10,49 @@ import CommentIcon from '@mui/icons-material/Comment';
 import Autocomplete from '@mui/material/Autocomplete';
 import SendIcon from '@mui/icons-material/Send';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import Card from '@mui/material/Card';
 import HeaderComponent from '../../components/HeaderComponent';
 import Alert from '@mui/material/Alert';
 
+import DataTable from '../../components/DataGridComponent';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import Container from '@mui/material/Container';
+
 export default function ExpensesPage(){
+
+  const columns = [
+    {
+      field: 'action', width:80, headerName: 'Actions',
+      renderCell: (params) => (
+      <div sx={{ mx: "auto"}}>
+        <IconButton color="primary" aria-label="Edit" size="small" height="15" width="15"  onClick={() => { alert(params.id) }}>
+            < EditRoundedIcon/>
+        </IconButton>
+        <IconButton color="error" aria-label="delete" size="small" height="15" width="15" onClick={() => { alert(params.id) }}>
+          <DeleteIcon />
+        </IconButton>
+      </div>
+      ),
+    },
+    { field: 'employeeMail', headerName: 'Employee Mail', width: 200 },
+    { field: 'type', headerName: 'Type', width: 100 },
+    { field: 'cost', headerName: 'Cost', width: 100 },
+    { field: 'date', headerName: 'Date', width: 150 },
+    { field: 'ica', headerName: 'ICA', width: 100 },
+    { field: 'icaManager', headerName: 'ICA Manager', width: 200 },
+    { field: 'admin', headerName: 'Administrator', width: 200 },
+    { field: 'comment', headerName: 'Comment', width: 400 }
+  ];
+    
+  const rows = [
+      { id: 8, employeeMail: "ivan.wielebaldo@ibm.com", type: 1, cost: 999, date: "09-06-2000", ica: 2, icaManager: "c", admin: "a", comment: "haolsd"},
+      { id: 5, employeeMail: "hola5", type: 2, cost: 100, date: "09-06-2000", ica: 2, icaManager: "b", admin: "c", comment: "haolsd"},
+      { id: 3, employeeMail: "hola3", type: 3, cost: 9234, date: "09-06-2000", ica: 2, icaManager: "a", admin: "b", comment: "haolsd"},
+  ];
+
   const [ICA, setICA] = useState([{label:"ICA 1"},{label:"ICA 2"},{label:"ICA 3"},{label:"ICA 4"}]);
   const [typeOptions, setType] = useState([{label:"Type 1"},{label:"Type 2"},{label:"Type 3"},{label:"Type 4"},]);
 
@@ -30,6 +67,8 @@ export default function ExpensesPage(){
   const [icaSelected, setICASelected] = useState(false);
   const [typeSelected, setTypeSelected] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [idSelected, setIdSelected] = useState(-1);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     if(icaSelected && typeSelected){
@@ -58,7 +97,6 @@ export default function ExpensesPage(){
       [event.target.id]: newInputValue
     });
   }
-
 
   //Hacer fetchs de los ica y de los type
   return (
@@ -192,7 +230,10 @@ export default function ExpensesPage(){
           </Grid>
         </Grid>
       </Box>
-      
+      <DataTable 
+        r = {rows}
+        c = {columns}
+      />
     </Card>
   );
 }
