@@ -1,5 +1,5 @@
 #from crypt import methods
-from crypt import methods
+#from crypt import methods
 import csv
 from datetime import datetime
 from io import StringIO
@@ -7,6 +7,8 @@ from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 from source.api.ExpensesPage import addExpense, deleteExpense, getExpenses
 from source.api.employeesEndpoints import getEmployee
+from ExpensesPage import ExpensesPage
+from source.api.employeesEndpoints import getEmployee,setEmployee
 from source.db.ICA_Data import ICA_Data
 from source.api.IcaEndpoints import getIca,setICA
 from source.db.DBManager import DBManager
@@ -29,6 +31,8 @@ app.add_url_rule("/employeesPage", view_func=getEmployee, methods=['GET'])
 app.add_url_rule("/expensesPage", view_func=addExpense, methods=["POST"])
 app.add_url_rule("/expensesPage", view_func=getExpenses, methods=["GET"])
 app.add_url_rule("/expensesPage", view_func=deleteExpense, methods=["DELETE"])
+app.add_url_rule("/employeesPage", view_func=setEmployee, methods=['POST'])
+
 app.add_url_rule("/expensesTypes", view_func=addExpensesTypes, methods=['POST'])
 app.add_url_rule("/expensesTypes", view_func=getExpensesTypes, methods=['GET'])
 
