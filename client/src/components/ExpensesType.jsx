@@ -19,8 +19,9 @@ import DownloadIcon from '@mui/icons-material/Download';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import Box from '@mui/material/Box';
 import { ButtonBase } from '@mui/material';
-
+import CircularIndeterminate from './Loading';
 function ExpensesType() {
+    const url = "http://127.0.0.1:5000/expensesTypes";
     const columns = [
         {
             field: 'action',
@@ -30,6 +31,8 @@ function ExpensesType() {
             <IconButton aria-label="delete" size="small" height="15" width="15"onClick={() => 
                 {
                     console.log(params.id)
+                    console.log(params.row)
+                    deleteButton(params)
                 }
             }>
                 <DeleteIcon />
@@ -40,43 +43,67 @@ function ExpensesType() {
         { field: 'Typeofexpense', headerName: 'Type of expense name', width: 450 },
         
     ];
-    const rows = [
-        { id: 1, Typeofexpense: 'Trip' },
-        { id: 2, Typeofexpense: 'Course' },
-    ];
-    const [InputField, setEmployees] = useState();
-    rows.sort(function (a, b) {
-        if (a.adminMail > b.adminMail) {
-        return 1;
+    const [rows, setRows] = useState([]);
+    const [InputField, setInputField] = useState("");
+    const [load,setLoad]=useState(false);
+    const deleteButton = (params) => {
+        if(confirm("¿Está seguro que desea eliminar el registro " + params.row.Typeofexpense + "?")){
+            setLoad(false);
+            fetch(url+`?Type=${params.row.Typeofexpense}`,{
+            method:'DELETE',
+            headers : {
+                'Content-Type':'application/json'
+            },
+            });
         }
-        if (a.adminMail < b.adminMail) {
-        return -1;
+    }
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if(InputField!=null){
+            setLoad(false);
+            fetch(url+`?Type=${InputField}`,{
+            method:'POST',
+            headers : {
+                'Content-Type':'application/json'
+            },
+            });
+        }else{
+          setShowAlert(true);
         }
-        // a must be equal to b
-        return 0;
-    });
+    }
     
     const handleChange = (event) =>{
         event.preventDefault();
         setInputField(event.target.value);
-
+        console.log(event.target.value)
     };
-
+    React.useEffect(()=>{
+        if(!load){
+            fetch(url,{
+                method:'GET',
+            })
+            .then((res)=>res.json())
+            .then((data)=>setRows(data)).then(()=>setLoad(true))
+        }
+        
+    })
     return (
         <Card sx={{ 
             maxWidth:'95%', 
             margin:'1rem auto'}}>
             <HeaderComponent title="New Type of Expense"/>
+            { !load && (<CircularIndeterminate/>)}
             <Container>
                 <Grid container spacing={2} sx={{ justifyContent: 'center', alignItems: 'center'}}>
                     <Grid className='input'>
                     <TextField value ={InputField} id="outlined-basic" label="New Employee(s)" variant="outlined" onChange = {handleChange} />
                     </Grid>
                     <Grid>
-                        <Button variant="outlined" size="small">SUBMIT</Button>
+                        <Button variant="outlined" size="small" onClick={handleSubmit} >SUBMIT</Button>
                     </Grid>
                 </Grid>
             </Container>
+            
             <Box>
                 <Card className="table" sx={{  
                             margin:'1rem 1rem 0 1rem'}}>
@@ -89,7 +116,7 @@ function ExpensesType() {
                         }}>
                             <h3 style={{ flex: "1 1 auto" }}> All Expenses Types: </h3>
                             <div>
-                                <IconButton aria-label="download">
+                                <IconButton aria-label="download" onClick={()=>console.log(rows)}>
                                     <DownloadIcon />
                                 </IconButton>
                             </div>
@@ -110,6 +137,7 @@ function ExpensesType() {
                     </div>
                 </Card>
             </Box>
+            
         </Card>
     )
 }

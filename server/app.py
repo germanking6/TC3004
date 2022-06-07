@@ -12,7 +12,7 @@ from source.api.employeesEndpoints import getEmployee,setEmployee
 from source.db.ICA_Data import ICA_Data
 from source.api.IcaEndpoints import getIca,setICA
 from source.db.DBManager import DBManager
-from source.api.ExpensesTypesEndpoints import getExpensesTypes,addExpensesTypes
+from source.api.ExpensesTypesEndpoints import getExpensesTypes,addExpensesTypes, deleteExpensesTypes
 from sqlalchemy import select
 
 #Prueba
@@ -35,7 +35,7 @@ app.add_url_rule("/employeesPage", view_func=setEmployee, methods=['POST'])
 
 app.add_url_rule("/expensesTypes", view_func=addExpensesTypes, methods=['POST'])
 app.add_url_rule("/expensesTypes", view_func=getExpensesTypes, methods=['GET'])
-
+app.add_url_rule("/expensesTypes", view_func=deleteExpensesTypes, methods=['DELETE'])
 
 @app.route("/")
 def servicio_default():
