@@ -5,6 +5,8 @@ from datetime import datetime
 from io import StringIO
 from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
+from source.api.ExpensesPage import addExpense, deleteExpense, getExpenses
+from source.api.employeesEndpoints import getEmployee
 from ExpensesPage import ExpensesPage
 from source.api.employeesEndpoints import getEmployee,setEmployee
 from source.db.ICA_Data import ICA_Data
@@ -26,7 +28,11 @@ CORS(app)
 app.add_url_rule("/recoveryPage", view_func=getIca, methods=['GET'])
 app.add_url_rule("/recoveryPage", view_func=setICA, methods=['POST'])
 app.add_url_rule("/employeesPage", view_func=getEmployee, methods=['GET'])
+app.add_url_rule("/expensesPage", view_func=addExpense, methods=["POST"])
+app.add_url_rule("/expensesPage", view_func=getExpenses, methods=["GET"])
+app.add_url_rule("/expensesPage", view_func=deleteExpense, methods=["DELETE"])
 app.add_url_rule("/employeesPage", view_func=setEmployee, methods=['POST'])
+
 app.add_url_rule("/expensesTypes", view_func=addExpensesTypes, methods=['POST'])
 app.add_url_rule("/expensesTypes", view_func=getExpensesTypes, methods=['GET'])
 
