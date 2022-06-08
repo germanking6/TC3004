@@ -14,17 +14,12 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import InputFooter from "./InputFooter";
-import { UserContext } from "../../context/AuthContext";
 
 export default function InputForm(props) {
   const [successfulLogin, setSucessfulLogin] = useState();
-  const AuthCtx = React.useContext(UserContext);
-
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    
-
     const data = new FormData(event.currentTarget);
     let email = data.get("email");
     let password = data.get("password");
@@ -34,7 +29,7 @@ export default function InputForm(props) {
       if (userData.password === password) {
         console.log("Sucessful Login");
         setSucessfulLogin(true);
-        AuthCtx.login();
+        props.setSuccess(true);
       } else {
         console.log("Incorrect Password");
         setSucessfulLogin(false);
@@ -43,6 +38,7 @@ export default function InputForm(props) {
     } else {
       console.log("Incorrect Email");
       setSucessfulLogin(false);
+      props.setSuccess(successfulLogin);
     }
   };
 

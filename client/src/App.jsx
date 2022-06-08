@@ -3,27 +3,12 @@ import logo from "./logo.svg";
 import "./App.css";
 import HeaderComponent from "./components/HeaderComponent";
 import Login from "./components/Login/Login";
-import Dashboard from "./components/dashboard";
-import { UserContext } from "./context/AuthContext";
-
-import { ThemeContext } from "./context/themeContext";
-
+import SideBar from "./components/sidebar";
 function App() {
-  const AuthCtx = React.useContext(UserContext);
-
-  const [value, setValue] = useState(localStorage.getItem("value"));
-  if(localStorage.getItem("value")===null){
-    setValue('light')
-    localStorage.setItem("value", 'light');
-  }
-  React.useEffect(() => {
-    localStorage.setItem("value", value);
-  }, [value]);
+  const [count, setCount] = useState(0);
   return (
     <div className="App">
-      {<ThemeContext.Provider value={{ value, setValue }}>
-        {AuthCtx.token ? <Dashboard /> : <Login />}
-      </ThemeContext.Provider>}
+      <SideBar />
     </div>
   );
 }

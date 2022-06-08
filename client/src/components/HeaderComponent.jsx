@@ -4,7 +4,7 @@ const logoStyle = {
     width: "100px",
 };
 
-export default function HeaderComponent(props) {
+export default function HeaderComponent() {
     return <header style={{
         display: "flex",
         justifyContent: "space-evenly",
@@ -14,7 +14,7 @@ export default function HeaderComponent(props) {
         <img src={logo} style={logoStyle}/>
         <h2 style={{
         }}
-        >{props.title}</h2>
+        >Activate/Deactivate Manager Functions</h2>
         <img src={logo} style={logoStyle}/>
     </header>
 };
