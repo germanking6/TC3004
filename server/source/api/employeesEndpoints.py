@@ -44,29 +44,37 @@ def getEmployee():
     
     #return pd.DataFrame.from_records(dict(zip(r.keys(), r)) for r in usuarioDB)
    
-"""
-def setICA():
+
+def setEmployee():
+    
     id = request.args.get('id')
-    recover = request.args.get('recover')
-    quarter = request.args.get('quarter')
-    newQuarter = request.args.get('trecover')
+    country = request.args.get('country')
+    employeeDepartment = request.args.get('EmployeeDepartment')
+    departmentRequester = request.args.get('DepartmentRequester')
+    band = request.args.get('band')
+    kind = request.args.get('kind')
+    percentageRecover = request.args.get('percentageRecover')
+    dateStart = request.args.get('dateStart')
+    dateFinish = request.args.get('dateFinish')
+    icaManager = request.args.get('icaManager')
+    ica = request.args.get('ica')
+    squad = request.args.get('squad')
+    state = request.args.get('state')
+
     print(id)
-    print(quarter)
-    newTotal = request.args.get('t')
+    
     print(id)
-    print(recover)
-    if quarter == "1":
-        query = update(ICA_Data).where(ICA_Data.id == id).values(u1=recover, total1=newQuarter, total=newTotal)
-    elif quarter == "2":
-        query = update(ICA_Data).where(ICA_Data.id == id).values(u2=recover, total2=newQuarter, total=newTotal)
-    elif quarter == "3":
-        query = update(ICA_Data).where(ICA_Data.id == id).values(u3=recover, total3=newQuarter, total=newTotal)
-    # modificado para usar SQLAlchemy 
+
+    
+    query = update(EMPLOYEE_Data).where(EMPLOYEE_Data.id == id).values(
+country = country,employeeDepartment = employeeDepartment,departmentRequester =departmentRequester,
+band = band, kind = kind, percentageRecover = percentageRecover, dateStart = dateStart,
+dateFinish = dateFinish, icaManager = icaManager, ica = ica, squad = squad, state = state)
+    
     db = DBManager.getInstance()
 
     
     db.session.execute(query)
     db.session.commit()
-    return getIca()
+    return getEmployee()
    
-"""

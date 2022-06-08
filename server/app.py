@@ -1,16 +1,17 @@
 #from crypt import methods
-from crypt import methods
+#from crypt import methods
 import csv
 from datetime import datetime
 from io import StringIO
 from flask import Flask, jsonify, request, Response, abort, session
 from flask_cors import CORS, cross_origin
-from source.api.ExpensesPage import addExpense, getExpenses
+from source.api.ExpensesPage import addExpense, getExpenses, deleteExpense
 from source.api.employeesEndpoints import getEmployee
+from source.api.employeesEndpoints import getEmployee,setEmployee
 from source.db.ICA_Data import ICA_Data
 from source.api.IcaEndpoints import getIca,setICA
 from source.db.DBManager import DBManager
-from source.api.ExpensesTypesEndpoints import getExpensesTypes,addExpensesTypes
+from source.api.ExpensesTypesEndpoints import getExpensesTypes,addExpensesTypes, deleteExpensesTypes
 from sqlalchemy import select
 from flask_bcrypt import Bcrypt
 from config import ApplicationConfig
@@ -18,6 +19,11 @@ from source.db.loginmodel import database, User
 from flask_session import Session
 from source.api.loginEndpoints import get_current_user, register_user, login_user, logout_user
 
+
+
+#imports de source
+from source.api.TypesPageBack import getTypes,addTypes,deleteTypes
+from source.api.ExtraHoursEndpoints import getExtraHours,addExtraHours,deleteExtraHours
 
 #Prueba
 from lert_driver_db2.db2.Db2Connection import Db2Connection
@@ -43,12 +49,25 @@ app.add_url_rule("/recoveryPage", view_func=setICA, methods=['POST'])
 app.add_url_rule("/employeesPage", view_func=getEmployee, methods=['GET'])
 app.add_url_rule("/expensesPage", view_func=addExpense, methods=["POST"])
 app.add_url_rule("/expensesPage", view_func=getExpenses, methods=["GET"])
+app.add_url_rule("/expensesPage", view_func=deleteExpense, methods=["DELETE"])
+app.add_url_rule("/employeesPage", view_func=setEmployee, methods=['POST'])
+
 app.add_url_rule("/expensesTypes", view_func=addExpensesTypes, methods=['POST'])
 app.add_url_rule("/@me", view_func=get_current_user, methods=['GET'])
 app.add_url_rule("/register", view_func=register_user, methods=['POST'])
 app.add_url_rule("/login", view_func=login_user, methods=['POST'])
 app.add_url_rule("/logout", view_func=logout_user, methods=['POST'])
+app.add_url_rule("/expensesTypes", view_func=getExpensesTypes, methods=['GET'])
+app.add_url_rule("/expensesTypes", view_func=deleteExpensesTypes, methods=['DELETE'])
 
+
+app.add_url_rule("/types", view_func=addTypes, methods=['POST'])
+app.add_url_rule("/types", view_func=getTypes, methods=['GET'])
+app.add_url_rule("/types", view_func=deleteTypes, methods=['DELETE'])
+
+app.add_url_rule("/extraHours", view_func=addExtraHours, methods=['POST'])
+app.add_url_rule("/extraHours", view_func=getExtraHours, methods=['GET'])
+app.add_url_rule("/extraHours", view_func=deleteExtraHours, methods=['DELETE'])
 
 @app.route("/")
 def servicio_default():
