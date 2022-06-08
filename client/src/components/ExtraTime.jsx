@@ -273,7 +273,7 @@ const COUNTRY_LIST = [
     "Åland Islands"
 ];
 function ExtraTime() {
-    const url = "http://127.0.0.1:5000/expensesTypes";
+    const url = "https://apilerttesting-humble-bear-yd.mybluemix.net/extraHours";
     const [typeOptions, setType] = useState([{label:"Trip"},{label:"Course"},]);
     const [bandOptions, setBand] = useState([{label:"1"},{label:"2"},{label:"3"},{label:"4"},{label:"5"},{label:"6"},{label:"7"},{label:"8"},]);
     const [formState, setFormState] = React.useState({
@@ -308,15 +308,16 @@ function ExtraTime() {
         { field: 'Rate', headerName: 'Rate', width: 200 },
         { field: 'Date1', headerName: 'Date1', width: 200 },
         { field: 'Date2', headerName: 'Date2', width: 200 },
+        {field:'id',headerName:'ID',width:200}
         
     ];
     const [rows, setRows] = useState([]);
     const [InputField, setInputField] = useState("");
-    const [load,setLoad]=useState(true);
+    const [load,setLoad]=useState(false);
     const deleteButton = (params) => {
-        if(confirm("¿Está seguro que desea eliminar el registro " + params.row.Typeofexpense + "?")){
+        if(confirm("¿Está seguro que desea eliminar el registro " + params.row.id + "?")){
             setLoad(false);
-            fetch(url+`?Type=${params.row.Typeofexpense}`,{
+            fetch(url+`?ID=${params.row.id}`,{
             method:'DELETE',
             headers : {
                 'Content-Type':'application/json'
@@ -325,18 +326,16 @@ function ExtraTime() {
         }
     }
     const handleSubmit = (event) => {
-        event.preventDefault();
-        if(InputField!=null){
+
             setLoad(false);
-            fetch(url+`?Type=${InputField}`,{
+            console.log("ola")
+            fetch(url+`?Type=${formState.Type}&Band=${formState.Band}&Country=${formState.Country}&Rate=${formState.Rate}&Date1=${formState.Date1}&Date2=${formState.Date2}`,{
             method:'POST',
             headers : {
                 'Content-Type':'application/json'
             },
             });
-        }else{
-          setShowAlert(true);
-        }
+
     }
     
     const handleChange = (event) =>{
@@ -345,7 +344,7 @@ function ExtraTime() {
         setFormState({
             ...formState,
             [event.target.id]: event.target.value
-          });
+        });
     };
     React.useEffect(()=>{
         if(!load){
@@ -353,7 +352,8 @@ function ExtraTime() {
                 method:'GET',
             })
             .then((res)=>res.json())
-            .then((data)=>setRows(data)).then(()=>setLoad(true))
+            .then((data)=>setRows(data))
+            .then(()=>setLoad(true))
         }
         
     })
@@ -365,7 +365,7 @@ function ExtraTime() {
             { !load && (<CircularIndeterminate/>)}
             <Container sx={{
             '& .MuiTextField-root': { m: 2, width:"35ch"},
-          }}>
+        }}>
                 <Grid container spacing={2} sx={{ justifyContent: 'center', alignItems: 'center'}}>  
                     <Grid item xs={4}>
                         <Autocomplete
@@ -401,7 +401,6 @@ function ExtraTime() {
                         id="Band"
                         options={bandOptions}
                         onInputChange={(event, newInputValue) => {
-
                             setFormState({
                                 ...formState,
                                 ["Band"]: newInputValue
@@ -452,7 +451,7 @@ function ExtraTime() {
                 </Grid>
                 <Grid>
                     <Button variant="outlined" size="small" onClick={()=>{
-                        console.log(formState)
+                        handleSubmit()
                     }} >SUBMIT</Button>
                 </Grid>
             </Container>
@@ -480,7 +479,7 @@ function ExtraTime() {
                             margin:'0 1rem 1rem 1rem'}}>
                     <div style={{ height: 400, width: '100%' }}>
                         <DataGrid
-                        rows={[]}
+                        rows={rows}
                         columns={columns}
                         pageSize={5}
                         rowsPerPageOptions={[5]}

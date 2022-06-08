@@ -272,7 +272,7 @@ const COUNTRY_LIST = [
     "Åland Islands"
 ];
 function TypesPage() {
-    const url = "http://127.0.0.1:5000/expensesTypes";
+    const url = "https://apilerttesting-humble-bear-yd.mybluemix.net/types";
     const [typeOptions, setType] = useState([{label:"Trip"},{label:"Course"},]);
     const [bandOptions, setBand] = useState([{label:"1"},{label:"2"},{label:"3"},{label:"4"},{label:"5"},{label:"6"},{label:"7"},{label:"8"},]);
     const [formState, setFormState] = React.useState({
@@ -311,11 +311,12 @@ function TypesPage() {
     ];
     const [rows, setRows] = useState([]);
     const [InputField, setInputField] = useState("");
-    const [load,setLoad]=useState(true);
+    const [load,setLoad]=useState(false);
     const deleteButton = (params) => {
-        if(confirm("¿Está seguro que desea eliminar el registro " + params.row.Typeofexpense + "?")){
+        if(confirm("¿Está seguro que desea eliminar el registro " + params.row.id + "?")){
             setLoad(false);
-            fetch(url+`?Type=${params.row.Typeofexpense}`,{
+            console.log("ola")
+            fetch(url+`?ID=${params.row.id}`,{
             method:'DELETE',
             headers : {
                 'Content-Type':'application/json'
@@ -324,18 +325,16 @@ function TypesPage() {
         }
     }
     const handleSubmit = (event) => {
-        event.preventDefault();
-        if(InputField!=null){
+       
+        
             setLoad(false);
-            fetch(url+`?Type=${InputField}`,{
+            fetch(url+`?Type=${formState.Type}&Band=${formState.Band}&Country=${formState.Country}&Rate=${formState.Rate}&Date1=${formState.Date1}&Date2=${formState.Date2}`,{
             method:'POST',
             headers : {
                 'Content-Type':'application/json'
             },
             });
-        }else{
-          setShowAlert(true);
-        }
+       
     }
     
     const handleChange = (event) =>{
@@ -380,34 +379,21 @@ function TypesPage() {
                         renderInput={(params) => <TextField {...params} label="Country" />}
                         />
                     </Grid>
-                    <Grid item xs={4}>
-                        <Autocomplete
-                        disablePortal
-                        id="Type"
-                        options={typeOptions}
-                        onInputChange={(event, newInputValue) => {
+                    <Grid item xs={4} className='input'>
+                        <TextField value ={formState.Type} id="outlined-basic" label="Type" variant="outlined" onChange = {(event)=>{
                             setFormState({
                                 ...formState,
-                                ["Type"]: newInputValue
+                                ["Type"]: event.target.value
                             });
-                        }}
-                        renderInput={(params) => <TextField {...params} label="Type" />}
-                        />
+                        }} />
                     </Grid>
-                    <Grid item xs={4}>
-                        <Autocomplete
-                        disablePortal
-                        id="Band"
-                        options={bandOptions}
-                        onInputChange={(event, newInputValue) => {
-
+                    <Grid item xs={4} className='input'>
+                        <TextField value ={formState.Band} id="outlined-basic" label="Band" variant="outlined" onChange = {(event)=>{
                             setFormState({
                                 ...formState,
-                                ["Band"]: newInputValue
+                                ["Band"]: event.target.value
                             });
-                        }}
-                        renderInput={(params) => <TextField {...params} label="Band" />}
-                        />
+                        }} />
                     </Grid>
                     <Grid item xs={4} className='input'>
                         <TextField value ={formState.Rate} id="outlined-basic" label="Rate" variant="outlined" onChange = {(event)=>{
@@ -451,7 +437,7 @@ function TypesPage() {
                 </Grid>
                 <Grid>
                     <Button variant="outlined" size="small" onClick={()=>{
-                        console.log(formState)
+                        handleSubmit()
                     }} >SUBMIT</Button>
                 </Grid>
             </Container>
@@ -479,7 +465,7 @@ function TypesPage() {
                             margin:'0 1rem 1rem 1rem'}}>
                     <div style={{ height: 400, width: '100%' }}>
                         <DataGrid
-                        rows={[]}
+                        rows={rows}
                         columns={columns}
                         pageSize={5}
                         rowsPerPageOptions={[5]}
