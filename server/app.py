@@ -7,7 +7,6 @@ from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 from source.api.ExpensesPage import addExpense, deleteExpense, getExpenses
 from source.api.employeesEndpoints import getEmployee
-from ExpensesPage import ExpensesPage
 from source.api.employeesEndpoints import getEmployee,setEmployee
 from source.db.ICA_Data import ICA_Data
 from source.api.IcaEndpoints import getIca,setICA

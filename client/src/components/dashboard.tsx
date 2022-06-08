@@ -50,6 +50,7 @@ import { ThemeContext } from "../context/themeContext";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import ExpensesType from "./ExpensesType";
+import ExtraTime from "./ExtraTime";
 const drawerWidth = 240;
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -133,7 +134,7 @@ const routeInfo = {
   icas: {
     name: "ICAS",
     icon: <TextSnippetIcon />,
-    component: <HomePage />,
+    component: <ICAS />,
   },
   expensesTypes: {
     name: "Expenses Types",
@@ -143,7 +144,7 @@ const routeInfo = {
   extrahours: {
     name: "Extra Hours",
     icon: <AddAlarmIcon />,
-    component: <HomePage />,
+    component: <ExtraTime />,
   },
   delegate: {
     name: "Delegate",
@@ -169,11 +170,6 @@ const routeInfo = {
     name: "Expenses",
     icon: <AccountBalanceIcon />,
     component: <ExpensesPage />,
-  },
-  ICAs: {
-    name: "ICAs",
-    icon: <AccountBalanceIcon />,
-    component: <ICAS />,
   },
   recovery: {
     name: "Recovery",

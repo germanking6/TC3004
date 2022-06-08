@@ -127,7 +127,7 @@ export default function ExpensesPage(){
     <Card variant="outlined" sx={{ margin:'1rem auto' }}>
       <HeaderComponent title="Expenses Page"/>
       {showAlert ? (<Alert severity="error">Selecciona ICA y Tipo</Alert>): null}
-      { loading ? (<CircularIndeterminate/>):
+      { !loading ? (<CircularIndeterminate/>):
       (
       <div>
         <Box
