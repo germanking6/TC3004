@@ -15,35 +15,55 @@ import {
 import { useState } from "react";
 import InputFooter from "./InputFooter";
 import { UserContext } from "../../context/AuthContext";
+import httpClient from "../httpClient";
 
 export default function InputForm(props) {
   const [successfulLogin, setSucessfulLogin] = useState();
   const AuthCtx = React.useContext(UserContext);
 
+  const logInUser = async (email, password) => {
+    try {
+      const resp = await httpClient.post("//localhost:5000/login", {
+        email,
+        password,
+      });
+
+      //window.location.href = "/";
+
+      //setSucessfulLogin(true);
+      //AuthCtx.login();
+      console.log(resp);
+    } catch (error) {
+      if (error.response.status === 401) {
+        alert("Invalid credentials");
+        setSucessfulLogin(false);
+      }
+    }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    
 
     const data = new FormData(event.currentTarget);
     let email = data.get("email");
     let password = data.get("password");
+    logInUser(email, password);
 
-    const userData = userJson.find((user) => user.email === email);
-    if (userData) {
-      if (userData.password === password) {
-        console.log("Sucessful Login");
-        setSucessfulLogin(true);
-        AuthCtx.login();
-      } else {
-        console.log("Incorrect Password");
-        setSucessfulLogin(false);
-        props.setSuccess(successfulLogin);
-      }
-    } else {
-      console.log("Incorrect Email");
-      setSucessfulLogin(false);
-    }
+    // const userData = userJson.find((user) => user.email === email);
+    // if (userData) {
+    //   if (userData.password === password) {
+    //     console.log("Sucessful Login");
+    //     setSucessfulLogin(true);
+    //     AuthCtx.login();
+    //   } else {
+    //     console.log("Incorrect Password");
+    //     setSucessfulLogin(false);
+    //     props.setSuccess(successfulLogin);
+    //   }
+    // } else {
+    //   console.log("Incorrect Email");
+    //   setSucessfulLogin(false);
+    // }
   };
 
   return (
