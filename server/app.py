@@ -17,7 +17,7 @@ from sqlalchemy import select
 
 #imports de source
 from source.api.TypesPageBack import getTypes,addTypes,deleteTypes
-
+from source.api.ExtraHoursEndpoints import getExtraHours,addExtraHours,deleteExtraHours
 
 #Prueba
 from lert_driver_db2.db2.Db2Connection import Db2Connection
@@ -45,6 +45,10 @@ app.add_url_rule("/expensesTypes", view_func=deleteExpensesTypes, methods=['DELE
 app.add_url_rule("/types", view_func=addTypes, methods=['POST'])
 app.add_url_rule("/types", view_func=getTypes, methods=['GET'])
 app.add_url_rule("/types", view_func=deleteTypes, methods=['DELETE'])
+
+app.add_url_rule("/extraHours", view_func=addExtraHours, methods=['POST'])
+app.add_url_rule("/extraHours", view_func=getExtraHours, methods=['GET'])
+app.add_url_rule("/extraHours", view_func=deleteExtraHours, methods=['DELETE'])
 
 @app.route("/")
 def servicio_default():
