@@ -1,14 +1,20 @@
 from flask_sqlalchemy import SQLAlchemy
-from uuid import uuid4
 
-database = SQLAlchemy()
+from source.db.DBManager import DBManager
+from sqlalchemy.orm import declarative_base
+from sqlalchemy import Column, Float, true
+from sqlalchemy import Text
+from sqlalchemy import Integer
+from sqlalchemy import String
 
-def get_uuid():
-    return uuid4().hex
 
-class User(database.Model):
-    __tablename__ = "users"
-    id = database.Column(database.String(32), primary_key = True, unique = True, default=get_uuid)
-    email = database.Column(database.String(345), unique = True)
-    password = database.Column(database.Text, nullable = False)
-    role = database.Column(database.String(15), nullable = False)
+BASE = declarative_base()
+
+
+
+class User(BASE):
+    __tablename__ = "USERSALEX"
+    ID = Column(String(50), primary_key = True, unique = True)
+    EMAIL = Column(String(200), unique = True)
+    PASSWORD = Column(Text, nullable = False)
+    ROLE = Column(String(40), nullable = False)

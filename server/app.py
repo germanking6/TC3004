@@ -15,7 +15,7 @@ from source.api.ExpensesTypesEndpoints import getExpensesTypes,addExpensesTypes,
 from sqlalchemy import select
 from flask_bcrypt import Bcrypt
 from config import ApplicationConfig
-from source.db.loginmodel import database, User
+from source.db.loginmodel import User
 from flask_session import Session
 from source.api.loginEndpoints import get_current_user, register_user, login_user, logout_user
 
@@ -34,11 +34,9 @@ db = DBManager.getInstance()
 app = Flask(__name__)
 app.config.from_object(ApplicationConfig)
 server_session = Session(app)
-database.init_app(app)
+
 cors = CORS(app, supports_credentials = True)
 
-with app.app_context():
-    database.create_all()
 
 bcrypt = Bcrypt(app)
 

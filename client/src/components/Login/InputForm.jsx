@@ -28,11 +28,10 @@ export default function InputForm(props) {
         password,
       });
 
-      //window.location.href = "/";
+      window.location.href = "/";
 
-      //setSucessfulLogin(true);
-      //AuthCtx.login();
-      console.log(resp);
+      setSucessfulLogin(true);
+      AuthCtx.login(resp.data);
     } catch (error) {
       if (error.response.status === 401) {
         alert("Invalid credentials");
