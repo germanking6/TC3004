@@ -96,7 +96,7 @@ function ExpensesType() {
             <Container>
                 <Grid container spacing={2} sx={{ justifyContent: 'center', alignItems: 'center'}}>
                     <Grid className='input'>
-                    <TextField value ={InputField} id="outlined-basic" label="New Employee(s)" variant="outlined" onChange = {handleChange} />
+                    <TextField value ={InputField} id="outlined-basic" label="New Type" variant="outlined" onChange = {handleChange} />
                     </Grid>
                     <Grid>
                         <Button variant="outlined" size="small" onClick={handleSubmit} >SUBMIT</Button>
