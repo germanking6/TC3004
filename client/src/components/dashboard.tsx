@@ -51,6 +51,7 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import ExpensesType from "./ExpensesType";
 import ExtraTime from "./ExtraTime";
+import TypesPage from "../pages/types-page/Typespage";
 const drawerWidth = 240;
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -129,7 +130,7 @@ const routeInfo = {
   types: {
     name: "Types",
     icon: <TrackChangesIcon />,
-    component: <HomePage />,
+    component: <TypesPage />,
   },
   icas: {
     name: "ICAS",
