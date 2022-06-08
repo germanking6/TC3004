@@ -8,70 +8,43 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { useState, useEffect } from 'react';
+import { Input } from '@mui/material';
+
+//insert into ICA_DATA (ID, "DateStart", "DateFinish", "1", "2", "3", "4", "5", "6", TOTAL1, RECOVER1, TOTAL2, RECOVER2, TOTAL, TAXES, RECOVER) VALUES ('1234', to_date('2020-12-17', 'yyyy-mm-dd'),to_date('2021-12-17', 'yyyy-mm-dd'),150,2000,4500,6000,5500,330,30,3838,8000,75000,10000,100,9000);
 
 //https://v4.mui.com/es/components/buttons/?msclkid=40af928eb62411ecaf95a1a6c922508a
 //https://materialui.co/icon/expand-more
 
 const RecoveryPage = () =>{
-    //------TEMPORARY DATA FOR TESTING
-    //table data titles to simulate database
-   
-    //obtenemos este objeto de una query
-    const contentRows = [
-        {
-            id: "1234",
-            DateStart: "11/03",
-            DateFinish:"12/03",
-            1: 100,
-            2: 200,
-            3: 4000,
-            total1: 6000,
-            recover1 : 5000,
-            4: 500,
-            5: 888,
-            6:3838,
-            total2: 8000,
-            recover2 : 7200,
-            total: 10000,
-            taxes: 100,
-            recover: 3000,
-            state: true
-
-        },
-        {
-            id: "1235",
-            DateStart: "11/03",
-            DateFinish:"12/03",
-            1: 150,
-            2: 2000,
-            3: 4500,
-            total1: 6000,
-            recover1 : 5500,
-            4: 330,
-            5: 30,
-            6:3838,
-            total2: 8000,
-            recover2 : 75000,
-            total: 10000,
-            taxes: 100,
-            recover: 9000,
-            state: true
-
+    //fetch
+    const cargarDatos = async () => {
+        try{
+            const url = "http://127.0.0.1:5000/recoveryPage";
+            const res = await fetch(url);
+            const datos = await res.json();
+            console.log(datos);
+            return datos
+        } catch(err) {
+          console.log(err)
         }
-    ];
-    //hacemos esto dentro de la query
-    let a = [];
+        
+      };
+    const [ica, setIca] = useState();
+    useEffect(async () => {
+          icas();
+        
+        
+     }, []);
+   
+   
+  
     const month = ["January", "February", "March","April","May","June","July","August", "September", "October", "November", "December"];
-    const [ica, setIca] = useState(contentRows);
+
     const [titles, setTitles] = useState();
-    const [months, setMonths] = useState();
+    //const [months, setMonths] = useState();
     const [recover, setRecover] = useState();
     const [total, setTotal] = useState();
 
- 
-    
-    let rec = [];
-    let tot = [];
     let q1 = [];
     let q2 = [];
     let q3 = [];
@@ -80,10 +53,17 @@ const RecoveryPage = () =>{
     let rec2 = [];
     let rec3 = [];
     let rec4 = [];
-    const icas = () => {
-       console.log(ica);
-       ica.map((item,index)=>{
-            a[index]= item.id;
+    let op = [];
+    const icas = async () => {
+        
+        let arrt =[]
+        let a = await cargarDatos();
+        await setIca(await a.data )
+        console.log(ica);
+           
+       await a.data.map((item,index)=>{
+            op.push(""+item.id)
+            //a[index]= item.id;
             q1[index] = item.total1;
             rec1[index] = item.recover1;
             if(item.total2){
@@ -98,6 +78,8 @@ const RecoveryPage = () =>{
                 q4[index] = item.total4;
                 rec4[index] = item.recover4;
             }
+            setTitles(op);
+            
             
        });
        
@@ -109,7 +91,7 @@ const RecoveryPage = () =>{
             arr1[0] = arr1[0] + rec1[i];
         }
         console.log(arr[0]);
-        if(q2.length > 0){
+        if(await q2.length > 0){
             for (var i = 0; i < q2.length; i++) {
             
                 arr[1] = arr[1] + q2[i];
@@ -118,7 +100,7 @@ const RecoveryPage = () =>{
             }
     
         }
-        if(q3.length > 0){
+        if(await q3.length > 0){
             for (var i = 0; i < q3.length; i++) {
             
                 arr[2] = arr[2] + q3[i];
@@ -127,7 +109,7 @@ const RecoveryPage = () =>{
             }
     
         }
-        if(q4.length > 0){
+        if(await q4.length > 0){
             for (var i = 0; i < q4.length; i++) {
             
                 arr[3] = arr[3] + q4[i];
@@ -136,25 +118,69 @@ const RecoveryPage = () =>{
             }
     
         }
-        //console.log(arr);
-       //console.log(arr1);
-       setTitles(a);
-       setRecover(arr1);
-       setTotal(arr);
-       //console.log(total);
-       //console.log(recover);
+      
+       
+       
+       await setRecover(await arr1);
+       await setTotal(await arr);
+       
     
     } 
-    useEffect(() => {
-        icas();
+    const updateRecover = (number,q,recover,totalrecover,tot) =>{
+    // POST request using fetch()
+    console.log(recover)
+    console.log(tot)
+        fetch(`http://127.0.0.1:5000/recoveryPage?id=${number}&recover=${totalrecover}&quarter=${q}&trecover=${recover}&t=${tot}`, {
+            
+            // Adding method type
+            method: "POST",
         
-     }, []);
-    
-     const [inputMonth, setInputMonth] = useState(null);
-     const [inputRecover, setInputRecover] = useState(null);
-     const [InputNumber, setInputNumber] = useState("");
-    
-    
+            // Adding body or contents to send
+            body: "id=1"
+            
+            /*// Adding headers to the request
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }*/
+        })
+        
+        // Converting to JSON
+        .then(response => response.json())
+        //.then(setIca([json]))
+        // Displaying results to console
+        .then(json => setIca([json]));
+
+    }
+    const [inputMonth, setInputMonth] = useState(month[0]);
+    const [inputRecover, setInputRecover] = useState();
+    const [InputNumber, setInputNumber] = useState("");
+     //update value of quarter1total quarter2 total or quarter3 total y taxes y recover y el mes 
+     const addRecovery = () =>{
+           console.log(InputNumber);
+           console.log(inputMonth)
+           console.log(inputRecover)
+           
+           //first cuarter
+           if(inputMonth == month[0] || inputMonth == month[1] || inputMonth == month[2] || inputMonth == month[3]){
+             //update recover in first quarter
+                console.log(ica[0].total+InputNumber)
+               updateRecover(inputRecover,1,parseInt(InputNumber),parseInt(InputNumber)+parseInt(ica[0].recover1),parseInt(ica[0].total)+parseInt(InputNumber))
+           }
+           //second quarter
+           if(inputMonth == month[4] || inputMonth == month[5] || inputMonth == month[6] || inputMonth == month[7]){
+               updateRecover(inputRecover,2,parseInt(InputNumber),parseInt(InputNumber)+parseInt(ica[0].recover2),parseInt(ica[0].total)+parseInt(InputNumber))
+            }
+            //third quarter
+            if(inputMonth == month[8] || inputMonth == month[9] || inputMonth == month[10] || inputMonth == month[11]){
+                updateRecover(inputRecover,3,parseInt(InputNumber),parseInt(InputNumber)+parseInt(ica[0].recover3),parseInt(ica[0].total)+parseInt(InputNumber))
+            }
+            
+           //setInputNumber(InputNumber)
+     }
+    /*useEffect(async () => {
+         let a = await getData();
+         await icas();
+     }, []);*/
     
       const columns = [
         { field: 'id', headerName: 'Ica', width: 150 },
@@ -175,11 +201,7 @@ const RecoveryPage = () =>{
       //const budget = [8137119, 9431691, 10266674,5000000];
       //const recover = [8130000,1110900,7777777,4000000];
 
-      
-      //update value of quarter1total quarter2 total or quarter3 total y taxes y recover y el mes 
-      const addRecovery = (event) =>{
-            console.log(event);
-      }
+  
     //---------HTML
     return(
         
@@ -190,17 +212,28 @@ const RecoveryPage = () =>{
                             id="clear-on-escape"
                             clearOnEscape
                             options={titles}
+                            value = {inputRecover}
+                            onChange = {(event) => setInputRecover(titles[parseInt(event.target.id[event.target.id.length-1])] )}
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} id="outlined-basic" label="Select the ica you want to recover in" variant="standard"/>}
                         />
                     </Grid>
                     <Grid className='input'>
                         <Autocomplete
-                            id="clear-on-escape"
                             clearOnEscape
                             options={month}
+                            value = {inputMonth}
+                            onChange={(event) => setInputMonth(month[parseInt(event.target.id[event.target.id.length-1])] )}
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} id="outlined-basic" label="Select month of recovery" variant="standard"/>}
+                        />
+                    </Grid>
+                    <Grid className='input'>
+                        <Input
+                        type='number'
+                        value = {InputNumber}
+                        onChange = {(event) => setInputNumber(event.target.value)}
+                            
                         />
                     </Grid>
                 <Grid>
@@ -212,7 +245,7 @@ const RecoveryPage = () =>{
                     </Grid>
                 </Grid>
             
-            <DataGrid rows={contentRows} columns={columns}/>
+            <DataGrid rows={ica} columns={columns}/>
             
           
             <Graphic budget={total} recover={recover} />
