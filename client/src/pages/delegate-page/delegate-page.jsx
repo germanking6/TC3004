@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 // Styles
 import "./delegate-page.css";
@@ -23,6 +23,68 @@ import DownloadIcon from '@mui/icons-material/Download';
 
 function DelegatePage() {
   const userToLog = useRef("");
+  const[statusChanged, setStatusChanged] = useState("");
+  const[profiles, setProfiles] = useState([]);
+  const[rows, setRows] = useState([]);
+
+  const solicitud = async() => {
+    var respuesta = await fetch("http://127.0.0.1:5000/delegatePage");
+    respuesta.status != 401 && setRows(await respuesta.json());
+  }
+
+  const solicitudMails = async() => {
+    const response = await fetch('http://127.0.0.1:5000/admin');
+    const data = await response.json();
+    setProfiles(data);
+  }
+
+  const addDelegate = async() => {
+    fetch('http://127.0.0.1:5000/delegatePage',{
+        method:'POST',
+        headers : {
+          'Content-Type':'application/json'
+        },
+        body: JSON.stringify({'user': userToLog.current.value,
+              'id': rows.length + 1})
+    })
+  }
+
+  // const updateStatus = async() => {
+  //   fetch('http://127.0.0.1:5000/delegatePage',{
+  //       method:'PUT',
+  //       headers : {
+  //         'Content-Type':'application/json'
+  //       },
+  //       body: {"status" : "Inactive",
+  //             "managerMail" : "a@ibm.com"}
+  //   })
+  // }
+
+  useEffect (() => {
+    solicitudMails();
+    solicitud();
+  },[])
+
+  // function getStatus(params) {
+
+  //   return params.row.status
+  // };
+
+  // function setStatus(params) {
+  //   setStatusChanged(params.row.status)
+  //   return params.row.status
+  // };
+
+ function inDelegates(user) {
+   for (const item in rows) {
+    console.log(user);
+    console.log(rows[item]['adminMail']);
+     if (rows[item]['adminMail'] == user) {
+       return true
+     }
+   }
+   return false
+ }
 
   const columns = [
     { field: "adminMail", headerName: "Admin mail", width: 400 },
@@ -34,52 +96,10 @@ function DelegatePage() {
       type: "singleSelect",
       valueOptions: ["Active", "Unactive"],
       editable: true,
+      // valueGetter: getStatus,
+      // valueSetter: setStatus,
     },
   ];
-
-  const rows = [
-    {
-      id: 1,
-      adminMail: "marisol@ibm.com",
-      managerMail: "alexhdz@ibm.com",
-      status: "Active",
-    },
-    {
-      id: 2,
-      adminMail: "ari@ibm.com",
-      managerMail: "alexhdz@ibm.com",
-      status: "Active",
-    },
-    {
-      id: 3,
-      adminMail: "sauce@ibm.com",
-      managerMail: "alexhdz@ibm.com",
-      status: "Active",
-    },
-    {
-      id: 4,
-      adminMail: "viktor@ibm.com",
-      managerMail: "lalo@ibm.com",
-      status: "Active",
-    },
-    {
-      id: 5,
-      adminMail: "german@ibm.com",
-      managerMail: "lalo@ibm.com",
-      status: "Active",
-    },
-  ];
-
-  rows.sort(function (a, b) {
-    if (a.status > b.status) {
-      return 1;
-    }
-    if (a.status < b.status) {
-      return -1;
-    }
-    // a must be equal to b
-    return 0;
-  });
 
   return (
     <Card
@@ -120,11 +140,14 @@ function DelegatePage() {
                 // Si el usuario no está en la tabla agregarlo y si está en la tabla
                 // verificar que esté activo. Si no está activo activarlo
                 var user = userToLog.current.value;
-                if (profiles.includes(user) == false) {
-                  profiles.push();
+                if (inDelegates(user) == false) {
+                  addDelegate();
+                  solicitud();
                 } else {
                   alert("This profile is already in your team");
                 }
+                console.log(rows);
+                console.log(profiles);
               }}
             >
               SUBMIT
@@ -163,7 +186,13 @@ function DelegatePage() {
             margin: "0 1rem 1rem 1rem",
           }}
         >
-          <DataTable r={rows} c={columns} />
+          <DataTable 
+          r={rows} 
+          c={columns}
+          onCellClick={() => {
+            console.log("hola");
+            }
+          }/> 
         </Card>
       </Box>
     </Card>
@@ -178,5 +207,7 @@ const profiles = [
   "marisol@ibm.com",
   "viktor@ibm.com",
 ];
+
+
 
 export default DelegatePage;
