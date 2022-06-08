@@ -21,7 +21,7 @@ import Box from '@mui/material/Box';
 import { ButtonBase } from '@mui/material';
 import CircularIndeterminate from './Loading';
 function ExpensesType() {
-    const url = "http://127.0.0.1:5000/expensesTypes";
+    const url = "https://apilerttesting-humble-bear-yd.mybluemix.net/expensesTypes";
     const columns = [
         {
             field: 'action',
