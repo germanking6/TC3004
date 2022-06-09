@@ -21,6 +21,9 @@ import Box from '@mui/material/Box';
 import { ButtonBase } from '@mui/material';
 import CircularIndeterminate from './Loading';
 
+import { UserContext } from '../context/AuthContext';
+
+
 const COUNTRY_LIST = [
     "Afghanistan",
     "Albania",
@@ -273,6 +276,7 @@ const COUNTRY_LIST = [
     "Åland Islands"
 ];
 function ExtraTime() {
+    const AuthCtx = React.useContext(UserContext);
     const url = "https://apilerttesting-humble-bear-yd.mybluemix.net/extraHours";
     const [typeOptions, setType] = useState([{label:"Trip"},{label:"Course"},]);
     const [bandOptions, setBand] = useState([{label:"1"},{label:"2"},{label:"3"},{label:"4"},{label:"5"},{label:"6"},{label:"7"},{label:"8"},]);
@@ -468,7 +472,7 @@ function ExtraTime() {
                         }}>
                             <h3 style={{ flex: "1 1 auto" }}> Extra Hours List: </h3>
                             <div>
-                                <IconButton aria-label="download" onClick={()=>console.log(rows)}>
+                                <IconButton aria-label="download" onClick={()=>console.log()}>
                                     <DownloadIcon />
                                 </IconButton>
                             </div>
