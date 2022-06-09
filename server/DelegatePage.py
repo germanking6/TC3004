@@ -6,12 +6,14 @@ from flask import Flask, jsonify, request, Response
 class DelegatePage:
     updateStatusQuery = '''UPDATE delegate SET status = '{}' WHERE managerMail = '{}';'''
     addDelegateQuery = '''INSERT INTO delegate (id, adminMail, managerMail, status) VALUES ('{}', '{}', 'a@ibm.com', 'Active');'''
-    # Aun no sirve
+    # Cambia el estado de un registro
     def updateStatus(self, formData: json):
         connection = Db2Connection()
-        sentence = self.updateStatusQuery.format(formData["status"], formData["managerMail"])
+        print(formData)
+        sentence = self.updateStatusQuery.format(formData['status'], formData['managerMail'])
         connection.execute(sentence)
         connection.close_connection()
+    # Agrega un registro a la tabla de delegados
     def addDelegate(self, formData: json):
         connection = Db2Connection()
         sentence = self.addDelegateQuery.format(formData['id'], formData['user'])
@@ -42,23 +44,10 @@ class DelegatePage:
                         "status" : record[3] }
             info.append(jsonFormat)
         return info
-
-
-# # Regresa todos datos de los recursos que tiene un manager
-# @app.route("/users")
-# def users_data(manager):
-#     connection = Db2Connection()
-#     sentence = "SELECT * FROM users WHERE manager = {manager}"
-#     records = connection.get_all(sentence)
-#     connection.close_connection()
-#     records_to_return = []
-#     for record in records:
-#         prueba = {
-#             "id": record[0],
-#             "mail": record[1],
-#             "manager": record[2],
-#             "status": record[3]
-#         }
-#         records_to_return.append(prueba)
-
-#     return jsonify(records_to_return)
+    # Elimina un registro de la tabla
+    def deleteDelegate():
+        connection = Db2Connection()
+        sentence = "DELETE FROM delegate WHERE managerMail = {};".format(request.get_json()["managerMail"])
+        connection.execute(sentence)
+        connection.close_connection()
+        return "", 200

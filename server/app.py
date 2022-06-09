@@ -20,7 +20,7 @@ from source.api.ExtraHoursEndpoints import getExtraHours,addExtraHours,deleteExt
 
 #Prueba
 from lert_driver_db2.db2.Db2Connection import Db2Connection
-from ExpensesPage import ExpensesPage
+
 from DelegatePage import DelegatePage
 # timestamp - milesimas de segundo desde 1 de enero de 1970 
 db = DBManager.getInstance()
@@ -80,7 +80,7 @@ def delegatePage():
         print(result)
         return jsonify(result), 200
     elif request.method == "PUT":
-        delegateManager.updateStatus(request.get_data())
+        delegateManager.updateStatus(request.get_json())
         return "", 200
     elif request.method == "POST":
         delegateManager.addDelegate(request.get_json())
