@@ -5,7 +5,27 @@ from io import StringIO
 from flask import Flask, request, Response
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from source.api.ExpensesPage import addExpense, deleteExpense, getExpenses
+from source.api.employeesEndpoints import getEmployee
+from source.api.employeesEndpoints import getEmployee,setEmployee
+from source.db.ICA_Data import ICA_Data
+from source.api.IcaEndpoints import getIca,setICA
+from source.db.DBManager import DBManager
+from source.api.ExpensesTypesEndpoints import getExpensesTypes,addExpensesTypes, deleteExpensesTypes
+from sqlalchemy import select
 
+
+#imports de source
+from source.api.TypesPageBack import getTypes,addTypes,deleteTypes
+from source.api.ExtraHoursEndpoints import getExtraHours,addExtraHours,deleteExtraHours
+
+#Prueba
+from lert_driver_db2.db2.Db2Connection import Db2Connection
+from ExpensesPage import ExpensesPage
+from DelegatePage import DelegatePage
+# timestamp - milesimas de segundo desde 1 de enero de 1970 
+db = DBManager.getInstance()
+# 2do - creamos un objeto de tipo flask
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite3'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -92,6 +112,38 @@ def home():
 def login():
     return "<p>el pepe</p>"
 
+
+@app.route("/expensesPage", methods=['POST', 'GET'])
+def expensesPage():
+    try:
+        expenseManager = ExpensesPage()
+        if request.method == "POST":
+            expenseManager.addExpense(request.get_json())
+            return "", 200
+        elif request.method == "GET":
+            result = expenseManager.getExpenses()
+            return jsonify(result), 200
+    except:
+        return 404
+
+@app.route("/delegatePage", methods=['PUT', 'GET', 'POST'])
+def delegatePage():
+    delegateManager = DelegatePage()
+    if request.method == "GET":
+        result = delegateManager.getDelegates()
+        print(result)
+        return jsonify(result), 200
+    elif request.method == "PUT":
+        delegateManager.updateStatus(request.get_data())
+        return "", 200
+    elif request.method == "POST":
+        delegateManager.addDelegate(request.get_json())
+        return "", 200
+
+@app.route("/admin")
+def getAdminMails():
+    result = DelegatePage().getAdminMail()
+    return result, 200
 
 def generate():
     # dummy data
