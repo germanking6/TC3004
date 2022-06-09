@@ -137,7 +137,7 @@ const EmployeesPage = () =>{
     };
     //Function: adding employee 
     const addEmployee = () =>{
-        if(!inputField) alert("No input!")
+        
         if (inputField != ""){
             //new employee object
             let obj = {
@@ -163,9 +163,7 @@ const EmployeesPage = () =>{
             setInputField(""); 
 
         }  
-        else{
-            alert("No input!");
-        }
+       
        
     };
 
