@@ -30,6 +30,7 @@ export default function Reports() {
 
             <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
+                    data-testid="newDate"
                     label="Date Start"
                     value={from}
                     onChange={(newValue) => {
@@ -38,6 +39,7 @@ export default function Reports() {
                     renderInput={(params) => <TextField required {...params} />}
                 />
                 <DatePicker
+                    placeholder="addRep"
                     label="Date Finish"
                     value={to}
                     onChange={(newValue) => {
@@ -47,7 +49,7 @@ export default function Reports() {
                 />
             </LocalizationProvider>
 
-            <Button variant="contained" onClick={submitHandler}>Submit</Button>
+            <Button data-testid="newReport" variant="contained" onClick={submitHandler}>Submit</Button>
         </Box>
     );
 }

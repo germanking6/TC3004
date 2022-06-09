@@ -39,6 +39,7 @@ export default function ExpensesPage(){
     }
   }
   const handleChange = (event) => {
+    if(!event.target.value) alert("no input")
     const value = event.target.value;
     setFormState({
       ...formState,
@@ -71,6 +72,7 @@ export default function ExpensesPage(){
           <Grid item xs={4}>
             <TextField
               required
+              data-testid="newEmail"
               id="EmployeeMail"
               value={formState.EmployeeMail}
               onChange={handleChange}
@@ -89,6 +91,7 @@ export default function ExpensesPage(){
           </Grid>
           <Grid item xs={4}>
             <TextField
+
               required
               id="Date"
               value={formState.Date}

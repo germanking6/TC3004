@@ -137,6 +137,7 @@ const EmployeesPage = () =>{
     };
     //Function: adding employee 
     const addEmployee = () =>{
+        if(!inputField) alert("No input!")
         if (inputField != ""){
             //new employee object
             let obj = {
@@ -485,8 +486,8 @@ const EmployeesPage = () =>{
 
             <form className='form' noValidate autoComplete="off">
                 <Box m={1} pt={1}>
-                    <TextField name="newEmployee" data-testid="newEmployee" value ={inputField} id="outlined-basic" label="New Employee(s)" variant="outlined" onChange = {handleChange} />
-                    <Button name="submitNew" className='b' color="primary" onClick={addEmployee}>Submit</Button>
+                    <TextField placeholder="addemp" name="newEmployee" data-testid="newEmployee" value ={inputField} id="outlined-basic" label="New Employee(s)" variant="outlined" onChange = {handleChange} />
+                    <Button data-testid="newEmp" name="submitNew" className='b' color="primary" onClick={addEmployee}>Submit</Button>
                 </Box>
                 <Box m={1} pt={1}>
                     <input type="file" onChange={updateExcel} />

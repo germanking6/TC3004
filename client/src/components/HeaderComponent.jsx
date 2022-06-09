@@ -1,7 +1,7 @@
 import logo from "../assets/IBM_logo.svg";
 
 const logoStyle = {
-    width: "100px",
+    width: "100px"
 };
 
 export default function HeaderComponent() {
