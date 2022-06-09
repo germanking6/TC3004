@@ -9,7 +9,8 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { useState, useEffect } from 'react';
 import { Input } from '@mui/material';
-
+import Card from '@mui/material/Card';
+import HeaderComponent from '../components/HeaderComponent';
 //insert into ICA_DATA (ID, "DateStart", "DateFinish", "1", "2", "3", "4", "5", "6", TOTAL1, RECOVER1, TOTAL2, RECOVER2, TOTAL, TAXES, RECOVER) VALUES ('1234', to_date('2020-12-17', 'yyyy-mm-dd'),to_date('2021-12-17', 'yyyy-mm-dd'),150,2000,4500,6000,5500,330,30,3838,8000,75000,10000,100,9000);
 
 //https://v4.mui.com/es/components/buttons/?msclkid=40af928eb62411ecaf95a1a6c922508a
@@ -19,7 +20,7 @@ const RecoveryPage = () =>{
     //fetch
     const cargarDatos = async () => {
         try{
-            const url = "http://127.0.0.1:5000/recoveryPage";
+            const url = "https://apilerttesting-humble-bear-yd.mybluemix.net/recoveryPage";
             const res = await fetch(url);
             const datos = await res.json();
             console.log(datos);
@@ -29,7 +30,7 @@ const RecoveryPage = () =>{
         }
         
       };
-    const [ica, setIca] = useState();
+    const [ica, setIca] = useState([]);
     useEffect(async () => {
           icas();
         
@@ -40,10 +41,10 @@ const RecoveryPage = () =>{
   
     const month = ["January", "February", "March","April","May","June","July","August", "September", "October", "November", "December"];
 
-    const [titles, setTitles] = useState();
+    const [titles, setTitles] = useState([]);
     //const [months, setMonths] = useState();
-    const [recover, setRecover] = useState();
-    const [total, setTotal] = useState();
+    const [recover, setRecover] = useState("");
+    const [total, setTotal] = useState("");
 
     let q1 = [];
     let q2 = [];
@@ -205,7 +206,11 @@ const RecoveryPage = () =>{
     //---------HTML
     return(
         
-        <div style={{ height: 300, width: '100%' }}>          
+        <Card sx={{ 
+            maxWidth:'95%', 
+            margin:'1rem auto'}}>
+               
+                <HeaderComponent title="New Type of Expense"/>
                 <Grid container spacing={2} sx={{ justifyContent: 'center', alignItems: 'center'}}>
                     <Grid className='input'>
                         <Autocomplete
@@ -249,8 +254,8 @@ const RecoveryPage = () =>{
             
           
             <Graphic budget={total} recover={recover} />
-        </div>
-        
+        </Card>
+
             
            
 
