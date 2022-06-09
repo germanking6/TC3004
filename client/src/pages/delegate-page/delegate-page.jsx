@@ -59,6 +59,17 @@ function DelegatePage() {
     setLoading(false);
   }
 
+  const deleteDelegate = async() => {
+    setLoading(true);
+    fetch('http://127.0.0.1:5000/delegatePage', {
+      method:'DELETE',
+      headers: {
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify({'managerMail': manager})
+    })
+  }
+
   const updateStatus = async() => {
     setLoading(true);
     fetch('http://127.0.0.1:5000/delegatePage',{
@@ -119,11 +130,9 @@ function DelegatePage() {
         </IconButton>
         <IconButton aria-label="delete" size="small" height="15" width="15"onClick={() => 
           {
-              setStatus(params.row.status);
               setManager(params.row.managerMail);
-              console.log(status);
               console.log(manager);
-              updateStatus();
+              deleteDelegate();
           }
       }>  
           <DeleteIcon />
