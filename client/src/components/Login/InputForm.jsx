@@ -23,7 +23,7 @@ export default function InputForm(props) {
 
   const logInUser = async (email, password) => {
     try {
-      const resp = await httpClient.post("//localhost:5000/login", {
+      const resp = await httpClient.post("https://apilertlogin-friendly-turtle-cq.mybluemix.net/login", {
         email,
         password,
       });
