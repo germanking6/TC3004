@@ -31,7 +31,7 @@ export default function InputForm(props) {
       window.location.href = "/";
 
       setSucessfulLogin(true);
-      AuthCtx.login(resp.data);
+      AuthCtx.login(JSON.stringify(resp.data));
     } catch (error) {
       if (error.response.status === 401) {
         alert("Invalid credentials");

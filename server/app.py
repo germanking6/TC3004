@@ -29,7 +29,7 @@ from source.api.ExtraHoursEndpoints import getExtraHours,addExtraHours,deleteExt
 #Prueba
 from lert_driver_db2.db2.Db2Connection import Db2Connection
 
-from ExpensesPage import ExpensesPage
+
 from DelegatePage import DelegatePage
 
 # timestamp - milesimas de segundo desde 1 de enero de 1970 
@@ -83,38 +83,6 @@ def servicio_default():
     connection.close_connection()
     return jsonify(records)
 
-
-@app.route("/expensesPage", methods=['POST', 'GET'])
-def expensesPage():
-    try:
-        expenseManager = ExpensesPage()
-        if request.method == "POST":
-            expenseManager.addExpense(request.get_json())
-            return "", 200
-        elif request.method == "GET":
-            result = expenseManager.getExpenses()
-            return jsonify(result), 200
-    except:
-        return 404
-
-@app.route("/delegatePage", methods=['PUT', 'GET', 'POST'])
-def delegatePage():
-    delegateManager = DelegatePage()
-    if request.method == "GET":
-        result = delegateManager.getDelegates()
-        print(result)
-        return jsonify(result), 200
-    elif request.method == "PUT":
-        delegateManager.updateStatus(request.get_data())
-        return "", 200
-    elif request.method == "POST":
-        delegateManager.addDelegate(request.get_json())
-        return "", 200
-
-@app.route("/admin")
-def getAdminMails():
-    result = DelegatePage().getAdminMail()
-    return result, 200
 
 def generate():
     # dummy data
