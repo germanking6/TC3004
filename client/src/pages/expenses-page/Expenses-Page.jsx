@@ -7,7 +7,7 @@ import DataTable from '../../components/DataGridComponent';
 import CircularIndeterminate from '../../components/Loading';
 
 export default function ExpensesPage(){
-  const url = "http://127.0.0.1:5000/expensesPage";
+  const url = "https://apilertlogin-friendly-turtle-cq.mybluemix.net/expensesPage";
   const columns = [
     {
       field: 'action', width:80, headerName: 'Actions',
