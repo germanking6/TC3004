@@ -3,7 +3,7 @@ import HeaderComponent from "../../components/HeaderComponent";
 import TextField from '@mui/material/TextField';
 import { Box, Paper, responsiveFontSizes, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { NativeSelect } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 
 import Stack from '@mui/material/Stack';
 
@@ -363,40 +363,15 @@ const TABLE_BODY = [
 ];
 
 export default function ICAS() {
-    const [rows, setRows] = React.useState([{
-        "ica_code": "a",
-        "ica_core": "a",
-        "year": "a",
-        "id_planning": "a",
-        "ica_owner": "a",
-        "budget": "a",
-        "country": "a",
-        "dept": "a",
-        "frequency_bill": "a",
-        "cc": "a",
-        "city_name_req": "a",
-        "r_city_req": "a",
-        "city_name_perf": "a",
-        "r_city_perf": "a",
-        "division": "a",
-        "major": "a",
-        "minor": "a",
-        "leru": "a",
-        "description": "a",
-        "type": "a",
-        "nec": "a",
-        "total_plus_taxes": "a",
-        "start_date": "a",
-        "end_date": "a",
-    }])
+    const [rows, setRows] = React.useState(null);
 
     async function fetchRows() {
-        const response = await fetch("/icas");
+        const response = await fetch("http://127.0.0.1:5000/icas");
         const data = await response.json();
         setRows(data);
     }
 
-
+    useEffect(fetchRows, []);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -429,10 +404,16 @@ export default function ICAS() {
             end_date: data.get("end_date"),
         };
 
-        fetch("/icas", {
+        fetch("http://127.0.0.1:5000/icas", {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(json_data),
+        }).then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+        }).then(data => {
+            setRows(data);
         });
     };
 
@@ -490,7 +471,7 @@ export default function ICAS() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows && rows.map(row => <TableRow>{TABLE_BODY.map(k => <TableCell align="right" key={k}>{row[k]}</TableCell>)}</TableRow>)}
+                    {rows && rows.map(row => <TableRow key={row.ica_code}>{TABLE_BODY.map(k => <TableCell align="right" key={k}>{row[k]}</TableCell>)}</TableRow>)}
                 </TableBody>
             </Table>
         </TableContainer>

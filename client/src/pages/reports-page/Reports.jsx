@@ -14,22 +14,23 @@ export default function Reports() {
     const [to, setTo] = React.useState(null);
 
     async function submitHandler() {
+
         if (from != null && to != null) {
-            let url = `http://localhost:5000/reports?start_date=${from}&end_date=${to}`;
+            let url = `http://127.0.0.1:5000/reports?start_date=${from.toISOString().split('T')[0]}&end_date=${to.toISOString().split('T')[0]}`;
             window.open(url);
         }
     }
 
     return (
         <React.Fragment>
-            <HeaderComponent title="Reports"/>
+            <HeaderComponent title="Reports" />
             <Box
                 sx={{
                     display: "flex",
                     justifyContent: "center",
                     p: 5,
                     gap: 2,
-            }}>
+                }}>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker
                         label="Date Start"

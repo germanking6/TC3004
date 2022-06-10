@@ -75,6 +75,7 @@ app.add_url_rule("/extraHours", view_func=addExtraHours, methods=['POST'])
 app.add_url_rule("/extraHours", view_func=getExtraHours, methods=['GET'])
 app.add_url_rule("/extraHours", view_func=deleteExtraHours, methods=['DELETE'])
 
+
 @app.route("/")
 def servicio_default():
     connection = Db2Connection()
@@ -116,46 +117,142 @@ def getAdminMails():
     result = DelegatePage().getAdminMail()
     return result, 200
 
-def generate():
-    # dummy data
-    log = [
-        ('login', datetime(2015, 1, 10, 5, 30)),
-        ('deposit', datetime(2015, 1, 10, 5, 35)),
-        ('order', datetime(2015, 1, 10, 5, 50)),
-        ('withdraw', datetime(2015, 1, 10, 6, 10)),
-        ('logout', datetime(2015, 1, 10, 6, 15))
-    ]
-    data = StringIO()
-    w = csv.writer(data)
 
-    w.writerow(('action', 'timestamp'))
-    yield data.getvalue()
-    data.seek(0)
-    data.truncate(0)
+class Reports(Base):
+    # agregamos los campos donde se mapearan las columnas de la db
+    __tablename__ = "reports"
+    id = Column(String, primary_key=True)
+    date = Column(Date)
+    serial = Column(String)
+    name = Column(String)
+    manager = Column(String)
+    department = Column(String)
+    type = Column(String)
+    band = Column(String)
+    depto_req = Column(String)
+    ica = Column(String)
+    month1 = Column(Integer)
+    month2 = Column(Integer)
+    month3 = Column(Integer)
+    total = Column(Integer)
+    comments = Column(String)
 
-    # write each log item
-    for item in log:
-        w.writerow((
-            item[0],
-            item[1].isoformat()  # format datetime as string
-        ))
-        yield data.getvalue()
-        data.seek(0)
-        data.truncate(0)
+    def __init__(self, id, date, serial, name, manager, department, type, band, depto_req, ica, month1, month2, month3, total, comments):
+        self.id = id
+        self.date = date
+        self.serial = serial
+        self.name = name
+        self.manager = manager
+        self.department = department
+        self.type = type
+        self.band = band
+        self.depto_req = depto_req
+        self.ica = ica
+        self.month1 = month1
+        self.month2 = month2
+        self.month3 = month3
+        self.total = total
+        self.comments = comments
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
-# alternative: http://flask.pyexcel.org/en/latest/
-@app.route("/reports")
+class ICA(Base):
+    # agregamos los campos donde se mapearan las columnas de la db
+    __tablename__ = "icas"
+    ica_code = Column(String, primary_key=True)
+    ica_core = Column(String)
+    year = Column(String)
+    id_planning = Column(String)
+    ica_owner = Column(String)
+    budget = Column(String)
+    country = Column(String)
+    dept = Column(String)
+    frequency_bill = Column(String)
+    cc = Column(String)
+    city_name_req = Column(String)
+    city_name_perf = Column(String)
+    division = Column(String)
+    major = Column(String)
+    minor = Column(String)
+    leru = Column(String)
+    description = Column(String)
+    type = Column(String)
+    nec = Column(String)
+    total_plus_taxes = Column(String)
+    start_date = Column(String)
+    end_date = Column(String)
+
+    def __init__(self, ica_code, ica_core, year, id_planning, ica_owner, budget, country, dept, frequency_bill, cc, city_name_req, r_city_req, city_name_perf, r_city_perf, division, major, minor, leru, description, type, nec, total_plus_taxes, start_date, end_date):
+        self.ica_code = ica_code
+        self.ica_core = ica_core
+        self.year = year
+        self.id_planning = id_planning
+        self.ica_owner = ica_owner
+        self.budget = budget
+        self.country = country
+        self.dept = dept
+        self.frequency_bill = frequency_bill
+        self.cc = cc
+        self.city_name_req = city_name_req
+        self.r_city_req = r_city_req
+        self.city_name_perf = city_name_perf
+        self.r_city_perf = r_city_perf
+        self.division = division
+        self.major = major
+        self.minor = minor
+        self.leru = leru
+        self.description = description
+        self.type = type
+        self.nec = nec
+        self.total_plus_taxes = total_plus_taxes
+        self.start_date = start_date
+        self.end_date = end_date
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+
+
+#https://stackoverflow.com/questions/8895208/sqlalchemy-how-to-filter-date-field
+@app.route("/reports", methods=["GET"])
 def reports():
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')
-    print(start_date, end_date)
-    response = Response(generate(), mimetype='text/csv')
-    response.headers.set("Content-Disposition", "attachment", filename="log.csv")
-    return response
+        
+    x = db_session.query(Reports).filter(Reports.date.between(start_date, end_date))
+    x_array = [y.as_dict() for y in x]
+     
+    headers = ["id", "date", "serial", "name", "manager", "department", "type", "band", "depto_req", "ica", "month1", "month2", "month3", "total", "comments"]
+    
+    data = io.StringIO()
+    writer = csv.DictWriter(data, fieldnames=headers)
+    
+    writer.writeheader()
+    writer.writerows(x_array)
 
+    output = make_response(data.getvalue())
+    output.headers["Content-Disposition"] = "attachment; filename=export.csv"
+    output.headers["Content-type"] = "text/csv"
+    return output
 
+@app.route("/icas", methods=['GET', 'POST'])
+def icas():
+    if request.method == "POST":
+        x = request.get_json()
+        new_ica = ICA(x["ica_code"], x["ica_core"], x["year"], x["id_planning"], x["ica_owner"], x["budget"], x["country"], x["dept"],
+                      x["frequency_bill"], x["cc"], x["city_name_req"], x["r_city_req"], x["city_name_perf"],
+                      x["r_city_perf"], x["division"], x["major"], x["minor"], x["leru"], x["description"], x["type"],
+                      x["nec"], x["total_plus_taxes"], x["start_date"], x["end_date"])
+        db_session.add(new_ica)
+        db_session.commit()
+
+    x = db_session.query(ICA).all()
+    return json.dumps([y.as_dict() for y in x])
 
     
 if __name__ == "__main__":
     app.run(debug=True)
+    
+    
