@@ -15,7 +15,7 @@ export default function Reports() {
 
     async function submitHandler() {
         if (from != null && to != null) {
-            let url = `http://localhost:5000/reports?start_date=${from}&end_date=${to}`;
+            let url = `https://apilertlogin-friendly-turtle-cq.mybluemix.net/reports?start_date=${from}&end_date=${to}`;
             window.open(url);
         }
     }
