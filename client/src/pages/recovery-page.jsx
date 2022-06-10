@@ -19,7 +19,7 @@ const RecoveryPage = () =>{
     //fetch
     const cargarDatos = async () => {
         try{
-            const url = "http://127.0.0.1:5000/recoveryPage";
+            const url = "https://apilertlogin-friendly-turtle-cq.mybluemix.net/recoveryPage";
             const res = await fetch(url);
             const datos = await res.json();
             console.log(datos);
@@ -130,7 +130,7 @@ const RecoveryPage = () =>{
     // POST request using fetch()
     console.log(recover)
     console.log(tot)
-        fetch(`http://127.0.0.1:5000/recoveryPage?id=${number}&recover=${totalrecover}&quarter=${q}&trecover=${recover}&t=${tot}`, {
+        fetch(`https://apilertlogin-friendly-turtle-cq.mybluemix.net/recoveryPage?id=${number}&recover=${totalrecover}&quarter=${q}&trecover=${recover}&t=${tot}`, {
             
             // Adding method type
             method: "POST",
