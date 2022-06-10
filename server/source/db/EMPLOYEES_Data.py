@@ -28,6 +28,4 @@ class EMPLOYEE_Data(Base):
     ica = Column(Integer)
     squad = Column(String(10))
     state = Column(Boolean)
-   
-    
-    
+    mail = Column(String(50))
