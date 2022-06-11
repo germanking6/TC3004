@@ -33,9 +33,13 @@ import { countries } from './countries';
 
 //https://v4.mui.com/es/components/buttons/?msclkid=40af928eb62411ecaf95a1a6c922508a
 //https://materialui.co/icon/expand-more
-const url = "https://apilertlogin-friendly-turtle-cq.mybluemix.net/employeesPage";
-const url2 = "https://apilertlogin-friendly-turtle-cq.mybluemix.net/addEmployee";
-const url3 = "https://apilertlogin-friendly-turtle-cq.mybluemix.net/updateStateEmployee";
+const url = "http://127.0.0.1:5000/employeesPage";
+const url2 = "http://127.0.0.1:5000/addEmployee";
+const url3 = "http://127.0.0.1:5000/updateStateEmployee";
+const url4 = "http://127.0.0.1:5000/recoveryPage";
+// const url = "https://apilertlogin-friendly-turtle-cq.mybluemix.net/employeesPage";
+// const url2 = "https://apilertlogin-friendly-turtle-cq.mybluemix.net/addEmployee";
+// const url3 = "https://apilertlogin-friendly-turtle-cq.mybluemix.net/updateStateEmployee";
 const EmployeesPage = () =>{
     //------TEMPORARY DATA FOR TESTING
     //table data titles to simulate database
@@ -98,6 +102,7 @@ const EmployeesPage = () =>{
     //modificating employees list
     const [employees, setEmployees] = useState([]);
     const [type, setType] = useState([{label: "", value: -1}])
+    const [ica, setICAS] = useState([{label: -1, value: -1}])
     //fetch
     const cargarDatos = async () => {
         try{
@@ -106,6 +111,7 @@ const EmployeesPage = () =>{
             setEmployees(await datos.data);
             console.log(datos.types)
             setType([...await datos.types])
+            setICAS(await datos.ICA)
             
         } catch(err) {
             console.log(err);
@@ -113,7 +119,6 @@ const EmployeesPage = () =>{
     };
     useEffect(async () => {
         await cargarDatos();
-        console.log(type)
     }, []);
 
     //------INPUT ADD EMPLOYEES
@@ -294,16 +299,6 @@ const EmployeesPage = () =>{
         }
     ];
 
-    const ica = [
-        {
-            value: '124',
-            label: 'Julio',
-        },
-        {
-            value: '123',
-            label: 'Cesar',
-        }
-    ];
 
     const squads = [
         {
