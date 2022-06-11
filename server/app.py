@@ -5,7 +5,7 @@ from io import StringIO
 
 from flask import Flask, jsonify, request, Response, abort, session
 from flask_cors import CORS, cross_origin
-from source.api.ExpensesPage import addExpense, getExpenses, deleteExpense
+from source.api.ExpensesPage import addExpense, getExpenses, deleteExpense, getManagerMail
 from source.api.employeesEndpoints import createEmployee, deleteEmployee, getEmployee, updateStateEmployee
 
 from source.api.employeesEndpoints import getEmployee,setEmployee
@@ -58,6 +58,7 @@ app.add_url_rule("/updateStateEmployee", view_func=updateStateEmployee, methods=
 app.add_url_rule("/expensesPage", view_func=addExpense, methods=["POST"])
 app.add_url_rule("/expensesPage", view_func=getExpenses, methods=["GET"])
 app.add_url_rule("/expensesPage", view_func=deleteExpense, methods=["DELETE"])
+app.add_url_rule("/expensesPageMail", view_func=getManagerMail, methods=["POST"])
 
 app.add_url_rule("/expensesTypes", view_func=addExpensesTypes, methods=['POST'])
 app.add_url_rule("/@me", view_func=get_current_user, methods=['GET'])
