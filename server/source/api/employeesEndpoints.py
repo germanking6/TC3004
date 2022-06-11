@@ -1,5 +1,6 @@
 from flask import jsonify,request
 from sqlalchemy import insert, select, update, delete
+from source.db.ICA_Data import ICA_Data
 from source.db.EMPLOYEES_Data import EMPLOYEE_Data
 from source.db.DBManager import DBManager
 from source.db.EMPLOYEES_Data import EMPLOYEE_Data
@@ -47,7 +48,15 @@ def getEmployee():
     for record in records:
         jsonFormat = { "value": record[0], "label": record[1]}
         data.append(jsonFormat)
-    return jsonify({'data': arr, 'types':data}), 200
+
+    db = DBManager.getInstance()
+    arr2 = []
+    items = db.session.query(ICA_Data).filter(ICA_Data.id =='1234').all()
+    for usuarioDB in items:
+        arr2.append(
+            { "value":usuarioDB.id, "label":usuarioDB.id}
+        )
+    return jsonify({'data': arr, 'types':data, 'ICA': arr2}), 200
     
     #return pd.DataFrame.from_records(dict(zip(r.keys(), r)) for r in usuarioDB)
 
@@ -66,6 +75,11 @@ def setEmployee():
     squad = request.args.get('squad')
     state = request.args.get('state')
     mail = request.args.get('mail')
+
+    if dateStart == "" or not dateStart:
+        dateStart = "2022-01-01"
+    if dateFinish == "" or not dateFinish:
+        dateFinish = "2022-01-01"
 
     query = update(EMPLOYEE_Data).where(EMPLOYEE_Data.id == id).values(
 country = country,employeeDepartment = employeeDepartment,departmentRequester =departmentRequester,
