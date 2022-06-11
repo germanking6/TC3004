@@ -25,7 +25,9 @@ import CircularIndeterminate from "../../components/Loading";
 
 export default function ExpensesPage() {
   const url =
-    "https://apilertlogin-friendly-turtle-cq.mybluemix.net/expensesPage";
+    "http://127.0.0.1:5000/expensesPage";
+  const url2 =
+    "http://127.0.0.1:5000/expensesPageMail";
   const columns = [
     {
       field: "action",
@@ -94,6 +96,8 @@ export default function ExpensesPage() {
     Comment: "",
     ICA: "",
     Type: "",
+    ICA_Manager: localStorage.getItem("email"),
+    Admin: localStorage.getItem("email"),
   });
   const [icaSelected, setICASelected] = useState(false);
   const [typeSelected, setTypeSelected] = useState(false);
@@ -103,9 +107,13 @@ export default function ExpensesPage() {
   const [loading, setLoading] = useState(false);
   const [reload, setReload] = useState(false);
   const [isAdmin, setAdmin] = useState(localStorage.getItem("role"));
+  const [manager, setManagerLocal] = useState(localStorage.getItem("email"));
 
   useEffect(() => {
     fetchExpenses();
+    if(isAdmin == "admin"){
+      fetchMails();
+    }
   }, [reload]);
 
   const handleSubmit = (event) => {
@@ -128,6 +136,8 @@ export default function ExpensesPage() {
             Comment: "",
             ICA: "",
             Type: "",
+            ICA_Manager: "",
+            Admin: "",
           })
         );
     } else {
@@ -175,6 +185,21 @@ export default function ExpensesPage() {
     let info = await data.json();
     setLoading(false);
     setRows(info);
+  }
+
+  async function fetchMails() {
+    setLoading(true);
+    const data = await fetch(url2, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ adminMail: manager }),
+    });
+    let info = await data.json();
+    setManager(info);
+    console.log(info)
+    setLoading(false);
   }
 
   //Hacer fetchs de los ica y de los type
@@ -333,7 +358,8 @@ export default function ExpensesPage() {
                           setManagerSelected(true);
                           setFormState({
                             ...formState,
-                            // ["Type"]: newInputValue,
+                            ["ICA_Manager"]: newInputValue,
+                            ["Admin"]: newInputValue,
                           });
                         } else {
                           setManagerSelected(false);
