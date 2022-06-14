@@ -1,0 +1,8 @@
+.gradient {
+  background-image: linear-gradient(
+      to bottom,
+      rgb(116, 116, 191, 0.5),
+      rgb(52, 138, 199, 0.2)
+    ),
+    var(--img);
+}

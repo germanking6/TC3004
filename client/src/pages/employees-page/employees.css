@@ -1,0 +1,16 @@
+.table {
+    border: 0.5pt solid #c0c0c0;
+    padding: 50px;
+    margin: 5px;
+    text-align: center;
+
+
+} 
+.form{
+    margin:50px;
+    padding: 5px;
+}
+.b{
+    margin-left: 50px;
+}
+
