@@ -2,9 +2,10 @@
 name: Newman Run
 
 on:
+  push:
+    branches: [ test ]
   pull_request:
-    branches:
-    - german2
+    branches: [ test ]
 
 jobs:
   newman:
