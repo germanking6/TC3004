@@ -3,7 +3,7 @@ name: Newman Run
 on:
   pull_request:
     branches:
-    - german2
+    - germanking6-patch-1
 
 jobs:
   newman:
