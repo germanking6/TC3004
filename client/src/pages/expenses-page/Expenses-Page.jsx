@@ -25,9 +25,9 @@ import CircularIndeterminate from "../../components/Loading";
 
 export default function ExpensesPage() {
   const url =
-    "http://127.0.0.1:5000/expensesPage";
+    "https://apilerttesting-humble-bear-yd.mybluemix.net/expensesPage";
   const url2 =
-    "http://127.0.0.1:5000/expensesPageMail";
+    "https://apilerttesting-humble-bear-yd.mybluemix.net/expensesPageMail";
   const columns = [
     {
       field: "action",

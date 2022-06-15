@@ -77,11 +77,8 @@ app.add_url_rule("/extraHours", view_func=deleteExtraHours, methods=['DELETE'])
 
 @app.route("/")
 def servicio_default():
-    connection = Db2Connection()
-    sentence = "SELECT * FROM gatitos"
-    records = connection.get_all(sentence)
-    connection.close_connection()
-    return jsonify(records)
+    
+    return "Welcome :)"
 
 @app.route("/delegatePage", methods=['PUT', 'GET', 'POST', 'DELETE'])
 def delegatePage():
