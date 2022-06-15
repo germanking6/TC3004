@@ -2,12 +2,10 @@
 import csv
 from datetime import datetime
 from io import StringIO
-
 from flask import Flask, jsonify, request, Response, abort, session
 from flask_cors import CORS, cross_origin
 from source.api.ExpensesPage import addExpense, getExpenses, deleteExpense, getManagerMail
 from source.api.employeesEndpoints import createEmployee, deleteEmployee, getEmployee, updateStateEmployee
-
 from source.api.employeesEndpoints import getEmployee,setEmployee
 from source.db.ICA_Data import ICA_Data
 from source.api.IcaEndpoints import getIca,setICA
@@ -22,14 +20,13 @@ from source.api.loginEndpoints import get_current_user, register_user, login_use
 
 
 
+
 #imports de source
 from source.api.TypesPageBack import getTypes,addTypes,deleteTypes
 from source.api.ExtraHoursEndpoints import getExtraHours,addExtraHours,deleteExtraHours
 
 #Prueba
 from lert_driver_db2.db2.Db2Connection import Db2Connection
-
-
 from DelegatePage import DelegatePage
 
 # timestamp - milesimas de segundo desde 1 de enero de 1970 
@@ -42,8 +39,8 @@ server_session = Session(app)
 cors = CORS(app, supports_credentials = True)
 
 
-bcrypt = Bcrypt(app)
 
+bcrypt = Bcrypt(app)
 
 
 app.add_url_rule("/recoveryPage", view_func=getIca, methods=['GET'])
@@ -76,6 +73,8 @@ app.add_url_rule("/extraHours", view_func=addExtraHours, methods=['POST'])
 app.add_url_rule("/extraHours", view_func=getExtraHours, methods=['GET'])
 app.add_url_rule("/extraHours", view_func=deleteExtraHours, methods=['DELETE'])
 
+#app.add_url_rule("/delegatePage", view_func=deleteDelegate, methods=['DELETE'])
+
 @app.route("/")
 def servicio_default():
     connection = Db2Connection()
@@ -84,6 +83,27 @@ def servicio_default():
     connection.close_connection()
     return jsonify(records)
 
+@app.route("/delegatePage", methods=['PUT', 'GET', 'POST', 'DELETE'])
+def delegatePage():
+    delegateManager = DelegatePage()
+    if request.method == "GET":
+        result = delegateManager.getDelegates()
+        print(result)
+        return jsonify(result), 200
+    elif request.method == "PUT":
+        delegateManager.updateStatus(request.get_json())
+        return "", 200
+    elif request.method == "POST":
+        delegateManager.addDelegate(request.get_json())
+        return "", 200
+    elif request.method == "DELETE":
+        delegateManager.deleteDelegate(request.get_json())
+        return "", 200
+
+@app.route("/admin")
+def getAdminMails():
+    result = DelegatePage().getAdminMail()
+    return result, 200
 
 def generate():
     # dummy data

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import CircularIndeterminate from '../../components/Loading';
 
 // Styles
 import "./delegate-page.css";
@@ -19,26 +20,34 @@ import {
   Box,
 } from "@mui/material";
 
-import DownloadIcon from '@mui/icons-material/Download';
+import SaveIcon from '@mui/icons-material/Save';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function DelegatePage() {
   const userToLog = useRef("");
-  const[statusChanged, setStatusChanged] = useState("");
+  const[status, setStatus] = useState("");
+  const[manager, setManager] = useState("");
   const[profiles, setProfiles] = useState([]);
   const[rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const solicitud = async() => {
+    setLoading(true);
     var respuesta = await fetch("https://apilertlogin-friendly-turtle-cq.mybluemix.net/delegatePage");
     respuesta.status != 401 && setRows(await respuesta.json());
+    setLoading(false);
   }
 
   const solicitudMails = async() => {
+    setLoading(true);
     const response = await fetch('https://apilertlogin-friendly-turtle-cq.mybluemix.net/admin');
     const data = await response.json();
     setProfiles(data);
+    setLoading(false);
   }
 
   const addDelegate = async() => {
+    setLoading(true);
     fetch('https://apilertlogin-friendly-turtle-cq.mybluemix.net/delegatePage',{
         method:'POST',
         headers : {
@@ -47,33 +56,38 @@ function DelegatePage() {
         body: JSON.stringify({'user': userToLog.current.value,
               'id': rows.length + 1})
     })
+    setLoading(false);
   }
 
-  // const updateStatus = async() => {
-  //   fetch('http://127.0.0.1:5000/delegatePage',{
-  //       method:'PUT',
-  //       headers : {
-  //         'Content-Type':'application/json'
-  //       },
-  //       body: {"status" : "Inactive",
-  //             "managerMail" : "a@ibm.com"}
-  //   })
-  // }
+  const deleteDelegate = async() => {
+    setLoading(true);
+    fetch('http://127.0.0.1:5000/delegatePage', {
+      method:'DELETE',
+      headers: {
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify({'managerMail': manager})
+    })
+    setLoading(false);
+  }
+
+  const updateStatus = async() => {
+    setLoading(true);
+    fetch('http://127.0.0.1:5000/delegatePage',{
+        method:'PUT',
+        headers : {
+          'Content-Type':'application/json'
+        },
+        body: JSON.stringify({'status' : status,
+              'managerMail' : manager})
+    })
+    setLoading(false);
+  }
 
   useEffect (() => {
     solicitudMails();
     solicitud();
   },[])
-
-  // function getStatus(params) {
-
-  //   return params.row.status
-  // };
-
-  // function setStatus(params) {
-  //   setStatusChanged(params.row.status)
-  //   return params.row.status
-  // };
 
  function inDelegates(user) {
    for (const item in rows) {
@@ -85,20 +99,48 @@ function DelegatePage() {
    }
    return false
  }
-
+ 
   const columns = [
-    { field: "adminMail", headerName: "Admin mail", width: 400 },
-    { field: "managerMail", headerName: "Manager mail", width: 450 },
+    
+    { field: "adminMail", headerName: "Admin mail", width: 325 },
+    { field: "managerMail", headerName: "Manager mail", width: 325 },
     {
       field: "status",
       headerName: "Status",
-      width: 100,
+      width: 200,
       type: "singleSelect",
-      valueOptions: ["Active", "Unactive"],
+      valueOptions: ["Active", "Inactive"],
       editable: true,
-      // valueGetter: getStatus,
-      // valueSetter: setStatus,
     },
+    {
+      field: 'action',
+      width:100,
+      headerName: 'Action',
+      renderCell: (params) => (
+      <div>
+        <IconButton aria-label="save" size="small" height="15" width="15"onClick={() => 
+          {
+              setStatus(params.row.status);
+              setManager(params.row.managerMail);
+              console.log(status);
+              console.log(manager);
+              updateStatus();
+          }
+      }>
+          <SaveIcon />
+        </IconButton>
+        <IconButton aria-label="delete" size="small" height="15" width="15"onClick={() => 
+          {
+              setManager(params.row.managerMail);
+              console.log(manager);
+              deleteDelegate();
+          }
+      }>  
+          <DeleteIcon />
+        </IconButton>
+      </div>
+      ),
+  },
   ];
 
   return (
@@ -108,8 +150,12 @@ function DelegatePage() {
         margin: "1rem auto",
       }}
     >
+
       <HeaderComponent title="Delegate Page" />
-      <Container>
+      { loading ? (<CircularIndeterminate/>):
+      (
+        <div>
+          <Container>
         <Grid
           container
           spacing={2}
@@ -172,11 +218,6 @@ function DelegatePage() {
               }}
             >
               <h3 style={{ flex: "1 1 auto" }}> Delegates: </h3>
-              <div>
-                <IconButton aria-label="download">
-                  <DownloadIcon />
-                </IconButton>
-              </div>
             </div>
           </Box>
         </Card>
@@ -189,25 +230,15 @@ function DelegatePage() {
           <DataTable 
           r={rows} 
           c={columns}
-          onCellClick={() => {
-            console.log("hola");
-            }
-          }/> 
+          experimentalFeatures={{ newEditingApi: true }}
+          />
         </Card>
       </Box>
+        </div>
+      )}
+      
     </Card>
   );
 }
-
-const profiles = [
-  "alexhdz@ibm.com",
-  "german@ibm.com",
-  "sauce@ibm.com",
-  "ari@ibm.com",
-  "marisol@ibm.com",
-  "viktor@ibm.com",
-];
-
-
 
 export default DelegatePage;
