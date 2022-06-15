@@ -72,4 +72,19 @@ def setICA():
     db.session.execute(query)
     db.session.commit()
     return getIca()
-   
+
+
+
+def icas():
+    if request.method == "POST":
+        x = request.get_json()
+        new_ica = ICA(x["ica_code"], x["ica_core"], x["year"], x["id_planning"], x["ica_owner"], x["budget"], x["country"], x["dept"],
+                      x["frequency_bill"], x["cc"], x["city_name_req"], x["r_city_req"], x["city_name_perf"],
+                      x["r_city_perf"], x["division"], x["major"], x["minor"], x["leru"], x["description"], x["type"],
+                      x["nec"], x["total_plus_taxes"], x["start_date"], x["end_date"])
+        db_session.add(new_ica)
+        db_session.commit()
+
+    x = db_session.query(ICA).all()
+    return json.dumps([y.as_dict() for y in x])
+
