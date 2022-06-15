@@ -275,7 +275,16 @@ export default function Dashboard() {
               <Divider />
 
               <Avatar alt="Sasa" sx={{ mx: "auto", my: 1 }} />
-
+              {open? <Typography
+                  component="div"
+                >
+                  {AuthCtx.email}
+                </Typography>:
+               <Typography
+               component="div"
+             >
+             (^人^)
+             </Typography> }
               <Divider />
               <List>
                 {permissions[role].map((k) => (
