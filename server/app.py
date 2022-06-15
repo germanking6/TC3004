@@ -1,4 +1,5 @@
 
+from crypt import methods
 import csv
 from datetime import datetime
 from io import StringIO
@@ -18,6 +19,8 @@ from source.db.loginmodel import User
 from flask_session import Session
 from source.api.loginEndpoints import get_current_user, register_user, login_user, logout_user
 
+from source.api.Reports import reports
+from source.api.IcaEndpoints import icas
 
 
 
@@ -73,7 +76,12 @@ app.add_url_rule("/extraHours", view_func=addExtraHours, methods=['POST'])
 app.add_url_rule("/extraHours", view_func=getExtraHours, methods=['GET'])
 app.add_url_rule("/extraHours", view_func=deleteExtraHours, methods=['DELETE'])
 
+
+app.add_url_rule("/reports", view_func=reports, methods=["GET"])
+app.add_url_rule("/icas", view_func=icas, methods=["GET", "POST"])
+
 #app.add_url_rule("/delegatePage", view_func=deleteDelegate, methods=['DELETE'])
+
 
 @app.route("/")
 def servicio_default():
@@ -105,46 +113,37 @@ def getAdminMails():
     result = DelegatePage().getAdminMail()
     return result, 200
 
-def generate():
-    # dummy data
-    log = [
-        ('login', datetime(2015, 1, 10, 5, 30)),
-        ('deposit', datetime(2015, 1, 10, 5, 35)),
-        ('order', datetime(2015, 1, 10, 5, 50)),
-        ('withdraw', datetime(2015, 1, 10, 6, 10)),
-        ('logout', datetime(2015, 1, 10, 6, 15))
-    ]
-    data = StringIO()
-    w = csv.writer(data)
+@app.route("/expensesPage", methods=['POST', 'GET'])
+def expensesPage():
+    try:
+        expenseManager = ExpensesPage()
+        if request.method == "POST":
+            expenseManager.addExpense(request.get_json())
+            return "", 200
+        elif request.method == "GET":
+            result = expenseManager.getExpenses()
+            return jsonify(result), 200
+    except:
+        return 404
 
-    w.writerow(('action', 'timestamp'))
-    yield data.getvalue()
-    data.seek(0)
-    data.truncate(0)
+@app.route("/delegatePage", methods=['PUT', 'GET', 'POST'])
+def delegatePage():
+    delegateManager = DelegatePage()
+    if request.method == "GET":
+        result = delegateManager.getDelegates()
+        print(result)
+        return jsonify(result), 200
+    elif request.method == "PUT":
+        delegateManager.updateStatus(request.get_data())
+        return "", 200
+    elif request.method == "POST":
+        delegateManager.addDelegate(request.get_json())
+        return "", 200
 
-    # write each log item
-    for item in log:
-        w.writerow((
-            item[0],
-            item[1].isoformat()  # format datetime as string
-        ))
-        yield data.getvalue()
-        data.seek(0)
-        data.truncate(0)
-
-
-# alternative: http://flask.pyexcel.org/en/latest/
-@app.route("/reports")
-def reports():
-    start_date = request.args.get('start_date')
-    end_date = request.args.get('end_date')
-    print(start_date, end_date)
-    response = Response(generate(), mimetype='text/csv')
-    response.headers.set("Content-Disposition", "attachment", filename="log.csv")
-    return response
-
-
-
+@app.route("/admin")
+def getAdminMails():
+    result = DelegatePage().getAdminMail()
+    return result, 200
     
 if __name__ == "__main__":
     app.run(debug=True)
