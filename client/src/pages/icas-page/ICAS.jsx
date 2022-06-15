@@ -436,7 +436,9 @@ export default function ICAS() {
         });
     };
 
-    return <Card variant="outlined" sx={{ margin: '1rem auto' }}>
+    return <Card variant="outlined" sx={{ 
+        maxWidth:'95%', 
+        margin:'1rem auto'}}>
         <HeaderComponent title="ICA" />
 
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} >

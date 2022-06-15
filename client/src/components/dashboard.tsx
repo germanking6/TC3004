@@ -183,6 +183,14 @@ const routeInfo = {
     component: <Reports />,
   },
 };
+
+const permissions = {
+  "manager": ["home", "delegate", "employee", "expenses", "recovery", "reports"],
+  "opmanager": ["home", "types", "icas", "expensesTypes", "extrahours"],
+  "admin": ["home", "expenses", "employee"],
+  "god": ["home", "types", "icas", "expensesTypes", "extrahours", "delegate", "employee", "expenses", "recovery", "reports"],
+}
+
 export default function Dashboard() {
   const [open, setOpen] = React.useState(false);
   const [log, setLog] = React.useState(true);
@@ -201,6 +209,8 @@ export default function Dashboard() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const [role, setRole] = React.useState(AuthCtx.role.toLowerCase());
 
   return (
     <React.Fragment>
@@ -265,10 +275,19 @@ export default function Dashboard() {
               <Divider />
 
               <Avatar alt="Sasa" sx={{ mx: "auto", my: 1 }} />
-
+              {open? <Typography
+                  component="div"
+                >
+                  {AuthCtx.email}
+                </Typography>:
+               <Typography
+               component="div"
+             >
+             (^人^)
+             </Typography> }
               <Divider />
               <List>
-                {Object.keys(routeInfo).map((k) => (
+                {permissions[role].map((k) => (
                   <ListItemButton
                     component={Link}
                     to={k}
@@ -327,7 +346,7 @@ export default function Dashboard() {
 
               <Routes>
                 <Route path="/" element={<HomePage />} />
-                {Object.keys(routeInfo).map((k) => (
+                {permissions[role].map((k) => (
                   <Route
                     key={k}
                     path={"/" + k}

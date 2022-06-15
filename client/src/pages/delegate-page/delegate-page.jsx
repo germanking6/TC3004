@@ -33,14 +33,14 @@ function DelegatePage() {
 
   const solicitud = async() => {
     setLoading(true);
-    var respuesta = await fetch("http://127.0.0.1:5000/delegatePage");
+    var respuesta = await fetch("https://apilertlogin-friendly-turtle-cq.mybluemix.net/delegatePage");
     respuesta.status != 401 && setRows(await respuesta.json());
     setLoading(false);
   }
 
   const solicitudMails = async() => {
     setLoading(true);
-    const response = await fetch('http://127.0.0.1:5000/admin');
+    const response = await fetch('https://apilertlogin-friendly-turtle-cq.mybluemix.net/admin');
     const data = await response.json();
     setProfiles(data);
     setLoading(false);
@@ -48,7 +48,7 @@ function DelegatePage() {
 
   const addDelegate = async() => {
     setLoading(true);
-    fetch('http://127.0.0.1:5000/delegatePage',{
+    fetch('https://apilertlogin-friendly-turtle-cq.mybluemix.net/delegatePage',{
         method:'POST',
         headers : {
           'Content-Type':'application/json'
