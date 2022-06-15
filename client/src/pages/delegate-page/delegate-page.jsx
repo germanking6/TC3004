@@ -68,6 +68,7 @@ function DelegatePage() {
       },
       body: JSON.stringify({'managerMail': manager})
     })
+    setLoading(false);
   }
 
   const updateStatus = async() => {

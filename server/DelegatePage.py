@@ -45,9 +45,9 @@ class DelegatePage:
             info.append(jsonFormat)
         return info
     # Elimina un registro de la tabla
-    def deleteDelegate():
+    def deleteDelegate(self, formData: json):
         connection = Db2Connection()
-        sentence = "DELETE FROM delegate WHERE managerMail = {};".format(request.get_json()["managerMail"])
+        sentence = "DELETE FROM delegate WHERE managerMail = '{}';".format(formData["managerMail"])
         connection.execute(sentence)
         connection.close_connection()
         return "", 200

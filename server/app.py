@@ -13,11 +13,6 @@ from source.api.IcaEndpoints import getIca,setICA
 from source.db.DBManager import DBManager
 from source.api.ExpensesTypesEndpoints import getExpensesTypes,addExpensesTypes, deleteExpensesTypes
 from sqlalchemy import select
-from flask_bcrypt import Bcrypt
-from config import ApplicationConfig
-from source.db.loginmodel import User
-from flask_session import Session
-from source.api.loginEndpoints import get_current_user, register_user, login_user, logout_user
 
 
 
@@ -32,13 +27,8 @@ from DelegatePage import DelegatePage
 db = DBManager.getInstance()
 # 2do - creamos un objeto de tipo flask
 app = Flask(__name__)
-app.config.from_object(ApplicationConfig)
-server_session = Session(app)
 
 cors = CORS(app, supports_credentials = True)
-
-
-bcrypt = Bcrypt(app)
 
 
 
@@ -51,10 +41,6 @@ app.add_url_rule("/expensesPage", view_func=deleteExpense, methods=["DELETE"])
 app.add_url_rule("/employeesPage", view_func=setEmployee, methods=['POST'])
 
 app.add_url_rule("/expensesTypes", view_func=addExpensesTypes, methods=['POST'])
-app.add_url_rule("/@me", view_func=get_current_user, methods=['GET'])
-app.add_url_rule("/register", view_func=register_user, methods=['POST'])
-app.add_url_rule("/login", view_func=login_user, methods=['POST'])
-app.add_url_rule("/logout", view_func=logout_user, methods=['POST'])
 app.add_url_rule("/expensesTypes", view_func=getExpensesTypes, methods=['GET'])
 app.add_url_rule("/expensesTypes", view_func=deleteExpensesTypes, methods=['DELETE'])
 
@@ -67,7 +53,7 @@ app.add_url_rule("/extraHours", view_func=addExtraHours, methods=['POST'])
 app.add_url_rule("/extraHours", view_func=getExtraHours, methods=['GET'])
 app.add_url_rule("/extraHours", view_func=deleteExtraHours, methods=['DELETE'])
 
-app.add_url_rule("/delegatePage", view_func=deleteDelegate, methods=['DELETE'])
+#app.add_url_rule("/delegatePage", view_func=deleteDelegate, methods=['DELETE'])
 
 @app.route("/")
 def servicio_default():
@@ -76,19 +62,6 @@ def servicio_default():
     records = connection.get_all(sentence)
     connection.close_connection()
     return jsonify(records)
-
-@app.route("/expensesPage", methods=['POST', 'GET'])
-def expensesPage():
-    try:
-        expenseManager = ExpensesPage()
-        if request.method == "POST":
-            expenseManager.addExpense(request.get_json())
-            return "", 200
-        elif request.method == "GET":
-            result = expenseManager.getExpenses()
-            return jsonify(result), 200
-    except:
-        return 404
 
 @app.route("/delegatePage", methods=['PUT', 'GET', 'POST', 'DELETE'])
 def delegatePage():
