@@ -1,7 +1,6 @@
 import json
-from pickle import ADDITEMS
 from lert_driver_db2.db2.Db2Connection import Db2Connection
-from flask import Flask, jsonify, request, Response
+from flask import jsonify
 
 class DelegatePage:
     updateStatusQuery = '''UPDATE delegate SET status = '{}' WHERE managerMail = '{}';'''

@@ -2,14 +2,15 @@ import json
 from flask import jsonify, request
 from lert_driver_db2.db2.Db2Connection import Db2Connection
 
-addExpenseQuery = '''insert into EXPENSES (MAIL, "DATE", USD_COST, COMMENT, ICA, TYPE, ICA_Manager, Admin)
-values ('{}','{}',{},'{}',{},{},{},{});'''
+addExpenseQuery = '''insert into EXPENSES (MAIL, "DATE", USD_COST, COMMENT, ICA, TYPE, "ICA_Manager", "Admin")
+values ('{}','{}',{},'{}',{},{},'{}','{}');'''
 
 def addExpense():
     try:
         formData = request.get_json()
         connection = Db2Connection()
         sentence = addExpenseQuery.format(formData["EmployeeMail"], formData["Date"], formData["Amount"], formData["Comment"], formData["ICA"][-1], formData["Type"][-1], formData["ICA_Manager"], formData["Admin"])
+        print(sentence)
         connection.execute(sentence)
         connection.close_connection()
     except:
@@ -50,7 +51,7 @@ def getManagerMail():
         connection.close_connection()
         data = []
         for record in records:
-            jsonFormat = { "label":record }
+            jsonFormat = { "label":record[0] }
             data.append(jsonFormat)
         print(jsonify(data))
         return jsonify(data), 200

@@ -1,5 +1,5 @@
 
-from flask import Column, String, Integer, Date
+from sqlalchemy import Column, String, Integer, Date
 
 from sqlalchemy.orm import declarative_base
 Base = declarative_base()

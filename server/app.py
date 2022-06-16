@@ -126,24 +126,6 @@ def expensesPage():
     except:
         return 404
 
-@app.route("/delegatePage", methods=['PUT', 'GET', 'POST'])
-def delegatePage():
-    delegateManager = DelegatePage()
-    if request.method == "GET":
-        result = delegateManager.getDelegates()
-        print(result)
-        return jsonify(result), 200
-    elif request.method == "PUT":
-        delegateManager.updateStatus(request.get_data())
-        return "", 200
-    elif request.method == "POST":
-        delegateManager.addDelegate(request.get_json())
-        return "", 200
-
-@app.route("/admin")
-def getAdminMails():
-    result = DelegatePage().getAdminMail()
-    return result, 200
     
 if __name__ == "__main__":
     app.run(debug=True)
