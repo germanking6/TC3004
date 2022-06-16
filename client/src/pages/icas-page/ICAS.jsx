@@ -9,6 +9,8 @@ import Stack from '@mui/material/Stack';
 
 
 import Button from '@mui/material/Button';
+import { DataGrid } from "@mui/x-data-grid";
+import CircularIndeterminate from "../../components/Loading";
 
 
 function generateYearsBetween(startYear, endYear = 2022) {
@@ -308,93 +310,46 @@ function DatePickerComponent(props) {
     />
 }
 
-
-const TABLE_HEADERS = [
-    "ICA Code",
-    "ICA Core",
-    "Year",
-    "ID Planning",
-    "ICA Owner",
-    "Budget",
-    "Country",
-    "Depto",
-    "Frequency bill",
-    "CC",
-    "City Name Req",
-    "R City Req",
-    "City Name Perf",
-    "R City Perf",
-    "Division",
-    "Major",
-    "Minor",
-    "Leru",
-    "Description",
-    "Type",
-    "Nec",
-    "Total Plus Taxes",
-    "Start Date",
-    "End Date",
-];
-const TABLE_BODY = [
-    "ica_code",
-    "ica_core",
-    "year",
-    "id_planning",
-    "ica_owner",
-    "budget",
-    "country",
-    "dept",
-    "frequency_bill",
-    "cc",
-    "city_name_req",
-    "r_city_req",
-    "city_name_perf",
-    "r_city_perf",
-    "division",
-    "major",
-    "minor",
-    "leru",
-    "description",
-    "type",
-    "nec",
-    "total_plus_taxes",
-    "start_date",
-    "end_date",
-];
-
 export default function ICAS() {
-    const [rows, setRows] = React.useState([{
-        "ica_code": "a",
-        "ica_core": "a",
-        "year": "a",
-        "id_planning": "a",
-        "ica_owner": "a",
-        "budget": "a",
-        "country": "a",
-        "dept": "a",
-        "frequency_bill": "a",
-        "cc": "a",
-        "city_name_req": "a",
-        "r_city_req": "a",
-        "city_name_perf": "a",
-        "r_city_perf": "a",
-        "division": "a",
-        "major": "a",
-        "minor": "a",
-        "leru": "a",
-        "description": "a",
-        "type": "a",
-        "nec": "a",
-        "total_plus_taxes": "a",
-        "start_date": "a",
-        "end_date": "a",
-    }])
-
-    async function fetchRows() {
-        const response = await fetch("/icas");
-        const data = await response.json();
-        setRows(data);
-    }
+    const [rows, setRows] = React.useState([])
+    const [loading, setLoading] = React.useState(false);
+    const columns = [
+    {field:"ica_code"        , headerName:"ICA Code"        , with:200   },
+    {field:"ica_core"        , headerName:"ICA Core"        , with:200   },
+    {field:"year"            , headerName:"Year"            , with:200   },
+    {field:"id_planning"     , headerName:"ID Planning"     , with:200   },
+    {field:"ica_owner"       , headerName:"ICA Owner"       , with:200   },
+    {field:"budget"          , headerName:"Budget"          , with:200   },
+    {field:"country"         , headerName:"Country"         , with:200   },
+    {field:"dept"           , headerName:"Depto"           , with:200   },
+    {field:"frequency_bill"  , headerName:"Frequency bill"  , with:200   },
+    {field:"cc"              , headerName:"CC"              , with:200   },
+    {field:"city_name_req"   , headerName:"City Name Req"   , with:200   },
+    {field:"r_city_req"      , headerName:"R City Req"      , with:200   },
+    {field:"city_name_perf"  , headerName:"City Name Perf"  , with:200   },
+    {field:"r_city_perf"     , headerName:"R City Perf"     , with:200   },
+    {field:"division"        , headerName:"Division"        , with:200   },
+    {field:"major"           , headerName:"Major"           , with:200   },
+    {field:"minor"           , headerName:"Minor"           , with:200   },
+    {field:"leru"            , headerName:"Leru"            , with:200   },
+    {field:"description"     , headerName:"Description"     , with:200   },
+    {field:"type"            , headerName:"Type"            , with:200   },
+    {field:"nec"             , headerName:"Nec"             , with:200         },
+    {field:"total_plus_taxes", headerName:"Total Plus Taxes", with:200         },
+    {field:"start_date"      , headerName:"Start Date"      , with:200         },
+    {field:"end_date"        , headerName:"End Date"        , with:200         },
+        
+      ];
+    React.useEffect(()=>{
+        if(!loading){
+            fetch("http://127.0.0.1:5000/icas",{
+                method:'GET',
+            })
+            .then((res)=>res.json())
+            .then((data)=>setRows(data)).then(()=>setLoading(true))
+        }
+        
+      })
 
 
 
@@ -440,7 +395,7 @@ export default function ICAS() {
         maxWidth:'95%', 
         margin:'1rem auto'}}>
         <HeaderComponent title="ICA" />
-
+        { !loading && (<CircularIndeterminate/>)}
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} >
             <Stack direction="row" sx={{ justifyContent: "center", alignItems: "center" }} spacing={5}>
                 <TextFieldComponent id="ica_code" label="ICA Code" />
@@ -481,20 +436,21 @@ export default function ICAS() {
 
 
             <Button variant="outlined" type="submit" >submit</Button>
-
+            <Card sx={{  
+                            margin:'0 1rem 1rem 1rem'}}>
+                    <div style={{ height: 400, width: '100%' }}>
+                        <DataGrid
+                        rows={rows}
+                        columns={columns}
+                        pageSize={5}
+                        rowsPerPageOptions={[5]}
+                        disableSelectionOnClick
+                        
+                        />
+                    </div>
+                </Card>
         </Box>
 
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        {TABLE_HEADERS.map(header => <TableCell key={header} align="right">{header}</TableCell>)}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {rows && rows.map(row => <TableRow>{TABLE_BODY.map(k => <TableCell align="right" key={k}>{row[k]}</TableCell>)}</TableRow>)}
-                </TableBody>
-            </Table>
-        </TableContainer>
+       
     </Card>;
 }

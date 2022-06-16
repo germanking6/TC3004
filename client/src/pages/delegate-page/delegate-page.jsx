@@ -22,46 +22,55 @@ import {
 
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { UserContext } from "../../context/AuthContext";
 
 function DelegatePage() {
+  const AuthCtx = React.useContext(UserContext);
   const userToLog = useRef("");
   const[status, setStatus] = useState("");
   const[manager, setManager] = useState("");
   const[profiles, setProfiles] = useState([]);
   const[rows, setRows] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const solicitud = async() => {
-    setLoading(true);
-    var respuesta = await fetch("https://apilertlogin-friendly-turtle-cq.mybluemix.net/delegatePage");
-    respuesta.status != 401 && setRows(await respuesta.json());
-    setLoading(false);
-  }
+  React.useEffect(()=>{
+    if(loading){
+        fetch("https://delegatetest-shiny-squirrel-os.mybluemix.net/delegatePage",{
+            method:'GET',
+        })
+        .then((res)=>res.json())
+        .then((data)=>setRows(data)).then(()=>setLoading(false))
+        
+    }
+    
+})
 
   const solicitudMails = async() => {
-    setLoading(true);
-    const response = await fetch('https://apilertlogin-friendly-turtle-cq.mybluemix.net/admin');
+    const response = await fetch('https://delegatetest-shiny-squirrel-os.mybluemix.net/admin');
     const data = await response.json();
     setProfiles(data);
     setLoading(false);
   }
 
   const addDelegate = async() => {
-    setLoading(true);
-    fetch('https://apilertlogin-friendly-turtle-cq.mybluemix.net/delegatePage',{
+    fetch('https://delegatetest-shiny-squirrel-os.mybluemix.net/delegatePage',{
         method:'POST',
         headers : {
           'Content-Type':'application/json'
         },
-        body: JSON.stringify({'user': userToLog.current.value,
-              'id': rows.length + 1})
+        body: JSON.stringify({
+              'user': userToLog.current.value,
+              'email': AuthCtx.email
+            },
+
+              )
     })
     setLoading(false);
   }
 
   const deleteDelegate = async() => {
     setLoading(true);
-    fetch('http://127.0.0.1:5000/delegatePage', {
+    fetch('https://delegatetest-shiny-squirrel-os.mybluemix.net/delegatePage', {
       method:'DELETE',
       headers: {
         'Content-Type':'application/json'
@@ -73,20 +82,19 @@ function DelegatePage() {
 
   const updateStatus = async() => {
     setLoading(true);
-    fetch('http://127.0.0.1:5000/delegatePage',{
+    fetch('https://delegatetest-shiny-squirrel-os.mybluemix.net/delegatePage',{
         method:'PUT',
         headers : {
           'Content-Type':'application/json'
         },
         body: JSON.stringify({'status' : status,
-              'managerMail' : manager})
+              'managerMail' : manager},)
     })
     setLoading(false);
   }
 
   useEffect (() => {
     solicitudMails();
-    solicitud();
   },[])
 
  function inDelegates(user) {
@@ -183,6 +191,7 @@ function DelegatePage() {
               variant="outlined"
               size="small"
               onClick={() => {
+                console.log(AuthCtx.email)
                 // Si el usuario no está en la tabla agregarlo y si está en la tabla
                 // verificar que esté activo. Si no está activo activarlo
                 var user = userToLog.current.value;
@@ -194,6 +203,7 @@ function DelegatePage() {
                 }
                 console.log(rows);
                 console.log(profiles);
+                
               }}
             >
               SUBMIT
