@@ -35,18 +35,7 @@ export default function ExpensesPage() {
       headerName: "Actions",
       renderCell: (params) => (
         <div sx={{ mx: "auto" }}>
-          <IconButton
-            color="primary"
-            aria-label="Edit"
-            size="small"
-            height="15"
-            width="15"
-            onClick={() => {
-              editButton(params);
-            }}
-          >
-            <EditRounded />
-          </IconButton>
+          
           <IconButton
             color="error"
             aria-label="delete"
@@ -356,6 +345,7 @@ export default function ExpensesPage() {
                       onInputChange={(event, newInputValue) => {
                         if (newInputValue != "") {
                           setManagerSelected(true);
+                          console.log("NEW INPUT    " + newInputValue);
                           setFormState({
                             ...formState,
                             ["ICA_Manager"]: newInputValue,
