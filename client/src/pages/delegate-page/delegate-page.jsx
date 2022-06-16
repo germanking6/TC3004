@@ -22,8 +22,10 @@ import {
 
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { UserContext } from "../../context/AuthContext";
 
 function DelegatePage() {
+  const AuthCtx = React.useContext(UserContext);
   const userToLog = useRef("");
   const[status, setStatus] = useState("");
   const[manager, setManager] = useState("");
@@ -56,8 +58,12 @@ function DelegatePage() {
         headers : {
           'Content-Type':'application/json'
         },
-        body: JSON.stringify({'user': userToLog.current.value,
-              'id': rows.length + 1})
+        body: JSON.stringify({
+              'user': userToLog.current.value,
+              'email': AuthCtx.email
+            },
+
+              )
     })
     setLoading(false);
   }
@@ -82,7 +88,7 @@ function DelegatePage() {
           'Content-Type':'application/json'
         },
         body: JSON.stringify({'status' : status,
-              'managerMail' : manager})
+              'managerMail' : manager},)
     })
     setLoading(false);
   }
@@ -185,10 +191,10 @@ function DelegatePage() {
               variant="outlined"
               size="small"
               onClick={() => {
-                console.log(rows)
+                console.log(AuthCtx.email)
                 // Si el usuario no está en la tabla agregarlo y si está en la tabla
                 // verificar que esté activo. Si no está activo activarlo
-                /*var user = userToLog.current.value;
+                var user = userToLog.current.value;
                 if (inDelegates(user) == false) {
                   addDelegate();
                   solicitud();
@@ -196,7 +202,8 @@ function DelegatePage() {
                   alert("This profile is already in your team");
                 }
                 console.log(rows);
-                console.log(profiles);*/
+                console.log(profiles);
+                
               }}
             >
               SUBMIT
