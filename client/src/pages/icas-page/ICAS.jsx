@@ -342,7 +342,7 @@ export default function ICAS() {
       ];
     React.useEffect(()=>{
         if(!loading){
-            fetch("http://127.0.0.1:5000/icas",{
+            fetch("https://geticas-intelligent-bongo-cd.mybluemix.net/icas",{
                 method:'GET',
             })
             .then((res)=>res.json())
